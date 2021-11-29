@@ -181,5 +181,9 @@ https://github.com/rsmudge/Malleable-C2-Profiles
 
 
 
+------
+
+附 [CobaltStrike4.0用户手册_中文翻译](/assets/CobaltStrike4.0用户手册_中文翻译.pdf)
+
 - [ ] 腾讯云 云函数
 - [ ] 定制profile文件
