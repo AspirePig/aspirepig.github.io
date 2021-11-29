@@ -2,7 +2,11 @@
 title: CS隐藏篇
 typora-root-url: ..
 date: 2021-11-29 09:49:34
-Tags:cs nginx cdn 云函数
+Tags:
+  - cs
+  - nginx
+  - cdn
+  - 云函数
 ---
 
 近期工作频繁用到cs，于是向古月大表哥要了一份CS隐藏教程，再结合一些其他教程，操作了一把。
@@ -187,3 +191,4 @@ https://github.com/rsmudge/Malleable-C2-Profiles
 
 - [ ] 腾讯云 云函数
 - [ ] 定制profile文件
+
