@@ -205,6 +205,65 @@ git push -u origin main
 
 其他如主题的配置，也遇到一些问题，需要看主题的文档及issue 进行解决。
 
+### 11.Mac 多平台协同配置
+
+考虑到需要在mac上同步写博客，使用github 做同步（顺便把备份问题解决掉）
+
+以下为操作步骤：
+
+1. 首先在github上新建一个私有项目 myblog
+
+2. 删除主题中带有 .git 的文件夹 (github 嵌套 的git项目源文件无法上传到github)
+
+3. Windows：在本地文件中创建 .gitignore 文件，文件内容如下
+
+   ```
+   .DS_Store
+   Thumbs.db
+   db.json
+   *.log
+   node_modules/
+   public/
+   .deploy*/
+   ```
+
+3. Windows：在hexo项目根目录，初始化git，并将项目push到私有项目 myblog上
+
+   ```bash
+   git init
+   git remote add origin git@github.com:AspirePig/myblog.git
+   git add .
+   git commit -m "update"
+   git push -u origin main
+   ```
+
+4. Mac：安装好npm，hexo ，clone项目，并在其他目录初始化一个 hexo 项目，将其中的node_modules 目录拷贝到 clone 下来的 目录中
+
+   ```bash
+   sudo npm install -g hexo-cli  #安装hexo
+   mkdir hexo_tmp && cd hexo_tmp
+   hexo init   #初始化一个hexo项目
+   cd ..
+   git clone git@github.com:AspirePig/myblog.git
+   cp -rf hexo_tmp/node_modules myblog/   #复制一个初始化好的node_modules
+   cd myblog
+   npm install  #自动安装好在Windows上安装过的模块
+   ```
+
+5. Mac：修改文章，测试各是否正常可用
+
+   ```bash
+   hexo g
+   hexo s
+   hexo d
+   ```
+
+6. 测试通过后，上传到git项目，并在Windows测试是否正常
+
+
+
+
+
 ## 参考链接
 
 - https://zhuanlan.zhihu.com/p/60578464
