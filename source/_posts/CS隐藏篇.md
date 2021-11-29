@@ -189,6 +189,27 @@ https://github.com/rsmudge/Malleable-C2-Profiles
 
 附 [CobaltStrike4.0用户手册_中文翻译](/assets/CobaltStrike4.0用户手册_中文翻译.pdf)
 
+DNS 上线配置方法：
+
+![image-20211129161253595](/assets/image-20211129161253595.png)
+
+cs中监听器对应配置如下，都写ns记录的值：
+
+![image-20211129161035273](/assets/image-20211129161035273.png)
+
+
+
+## 参考链接
+
+- https://www.cnblogs.com/Xy--1/p/14396744.html
+- https://blog.ateam.qianxin.com/CobaltStrike4.0%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91.pdf
+
+
+
+
+
+TODO：
+
 - [ ] 腾讯云 云函数
 - [ ] 定制profile文件
 
