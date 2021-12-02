@@ -479,7 +479,36 @@ bash &amp;lt;(curl -L -s https:/">
 <h2 id="0x00：安装V2RAY"><a href="#0x00：安装V2RAY" class="headerlink" title="0x00：安装V2RAY"></a>0x00：安装V2RAY</h2><p>Linux系统中直接使用以下命令进行一键安装：</p>
 <p><code>bash &lt;(curl -L -s https://install.direct/go.sh)</code></p>
 <p>安装完成后，修改配置文件 <code>/etc/v2ray/config.json</code> 如下：</p>
-<p>{<br>   “inbounds”: [<br>     {<br>       “listen”: “127.0.0.1”,<br>       “port”: 2333,<br>       “protocol”: “vmess”,<br>       “settings”: {<br>         “clients”: [<br>           {<br>             “id”: “b1d53297-870d-4967-9ff0-f16aa315ddde”,<br>             “alterId”: 64<br>           }<br>         ]<br>       },<br>       “streamSettings”: {<br>         “network”: “ws”,<br>         “wsSettings”: {<br>         “path”: “/blog”<br>         }<br>       }<br>     }<br>   ],<br>   “outbounds”: [<br>     {<br>       “protocol”: “freedom”,<br>       “settings”: {}<br>     }<br>   ]<br> }</p>
+<pre class="language-none"><code class="language-none">{
+   "inbounds": \[
+     {
+       "listen": "127.0.0.1",
+       "port": 2333,
+       "protocol": "vmess",
+       "settings": {
+         "clients": \[
+           {
+             "id": "b1d53297-870d-4967-9ff0-f16aa315ddde",
+             "alterId": 64
+           }
+         \]
+       },
+       "streamSettings": {
+         "network": "ws",
+         "wsSettings": {
+         "path": "/blog"
+         }
+       }
+     }
+   \],
+   "outbounds": \[
+     {
+       "protocol": "freedom",
+       "settings": {}
+     }
+   \]
+ }</code></pre>
+
 <p>V2RAY常用控制命令：</p>
 <p>systemctl stauts v2ray<br>systemctl start v2ray<br>systemctl stop v2ray<br>systemctl restart v2ray<br>systemctl enable v2ray</p>
 <h2 id="0x01：https证书申请"><a href="#0x01：https证书申请" class="headerlink" title="0x01：https证书申请"></a>0x01：https证书申请</h2><p>此处我是直接从腾讯云申请的一年免费ssl证书，上传到VPS上，过程忽略</p>
@@ -1031,7 +1060,7 @@ bash &amp;lt;(curl -L -s https:/">
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">21.4k</span>
+                        class="white-color">24k</span>
             
             
             
