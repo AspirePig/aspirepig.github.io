@@ -15,7 +15,9 @@ tags:
 >
 > 随着 ATT&CK 的成立，MITRE 正在履行其为更安全的世界解决问题的使命——通过将社区聚集在一起开发更有效的网络安全。ATT&CK 是开放的，可供任何个人或组织免费使用。
 
-在 MITRE [官网](https://attack.mitre.org/#) 主页下方，可以看见攻击矩阵。
+MITRE  ATT&CK 更像是一个知识库，
+
+在 MITRE [官网](https://attack.mitre.org/#) 主页下方，可以看见攻击矩阵(提供企业及移动 两个方向)。
 
 ![image-20211202100444192](/assets/image-20211202100444192.png)
 
