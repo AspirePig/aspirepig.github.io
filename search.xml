@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>MITRE ATT&amp;CK学习-Navigator</title>
+      <link href="/2021/12/03/mitre-att-ck-xue-xi-navigator-er/"/>
+      <url>/2021/12/03/mitre-att-ck-xue-xi-navigator-er/</url>
+      
+        <content type="html"><![CDATA[<p>在上文中，主要了解了 MITRE ATT&amp;CK 攻击模型的一些概念，本文将记录 MITRE的Navigator 工具基础使用。 Navigator 项目地址：<a href="https://github.com/mitre-attack/attack-navigator">https://github.com/mitre-attack/attack-navigator</a></p><h1 id="ATT-amp-CK®-Navigator"><a href="#ATT-amp-CK®-Navigator" class="headerlink" title="ATT&amp;CK® Navigator"></a>ATT&amp;CK® Navigator</h1><blockquote><p>The ATT&amp;CK Navigator is designed to provide basic navigation and annotation of <a href="https://attack.mitre.org/">ATT&amp;CK</a> matrices, something that people are already doing today in tools like Excel. We’ve designed it to be simple and generic - you can use the Navigator to visualize your defensive coverage, your red/blue team planning, the frequency of detected techniques or anything else you want to do. The Navigator doesn’t care - it just allows you to manipulate the cells in the matrix (color coding, adding a comment, assigning a numerical value, etc.). We thought having a simple tool that everyone could use to visualize the matrix would help make it easy to use ATT&amp;CK.</p><p>The principal feature of the Navigator is the ability for users to define layers - custom views of the ATT&amp;CK knowledge base - e.g. showing just those techniques for a particular platform or highlighting techniques a specific adversary has been known to use. Layers can be created interactively within the Navigator or generated programmatically and then visualized via the Navigator.</p></blockquote><p>正如介绍所说，Navigator作为一个攻击矩阵导航器，做了能够在Excel中能做的事。作为一个可视化的页面，可以标注颜色、分数、备注等，可用于红/蓝队构建自己的攻击/防御路线。</p><p>如果要查看在线版，可直接访问 <a href="https://mitre-attack.github.io/attack-navigator/">https://mitre-attack.github.io/attack-navigator/</a> ，可导入APT组织的矩阵图，或创建自己的矩阵图</p><p>以下为本地安装方法：</p><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><p>前置条件： node.js 8 +</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">npm</span> <span class="token function">install</span> -g @angular/cli<span class="token function">git</span> clone https://github.com/mitre-attack/attack-navigator.git<span class="token builtin class-name">cd</span> attack-navigator/nav-app/<span class="token function">npm</span> <span class="token function">install</span> </code></pre><p>然后就可以在 <a href="http://localhost:4200/">http://localhost:4200/</a> 查看安装完成的页面</p><p><img src="/assets/image-20211203125439560.png" alt="image-20211203125439560"></p><h2 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h2><p>点击 create New Layer，可以创建一个新的视图，选择我们想要创建的视图后，将会加载json文件</p><p>加载完成后，顶部工具栏，可供我们对矩阵进行修改、标注、导出</p><p><img src="/assets/image-20211203125934378.png" alt="image-20211203125934378"></p><p>同时，Navigator支持导入本地或远程的json文件，或创建自定义的视图。</p><p>比如可以在github中查找知名APT组织的相关矩阵图，如 APT29（可直接从 MITRE官网该组织描述页面中下载json文件或直接在线浏览 ）</p><p>如 <a href="https://attack.mitre.org/groups/G0016/">https://attack.mitre.org/groups/G0016/</a> 页面中，按钮如下：</p><p><img src="/assets/image-20211203130400861.png" alt="image-20211203130400861"></p><p>具体页面中的操作，本文不做介绍，可自行探索</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> APT </tag>
+            
+            <tag> MITRE </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MITRE ATT&amp;CK学习(1)</title>
       <link href="/2021/12/01/mitre-att-ck-xue-xi-yi/"/>
       <url>/2021/12/01/mitre-att-ck-xue-xi-yi/</url>

