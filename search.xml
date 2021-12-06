@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>好用软件推荐</title>
+      <link href="/2021/12/03/hao-yong-ruan-jian-tui-jian-chi-xu-geng-xin/"/>
+      <url>/2021/12/03/hao-yong-ruan-jian-tui-jian-chi-xu-geng-xin/</url>
+      
+        <content type="html"><![CDATA[<p>记录一下各个平台自己在用的软件，及其推荐理由：</p><p>文件上传在百度网盘：</p><table><thead><tr><th>平台</th><th>软件名</th><th>推荐原因</th><th>下载地址/激活方法</th></tr></thead><tbody><tr><td>mac</td><td>Typora</td><td>markdown 编写好用👍</td><td>官网下载最后一个 beta 版(免费，或购买（80+RMB）</td></tr><tr><td>mac</td><td>ProxifierMac3</td><td>mac平台 代理软件(懂得都懂)</td><td>官网下载v3，使用序列号激活<br>3CWNN-WYTP4-SD83W-ASDFR-84KEA</td></tr><tr><td>mac</td><td>Easy_New_File</td><td>mac右键扩展助手</td><td>已PJ</td></tr><tr><td>mac</td><td>Navicat_Premium</td><td>数据库查看</td><td>已PJ</td></tr><tr><td>mac</td><td>IDEA/Pycharm等</td><td>jetbrains系列</td><td>教育邮箱激活</td></tr><tr><td>mac</td><td>ZenTermLite</td><td>securecrt平替</td><td>App Store 免费</td></tr><tr><td>mac</td><td>KeeWeb</td><td>密码管理工具</td><td><a href="https://github.com/keeweb/keeweb">https://github.com/keeweb/keeweb</a></td></tr><tr><td>Mac</td><td>Sublime Text</td><td>文本编辑器</td><td>官网下载，随便找个序列号激活，再hosts文件屏蔽检查</td></tr><tr><td>mac</td><td>腾讯 Lemon</td><td>管理下电脑将就用用</td><td>官网下载</td></tr><tr><td>Mac</td><td>Alfred</td><td>系统增强，替换掉系统自带搜索</td><td>已PJ</td></tr><tr><td>mac</td><td>FileZilla</td><td>免费 FTP/SFTF</td><td>官网下载</td></tr><tr><td>mac</td><td>PD Runner</td><td>无限试用 PD</td><td><a href="https://github.com/lihaoyun6/PD-Runner">https://github.com/lihaoyun6/PD-Runner</a></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Mac </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MITRE ATT&amp;CK学习-Navigator</title>
       <link href="/2021/12/03/mitre-att-ck-xue-xi-navigator-er/"/>
       <url>/2021/12/03/mitre-att-ck-xue-xi-navigator-er/</url>
