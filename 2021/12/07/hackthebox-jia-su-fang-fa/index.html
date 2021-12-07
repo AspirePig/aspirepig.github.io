@@ -454,7 +454,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    356
+                    365
                 </div>
                 
 
@@ -485,7 +485,10 @@
 openvpn openvpn.ovpn</code></pre>
 
 <p>完成后，新开一个vps shell，测试能否正常访问 HTB 节点</p>
-<h2 id="安装L2TP-IPsec"><a href="#安装L2TP-IPsec" class="headerlink" title="安装L2TP/IPsec"></a>安装L2TP/IPsec</h2><p>通过docker 快速搭建 L2TP/IPsec,此处使用了项目<a target="_blank" rel="noopener" href="https://github.com/hwdsl2/docker-ipsec-vpn-server">https://github.com/hwdsl2/docker-ipsec-vpn-server</a></p>
+<h2 id="安装L2TP-IPsec"><a href="#安装L2TP-IPsec" class="headerlink" title="安装L2TP/IPsec"></a>安装L2TP/IPsec</h2><p>开启 ipsec 支持</p>
+<pre class="language-none"><code class="language-none">sudo modprobe af_key</code></pre>
+
+<p>通过docker 快速搭建 L2TP/IPsec,此处使用了项目<a target="_blank" rel="noopener" href="https://github.com/hwdsl2/docker-ipsec-vpn-server">https://github.com/hwdsl2/docker-ipsec-vpn-server</a></p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">docker run <span class="token punctuation">\</span>
     --name ipsec-vpn-server <span class="token punctuation">\</span>
     --restart<span class="token operator">=</span>always <span class="token punctuation">\</span>
