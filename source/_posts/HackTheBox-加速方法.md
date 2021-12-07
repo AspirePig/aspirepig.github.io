@@ -38,6 +38,12 @@ openvpn openvpn.ovpn
 
 ## 安装L2TP/IPsec
 
+开启 ipsec 支持
+
+```
+sudo modprobe af_key
+```
+
 通过docker 快速搭建 L2TP/IPsec,此处使用了项目https://github.com/hwdsl2/docker-ipsec-vpn-server
 
 ```bash
