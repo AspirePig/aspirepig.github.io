@@ -453,7 +453,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    381
+                    488
                 </div>
                 
 
@@ -486,43 +486,51 @@
 <h3 id="安装-Parallels-tools"><a href="#安装-Parallels-tools" class="headerlink" title="安装 Parallels tools"></a>安装 Parallels tools</h3><p>点击右上角 安装 paralleltools 按钮，将会加载驱动盘 </p>
 <p><img src="/assets/image-20211208094309859.png" alt="image-20211208094309859"></p>
 <p>由于权限问题，需将文件复制出来进行安装</p>
-<pre class="language-none"><code class="language-none">#右键打开终端
-mkdir /root/pt
-cp -r /media/cdrom0 /root/pt
-cd /root/pt
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#右键打开终端</span>
+<span class="token function">mkdir</span> /root/pt
+<span class="token function">cp</span> -r /media/cdrom0 /root/pt
+<span class="token builtin class-name">cd</span> /root/pt
 ./install.sh</code></pre>
 
 <p><img src="/assets/image-20211208095355377.png" alt="image-20211208095355377"></p>
 <p>出现报错，然后开始解决</p>
-<pre class="language-none"><code class="language-none">vim  /etc/apt/sources.list
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vim</span>  /etc/apt/sources.list
 
 deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
 deb-src http://mirrors.ustc.edu.cn/kali/ kali-rolling main contrib non-free
 
-apt-get update
-apt-get install libelf-dev
-apt-get install dkms
-apt-get install printer-driver-postscript-hp  #这个好像没成功，也没管
+<span class="token function">apt-get</span> update
+<span class="token function">apt-get</span> <span class="token function">install</span> libelf-dev
+<span class="token function">apt-get</span> <span class="token function">install</span> dkms
+<span class="token function">apt-get</span> <span class="token function">install</span> printer-driver-postscript-hp  <span class="token comment">#这个好像没成功，也没管</span>
 </code></pre>
 
 <p>开始解决 缺少 linux-headers 的问题</p>
 <p>可以到  <a target="_blank" rel="noopener" href="http://old.kali.org/kali/pool/main/l/linux/">http://old.kali.org/kali/pool/main/l/linux/</a> 下载对应版本</p>
-<h3 id="开启ssh"><a href="#开启ssh" class="headerlink" title="开启ssh"></a>开启ssh</h3><pre class="language-none"><code class="language-none">vim /etc/ssh/sshd_config</code></pre>
+<h3 id="开启ssh"><a href="#开启ssh" class="headerlink" title="开启ssh"></a>开启ssh</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vim</span> /etc/ssh/sshd_config</code></pre>
 
 <p><img src="/assets/image-20211208102727047.png" alt="image-20211208102727047"></p>
 <p>保存退出，重启服务</p>
-<pre class="language-none"><code class="language-none">service ssh restart 
-ssh -antp
-update-rc.do ssh enable   #开启开机自启</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">service</span> <span class="token function">ssh</span> restart 
+<span class="token function">ssh</span> -antp
+update-rc.do <span class="token function">ssh</span> <span class="token builtin class-name">enable</span>   <span class="token comment">#开启开机自启</span></code></pre>
 
 <p>使用 ssh登陆后，上传刚刚下载的三个文件，依次安装</p>
-<pre class="language-none"><code class="language-none">dpkg -i linux-kbuild-5.10_5.10.46-4kali1_amd64.deb     
+<pre class="language-bash" data-language="bash"><code class="language-bash">dpkg -i linux-kbuild-5.10_5.10.46-4kali1_amd64.deb     
 dpkg -i linux-headers-5.10.0-kali9-common_5.10.46-4kali1_all.deb 
 dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb</code></pre>
 
 <p>安装完成后，重新执行 ./install 等待congratulation 提示，再重启即可</p>
+<p>实现了复制粘贴及拖拽文件的功能XD</p>
+<h3 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h3><h4 id="ssh-远程端口转发"><a href="#ssh-远程端口转发" class="headerlink" title="ssh 远程端口转发"></a>ssh 远程端口转发</h4><pre class="language-none"><code class="language-none">ssh -f -N -R 445:10.211.55.5:445 xx.xx.xx.xx</code></pre>
+
+<p>然而vps只能监听在 127.0.0.1 上,需要修改  <code>/etc/ssh/sshd_config</code> 文件中 <code>GatewayPorts</code> 为 yes</p>
+<h4 id="frp端口转发"><a href="#frp端口转发" class="headerlink" title="frp端口转发"></a>frp端口转发</h4><p>Github地址:<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">https://github.com/fatedier/frp/releases</a></p>
+<p>【占位】</p>
 <h2 id="参考连接"><a href="#参考连接" class="headerlink" title="参考连接"></a>参考连接</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/artwalker/p/13235757.html">https://www.cnblogs.com/artwalker/p/13235757.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://superuser.com/questions/1450567/ssh-tunnel-only-listens-on-127-0-0-1-on-remote-host">https://superuser.com/questions/1450567/ssh-tunnel-only-listens-on-127-0-0-1-on-remote-host</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xuanlvsec/p/13723495.html">https://www.cnblogs.com/xuanlvsec/p/13723495.html</a></li>
 </ul>
 
                 
@@ -1069,7 +1077,7 @@ dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">25.6k</span>
+                        class="white-color">25.7k</span>
             
             
             
