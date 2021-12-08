@@ -86,6 +86,8 @@ print(requests.get(TARGET_URL+'/static/out').text)
 
 
 
+通过命令执行，将结果输出到文件中，或直接反弹shell即可拿到flag
+
 
 
 
