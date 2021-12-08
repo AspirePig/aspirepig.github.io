@@ -57,6 +57,8 @@ Command=ToggleDesktop
 responder -wrf -I eth0
 ```
 
+注：下图是存在问题的，抓到的NTLM存在问题，后来在kali上可正常运行
+
 ![image-20211207220539265](/assets/image-20211207220539265.png)
 
 或者使用 msf 的 `auxiliary/server/capture/smb` 模块接收(未成功)
@@ -66,6 +68,8 @@ responder -wrf -I eth0
 ```bash
 hashcat -m 5600 hash.txt rockyou.txt --self-test-disable
 ```
+
+注：由于上面抓到的NTLMV2有问题，导致爆破存在问题，后来在kali上可正常运行
 
 ![image-20211207222632895](/assets/image-20211207222632895.png)
 
