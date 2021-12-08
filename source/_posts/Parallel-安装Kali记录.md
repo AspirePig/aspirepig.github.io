@@ -37,7 +37,7 @@ tags:
 
 由于权限问题，需将文件复制出来进行安装
 
-```
+```bash
 #右键打开终端
 mkdir /root/pt
 cp -r /media/cdrom0 /root/pt
@@ -49,7 +49,7 @@ cd /root/pt
 
 出现报错，然后开始解决
 
-```
+```bash
 vim  /etc/apt/sources.list
 
 deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
@@ -68,7 +68,7 @@ apt-get install printer-driver-postscript-hp  #这个好像没成功，也没管
 
 ### 开启ssh
 
-```
+```bash
 vim /etc/ssh/sshd_config
 ```
 
@@ -76,7 +76,7 @@ vim /etc/ssh/sshd_config
 
 保存退出，重启服务
 
-```
+```bash
 service ssh restart 
 ssh -antp
 update-rc.do ssh enable   #开启开机自启
@@ -84,7 +84,7 @@ update-rc.do ssh enable   #开启开机自启
 
 使用 ssh登陆后，上传刚刚下载的三个文件，依次安装
 
-```
+```bash
 dpkg -i linux-kbuild-5.10_5.10.46-4kali1_amd64.deb     
 dpkg -i linux-headers-5.10.0-kali9-common_5.10.46-4kali1_all.deb 
 dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb
@@ -92,8 +92,28 @@ dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb
 
 安装完成后，重新执行 ./install 等待congratulation 提示，再重启即可
 
+实现了复制粘贴及拖拽文件的功能XD
+
+### 端口转发
+
+#### ssh 远程端口转发
+
+```
+ssh -f -N -R 445:10.211.55.5:445 xx.xx.xx.xx
+```
+
+然而vps只能监听在 127.0.0.1 上,需要修改  `/etc/ssh/sshd_config` 文件中 `GatewayPorts` 为 yes
+
+#### frp端口转发
+
+Github地址:https://github.com/fatedier/frp/releases
+
+【占位】
+
 
 
 ## 参考连接
 
 - https://www.cnblogs.com/artwalker/p/13235757.html
+- https://superuser.com/questions/1450567/ssh-tunnel-only-listens-on-127-0-0-1-on-remote-host
+- https://www.cnblogs.com/xuanlvsec/p/13723495.html
