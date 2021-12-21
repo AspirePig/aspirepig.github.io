@@ -428,7 +428,7 @@ googleAnalytics:
 # 添加 baidu Analytics 配置
 baiduAnalytics:
   enable: true
-  id: 81759ea657fc3b4b8bfe69ecbb3eb537
+  id: f22d47f7e2eff37039f9e60a3d9c9940
 
 # 百度搜索资源平台提交链接
 baiduPush: true
