@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Nessus crack&amp;update</title>
+      <link href="/2021/12/22/nessus-crack-update/"/>
+      <url>/2021/12/22/nessus-crack-update/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-下载nessus安装包"><a href="#1-下载nessus安装包" class="headerlink" title="1.下载nessus安装包"></a>1.下载nessus安装包</h2><p>访问 <a href="https://www.tenable.com/downloads/nessus">https://www.tenable.com/downloads/nessus</a> 下载对应系统版本的nessus</p><h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h2><p>本文以 ubuntu 18.04 为例：</p><pre class="language-none"><code class="language-none">dpkg -i nessus.deb</code></pre><p>启动 nessus</p><pre class="language-none"><code class="language-none">systemctl start nessusd</code></pre><p>访问 <a href="https://xxx.xx:8834/">https://xxx.xx:8834</a></p><p>选择 managed scanner</p><p><img src="/assets/image-20211222131635783.png" alt="image-20211222131635783"></p><p>选择Tenable.sc然后Continue</p><p><img src="/assets/image-20211222131708884.png" alt="image-20211222131708884"></p><p>设置nessus 账号和密码</p><h2 id="3-更新插件包"><a href="#3-更新插件包" class="headerlink" title="3.更新插件包"></a>3.更新插件包</h2><p>获取 challenge code</p><pre class="language-none"><code class="language-none">/opt/nessus/sbin/nessuscli fetch --challenge</code></pre><p>获取active code</p><p><a href="http://www.tenable.com/products/nessus-home">http://www.tenable.com/products/nessus-home</a></p><p>访问 <a href="https://plugins.nessus.org/offline.php">https://plugins.nessus.org/offline.php</a> ，输入 challenge code  和 active code</p><p>下载 all-2.0.tar.gz</p><p>使用nessus更新</p><pre class="language-none"><code class="language-none">./nessuscli update all.tar.gz</code></pre><p>重新打开即可，可见当前没有scan权限，只有setting选项：</p><p><img src="/assets/image-20211222131915515.png" alt="image-20211222131915515"></p><h2 id="4-PJ激活"><a href="#4-PJ激活" class="headerlink" title="4.PJ激活"></a>4.PJ激活</h2><p>停止 nessus服务</p><pre class="language-none"><code class="language-none">systemctl stop nessusd</code></pre><p>访问  <a href="https://plugins.nessus.org/v2/plugins.php">https://plugins.nessus.org/v2/plugins.php</a> 获取插件版本号</p><p>创建对应 plugin_feed_info.inc 文件</p><pre class="language-none"><code class="language-none">PLUGIN_SET = "202112220032";PLUGIN_FEED = "ProfessionalFeed (Direct)";PLUGIN_FEED_TRANSPORT = "Tenable Network Security Lightning"</code></pre><p>使用该文件替换原始文件</p><pre class="language-none"><code class="language-none">copy plugin_feed_info.inc -rf /opt/nessus/lib/nessus/plugins/copy plugin_feed_info.inc -rf /opt/nessus/var/nessus/</code></pre><p>启动 nessus </p><pre class="language-none"><code class="language-none">systemctl start nessusd</code></pre><p>查看是否有 scan 功能</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>代理汇总</title>
       <link href="/2021/12/17/dai-li-gong-ju/"/>
       <url>/2021/12/17/dai-li-gong-ju/</url>
