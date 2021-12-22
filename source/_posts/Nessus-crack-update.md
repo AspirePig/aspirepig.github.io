@@ -55,7 +55,11 @@ http://www.tenable.com/products/nessus-home
 
 访问 https://plugins.nessus.org/offline.php ，输入 challenge code  和 active code
 
-下载 all-2.0.tar.gz
+下载 all-2.0.tar.gz 和license ，并将license放置到对应
+
+![image-20211222171648569](/assets/image-20211222171648569.png)
+
+
 
 使用nessus更新
 
@@ -75,12 +79,12 @@ http://www.tenable.com/products/nessus-home
 systemctl stop nessusd
 ```
 
-访问  https://plugins.nessus.org/v2/plugins.php 获取插件版本号
+PLUGIN_SET 编号通过 上一步打开时进行获取
 
 创建对应 plugin_feed_info.inc 文件
 
 ```
-PLUGIN_SET = "202112220032";
+PLUGIN_SET = "202112201318";
 PLUGIN_FEED = "ProfessionalFeed (Direct)";
 PLUGIN_FEED_TRANSPORT = "Tenable Network Security Lightning"
 ```
@@ -88,7 +92,7 @@ PLUGIN_FEED_TRANSPORT = "Tenable Network Security Lightning"
 使用该文件替换原始文件
 
 ```
-copy plugin_feed_info.inc -rf /opt/nessus/lib/nessus/plugins/
+copy plugin_feed_info.inc -rf /opt/nessus/lib/nessus/plugins/ #第一次先不用拷贝到这
 
 copy plugin_feed_info.inc -rf /opt/nessus/var/nessus/
 ```
@@ -101,3 +105,4 @@ systemctl start nessusd
 
 查看是否有 scan 功能
 
+![image-20211222173724388](/assets/image-20211222173724388.png)
