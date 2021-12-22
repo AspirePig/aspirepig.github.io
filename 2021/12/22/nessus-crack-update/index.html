@@ -452,7 +452,7 @@ dpkg -i nessus.deb
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    237
+                    256
                 </div>
                 
 
@@ -491,7 +491,8 @@ dpkg -i nessus.deb
 <p>获取active code</p>
 <p><a target="_blank" rel="noopener" href="http://www.tenable.com/products/nessus-home">http://www.tenable.com/products/nessus-home</a></p>
 <p>访问 <a target="_blank" rel="noopener" href="https://plugins.nessus.org/offline.php">https://plugins.nessus.org/offline.php</a> ，输入 challenge code  和 active code</p>
-<p>下载 all-2.0.tar.gz</p>
+<p>下载 all-2.0.tar.gz 和license ，并将license放置到对应</p>
+<p><img src="/assets/image-20211222171648569.png" alt="image-20211222171648569"></p>
 <p>使用nessus更新</p>
 <pre class="language-none"><code class="language-none">./nessuscli update all.tar.gz</code></pre>
 
@@ -500,14 +501,14 @@ dpkg -i nessus.deb
 <h2 id="4-PJ激活"><a href="#4-PJ激活" class="headerlink" title="4.PJ激活"></a>4.PJ激活</h2><p>停止 nessus服务</p>
 <pre class="language-none"><code class="language-none">systemctl stop nessusd</code></pre>
 
-<p>访问  <a target="_blank" rel="noopener" href="https://plugins.nessus.org/v2/plugins.php">https://plugins.nessus.org/v2/plugins.php</a> 获取插件版本号</p>
+<p>PLUGIN_SET 编号通过 上一步打开时进行获取</p>
 <p>创建对应 plugin_feed_info.inc 文件</p>
-<pre class="language-none"><code class="language-none">PLUGIN_SET = "202112220032";
+<pre class="language-none"><code class="language-none">PLUGIN_SET = "202112201318";
 PLUGIN_FEED = "ProfessionalFeed (Direct)";
 PLUGIN_FEED_TRANSPORT = "Tenable Network Security Lightning"</code></pre>
 
 <p>使用该文件替换原始文件</p>
-<pre class="language-none"><code class="language-none">copy plugin_feed_info.inc -rf /opt/nessus/lib/nessus/plugins/
+<pre class="language-none"><code class="language-none">copy plugin_feed_info.inc -rf /opt/nessus/lib/nessus/plugins/ #第一次先不用拷贝到这
 
 copy plugin_feed_info.inc -rf /opt/nessus/var/nessus/</code></pre>
 
@@ -515,6 +516,7 @@ copy plugin_feed_info.inc -rf /opt/nessus/var/nessus/</code></pre>
 <pre class="language-none"><code class="language-none">systemctl start nessusd</code></pre>
 
 <p>查看是否有 scan 功能</p>
+<p><img src="/assets/image-20211222173724388.png" alt="image-20211222173724388"></p>
 
                 
             </div>
