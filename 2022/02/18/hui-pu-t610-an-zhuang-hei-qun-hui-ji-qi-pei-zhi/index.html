@@ -473,7 +473,7 @@
                 <h2 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h2><p>惠普T610 (6GRAM 16Gsata固态 1T2.5寸机械硬盘) 鼠标 键盘</p>
 <p>工具软件：度盘链接(自行拼接): 1ahQQVfZXXWgoV_92-AWs7A 提取码: xtaa </p>
 <p>本文将会介绍使用 16G sata 固态硬盘作为黑群晖引导，安装 6.1.7 的教程(6.2.2 多次尝试没装上！！烦死了)</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70.png" alt="img"></p>
 <h1 id="1-制作引导"><a href="#1-制作引导" class="headerlink" title="1.制作引导"></a>1.制作引导</h1><p>引导可以使用U盘或者硬盘做，因为买的时候送了一块 16G的sata 小固态。本文使用USB及硬盘均尝试了进行引导。</p>
 <p>需要的工具：分区大师DiskGenius_x86 芯片无忧ChipEasy-v1.620 ImageWriter Roadkils DiskImage </p>
 <p>需要的资源：DSM_DS3617xs_15284.pat  ds3617_6.1.img</p>
@@ -482,23 +482,23 @@
 <p>具体写入引导过程不详细诉说，搜索相关帖子都能找到</p>
 <h1 id="2-安装群晖系统"><a href="#2-安装群晖系统" class="headerlink" title="2.安装群晖系统"></a>2.安装群晖系统</h1><p>引导制作好后，将硬盘或USB插入惠普T610，开机，狂按delete键，会出现引导界面，选择第一项，回车。</p>
 <p>接着使用群晖搜索，正常情况下会搜索到未安装的群晖，由于此处我已安装过，所以状态时已就绪。</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602202.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602202.png" alt="img"></p>
 <p> 进入网页，选择DSM_DS3617xs_15284.pat 文件进行安装。安装中会格式化另一块硬盘，安装完成后会自动重启。</p>
 <h1 id="3-安装及配置"><a href="#3-安装及配置" class="headerlink" title="3.安装及配置"></a>3.安装及配置</h1><p>重启好了以后，安装 download station（后面会尝试下 玩物下载和迅雷内测的下载） 和 video station (做视频刮削器)</p>
 <h2 id="配置video-station："><a href="#配置video-station：" class="headerlink" title="配置video station："></a>配置video station：</h2><p>配置 电影目录</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602025.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602025.png" alt="img"></p>
 <p>配置 刮削器 (勾选中文)</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601576.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601576.png" alt="img"></p>
 <p>配置刮削器 apikey，根据教程到 TMDB注册账号，申请apikey</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601915.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601915.png" alt="img"></p>
 <p>由于网络原因，需要手动修改hosts文件，才能正常访问到 TMDB，添加以下信息到/etc/hosts文件(需开启ssh登陆)</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token number">13.224</span>.161.90 api.themoviedb.org
 
 <span class="token number">13.226</span>.238.76 api.themoviedb.org</code></pre>
 
-<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+
 <p>效果如下：</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602681.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602681.png" alt="img"></p>
 <p>为了能在电视上也有这种海报的效果，电视上安装了群晖的DS video.apk 。据说有些用户安装后找不到图标，可以两个都安装DSVideo_Go_v1.0.1.apk AndroidTV-DSvideo.1.1.5-10054.apk </p>
 <p>原本是想安装kodi的，但是家里的电视换了好多个版本都没法装上，要么闪退，要么说找不到存储卡。不想再折腾了，就直接安装 DS video ，效果也还行。刮削全靠nas上的dsvideo。</p>
 <p> ios手机可安装 infuse (需要映射支持)</p>
@@ -507,7 +507,7 @@
 <p>如果想要手机上可以远程下载 安卓可安装 DSGET IOS的话目前好像只能用 DS Mobile (很久没更新的软件，但能用)，这个功能在外网使用时需要nas被外网访问，使用了自搭frp的方式临时实现。等以后有了公网IP，会采用DDNS 的方式实现。</p>
 <p>BT搜索增强：</p>
 <p>默认只有两个</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601915-5155361.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601915-5155361.png" alt="img"></p>
 <p>可下载大神提取的dlm文件导入  syno_search_fullpack.zip</p>
 <h2 id="FRP端口映射配置："><a href="#FRP端口映射配置：" class="headerlink" title="FRP端口映射配置："></a>FRP端口映射配置：</h2><p>需要一台公网VPS 使用FRP项目 <a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a> </p>
 <p>下载release、解压。</p>
@@ -539,10 +539,11 @@ local_ip = 127.0.0.1
 local_port = 5001
 remote_port = 443</code></pre>
 
-<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+
+
 <h2 id="transmission-安装配置"><a href="#transmission-安装配置" class="headerlink" title="transmission 安装配置"></a>transmission 安装配置</h2><p>玩物和download station 下载太恶心了，慢。</p>
 <p>套件中，允许任何安装源，再添加套件来源 <a target="_blank" rel="noopener" href="http://packages.synocommunity.com/">http://packages.synocommunity.com/</a></p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601570.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113601570.png" alt="img"></p>
 <p>添加后，在社群中下载 transmission，下载完成后，使用ssh执行以下脚本(需F）Q，并且nas wget 好像有问题，第一个脚本直接从github下载没下下来)</p>
 <pre class="language-none"><code class="language-none">wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh
 
@@ -550,7 +551,7 @@ sh install-tr-control-cn.sh</code></pre>
 
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
 <p>安装完成后，在套件中心中重新启动 transmission ，界面改变</p>
-<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602033.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw=="></p>
+<p><img src="/assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMTI2ODgx,size_16,color_FFFFFF,t_70-20220218113602033.png" alt="img"></p>
 <p>7月23日更新</p>
 <p>前面的都不好用，申请了迅雷内测版，果然舒服了</p>
 <p>极米投影仪安装了kodi(为了好看皮肤安装了18.9 )，看来使用上还得改改。</p>
