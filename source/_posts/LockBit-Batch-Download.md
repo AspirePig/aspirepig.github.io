@@ -216,6 +216,26 @@ if __name__ == "__main__":
 
 
 
+## 监控Python脚本
+
+```bash
+#!/bin/sh
+
+while true
+do
+count=`ps -fe|grep download.py |grep -v grep | wc -l`
+if [ ${count} -lt 1 ]
+then
+python3  download.py &
+else
+echo "runing....."
+fi
+sleep 3
+done
+```
+
+
+
 ## 全自动化想法
 
 该网站使用了 Nginx-Lua-Anti-DDoS  做人机校验，实现原理是 让浏览器去计算一个复杂结果，表现为打开网站，展示 DDOS 页面，需要等待7秒后跳转到真正页面，之后会设置一个 有效 Session。
