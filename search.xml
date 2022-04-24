@@ -8,9 +8,23 @@
       <link href="/2022/04/24/soc-ji-zhu-ji-da-jian/"/>
       <url>/2022/04/24/soc-ji-zhu-ji-da-jian/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> ES </tag>
+            
+            <tag> filebeat </tag>
+            
+            <tag> JIRA </tag>
+            
+            <tag> HIDS </tag>
+            
+            <tag> NIDS </tag>
+            
+        </tags>
       
     </entry>
     
@@ -18,12 +32,26 @@
     
     <entry>
       <title>开源NIDS</title>
-      <link href="/2022/04/24/kai-yuan-nids/"/>
-      <url>/2022/04/24/kai-yuan-nids/</url>
+      <link href="/2022/04/20/kai-yuan-nids/"/>
+      <url>/2022/04/20/kai-yuan-nids/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> ES </tag>
+            
+            <tag> filebeat </tag>
+            
+            <tag> zeek </tag>
+            
+            <tag> moloch </tag>
+            
+            <tag> arkime </tag>
+            
+        </tags>
       
     </entry>
     
