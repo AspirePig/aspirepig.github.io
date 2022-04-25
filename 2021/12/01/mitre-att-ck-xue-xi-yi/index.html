@@ -1,0 +1,1280 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="MITRE ATT&amp;CK学习(1), 网络安全">
+    <meta name="description" content="1.MITRE ATT&amp;amp;CK简介
+MITRE ATT&amp;amp;CK ®是一个全球可访问的基于现实世界观察的对手战术和技术知识库。ATT&amp;amp;CK 知识库被用作在私营部门、政府以及网络安全产品和服务社区中开发特定威胁模型和方法的基">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>MITRE ATT&amp;CK学习(1) | Aspirepig</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Aspirepig</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Aspirepig</div>
+        <div class="logo-desc">
+            
+            网络安全小菜鸡
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">MITRE ATT&amp;CK学习(1)</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/APT/">
+                                <span class="chip bg-color">APT</span>
+                            </a>
+                        
+                            <a href="/tags/MITRE/">
+                                <span class="chip bg-color">MITRE</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2021-12-01
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    2.6k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="1-MITRE-ATT-amp-CK简介"><a href="#1-MITRE-ATT-amp-CK简介" class="headerlink" title="1.MITRE ATT&amp;CK简介"></a>1.MITRE ATT&amp;CK简介</h2><blockquote>
+<p>MITRE ATT&amp;CK ®是一个全球可访问的基于现实世界观察的对手战术和技术知识库。ATT&amp;CK 知识库被用作在私营部门、政府以及网络安全产品和服务社区中开发特定威胁模型和方法的基础。</p>
+<p>随着 ATT&amp;CK 的成立，MITRE 正在履行其为更安全的世界解决问题的使命——通过将社区聚集在一起开发更有效的网络安全。ATT&amp;CK 是开放的，可供任何个人或组织免费使用。</p>
+</blockquote>
+<p>MITRE  ATT&amp;CK 更像是一个知识库，</p>
+<p>在 MITRE <a target="_blank" rel="noopener" href="https://attack.mitre.org/#">官网</a> 主页下方，可以看见攻击矩阵(提供企业及移动 两个方向)。</p>
+<p><img src="/assets/image-20211202100444192.png" alt="image-20211202100444192"></p>
+<p>ATT&amp;CK 框架有三个技术名词：</p>
+<ul>
+<li>Tactics: 战术, 是列标题名，是攻击者为什么使用特定技术的概括性分类。</li>
+<li>Techniques:技术，出现在战术列标题下的每个框中，显示攻击者为完成战术都做了什么。ATT&amp;CK 矩阵为每种技术都分配了一个编号，比如 T1500 或 T1191。</li>
+<li>Procedures:流程，可通过技术框中的链接访问，显示攻击者是如何执行某种技术的。流程提供了攻击者（无论单干还是组团）实施具体技术的更详尽说明。</li>
+</ul>
+<p>学习 att&amp;ck 框架对红蓝队均是有利的:</p>
+<ul>
+<li>红队：可以将该表格视作攻击流程，指导攻击者构建一条完整渗透路径</li>
+<li>蓝队：可以按照该攻击路径，对各个板块进行防御，达到安全能力可视，并且能够对照发现自身薄弱项，了解攻击手法，阻断渗透攻击路径。</li>
+</ul>
+<p>MITRE 提供了几个工具：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitre-attack/attack-navigator">navigator</a>：ATT&amp;CK导航器旨在提供ATT&amp;CK矩阵的基本导航和注释。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitre/cti">ATT&amp;CK Expressed in STIX</a>：结构化威胁信息表达（STIX）™) 是一种用于交换网络威胁情报（CTI）的语言和序列化格式。</li>
+<li><a target="_blank" rel="noopener" href="https://car.mitre.org/">CAR</a>：Cyber Analytics Repository（CAR）是MITRE基于ATT&amp;CK®敌手模型开发的分析知识库。</li>
+<li>so on …</li>
+</ul>
+<p>推荐一些学习资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://academy.attackiq.com/">https://academy.attackiq.com/</a>  ：注册账号，提供 MITRE ATT&amp;CK 视频教程以及其他红蓝对抗视频</li>
+<li><a target="_blank" rel="noopener" href="https://www.mitre.org/sites/default/files/publications/mitre-getting-started-with-attack-october-2019.pdf">https://www.mitre.org/sites/default/files/publications/mitre-getting-started-with-attack-october-2019.pdf</a> ：整合 威胁情报、检测和分析、对手仿真和红队、评估和工程 四个板块的电子书</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=bkfwMADar0M">https://www.youtube.com/watch?v=bkfwMADar0M</a>  ：介绍ATT&amp;CK的概述，以及如何将其应用于四个用例的想法。还提供<a target="_blank" rel="noopener" href="https://www.slideshare.net/KatieNickels/putting-mitre-attck-into-action-with-what-you-have-where-you-are">幻灯片</a>。</li>
+</ul>
+<p>包含MITRE 定义的攻击各个阶段：</p>
+<h2 id="2-Reconnaissance-侦查"><a href="#2-Reconnaissance-侦查" class="headerlink" title="2.Reconnaissance:侦查"></a>2.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0043">Reconnaissance</a>:<strong>侦查</strong></h2><p>对手正试图收集可用于规划未来行动的信息。</p>
+<p>侦察包括涉及对手主动或被动收集可用于支持目标定位的信息的技术。此类信息可能包括受害组织、基础设施或员工/人员的详细信息。攻击者可以利用这些信息来帮助攻击者生命周期的其他阶段，例如使用收集到的信息来计划和执行初始访问、确定妥协后目标的范围和优先级，或者推动和领导进一步的侦察工作。</p>
+<h2 id="3-Resource-Development-资源发展"><a href="#3-Resource-Development-资源发展" class="headerlink" title="3.Resource Development:资源发展"></a>3.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0042">Resource Development</a>:<strong>资源发展</strong></h2><p>对手正试图建立他们可以用来支持行动的资源。</p>
+<p>资源开发包括涉及对手创建、购买或破坏/窃取可用于支持目标定位的资源的技术。此类资源包括基础设施、帐户或功能。攻击者可以利用这些资源在攻击者生命周期的其他阶段提供帮助，例如使用购买的域来支持命令和控制、将网络钓鱼电子邮件帐户作为初始访问的一部分，或窃取代码签名证书以帮助防御规避.</p>
+<h2 id="4-Initial-Access-初始访问"><a href="#4-Initial-Access-初始访问" class="headerlink" title="4.Initial Access:初始访问"></a>4.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0001">Initial Access</a>:<strong>初始访问</strong></h2><p>对手正试图进入您的网络。</p>
+<p>初始访问包含使用各种进入向量来在网络中获得初始立足点的技术。用于获得立足点的技术包括有针对性的鱼叉式网络钓鱼和利用面向公众的 Web 服务器上的弱点。通过初始访问获得的立足点可能允许继续访问，例如有效帐户和外部远程服务的使用，或者可能由于更改密码而限制使用。</p>
+<h2 id="5-Execution-执行"><a href="#5-Execution-执行" class="headerlink" title="5.Execution:执行"></a>5.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0002">Execution</a>:<strong>执行</strong></h2><p>对手试图运行恶意代码。</p>
+<p>执行包含导致在本地或远程系统上运行的由对手控制的代码的技术。运行恶意代码的技术通常与所有其他策略的技术相结合，以实现更广泛的目标，例如探索网络或窃取数据。例如，攻击者可能使用远程访问工具来运行执行远程系统发现的 PowerShell 脚本。</p>
+<h2 id="6-Persistence-持久化"><a href="#6-Persistence-持久化" class="headerlink" title="6.Persistence:持久化"></a>6.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0003">Persistence</a>:<strong>持久化</strong></h2><p>对手正试图保持立足点。</p>
+<p>持久性包括攻击者用来在重启、更改凭据和其他可能切断其访问的中断期间保持对系统的访问的技术。用于持久性的技术包括任何访问、操作或配置更改，使它们能够在系统上保持立足点，例如替换或劫持合法代码或添加启动代码。</p>
+<h2 id="7-Privilege-Escalation-提权"><a href="#7-Privilege-Escalation-提权" class="headerlink" title="7.Privilege Escalation:提权"></a>7.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0004">Privilege Escalation</a>:<strong>提权</strong></h2><p>对手试图获得更高级别的权限。</p>
+<p>权限提升包括攻击者用来在系统或网络上获得更高级别权限的技术。攻击者通常可以进入并探索具有非特权访问权限的网络，但需要更高的权限才能实现其目标。常见的方法是利用系统弱点、错误配置和漏洞。提升访问权限的示例包括：</p>
+<ul>
+<li>系统/根级别</li>
+<li>本地管理员</li>
+<li>具有管理员权限的用户帐户</li>
+<li>可以访问特定系统或执行特定功能的用户帐户</li>
+</ul>
+<p>这些技术通常与持久性技术重叠，因为让对手持久化的操作系统功能可以在提升的上下文中执行。</p>
+<h2 id="8-Defense-Evasion-防御规避"><a href="#8-Defense-Evasion-防御规避" class="headerlink" title="8.Defense Evasion:防御规避"></a>8.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0005">Defense Evasion</a>:<strong>防御规避</strong></h2><p>对手试图避免被发现。</p>
+<p>防御规避包括攻击者用来在整个入侵过程中避免检测的技术。用于防御规避的技术包括卸载/禁用安全软件或混淆/加密数据和脚本。攻击者还利用和滥用受信任的进程来隐藏和伪装他们的恶意软件。当其他战术的技术包括颠覆防御的额外好处时，这里会交叉列出这些技术。</p>
+<h2 id="9-Credential-Access-凭据访问"><a href="#9-Credential-Access-凭据访问" class="headerlink" title="9.Credential Access:凭据访问"></a>9.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0006">Credential Access</a>:<strong>凭据访问</strong></h2><p>对手试图窃取帐户名和密码。</p>
+<p>凭据访问包括窃取凭据（如帐户名和密码）的技术。用于获取凭据的技术包括键盘记录或凭据转储。使用合法凭证可以让攻击者访问系统，使他们更难被发现，并提供创建更多帐户以帮助实现其目标的机会。</p>
+<h2 id="10-Discovery-发现"><a href="#10-Discovery-发现" class="headerlink" title="10.Discovery:发现"></a>10.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0007">Discovery</a>:<strong>发现</strong></h2><p>对手试图找出你的环境。</p>
+<p>发现包括攻击者可能用来获取有关系统和内部网络的知识的技术。这些技术可帮助对手在决定如何行动之前观察环境并确定自己的方向。它们还允许对手探索他们可以控制的内容以及他们的切入点周围的内容，以发现它如何有利于他们当前的目标。本机操作系统工具通常用于实现此妥协后的信息收集目标。</p>
+<h2 id="11-Lateral-Movement-横向移动"><a href="#11-Lateral-Movement-横向移动" class="headerlink" title="11.Lateral Movement:横向移动"></a>11.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0008">Lateral Movement</a>:<strong>横向移动</strong></h2><p>对手正试图穿越您的环境。</p>
+<p>横向移动由攻击者用来进入和控制网络上的远程系统的技术组成。完成他们的主要目标通常需要探索网络以找到他们的目标，然后才能访问它。实现他们的目标通常需要通过多个系统和帐户来获取收益。攻击者可能会安装自己的远程访问工具来完成横向移动，或者使用合法凭据与本机网络和操作系统工具配合使用，这可能会更加隐蔽。</p>
+<h2 id="12-Collection-收集"><a href="#12-Collection-收集" class="headerlink" title="12.Collection:收集"></a>12.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0009">Collection</a>:<strong>收集</strong></h2><p>对手正试图收集对其目标感兴趣的数据。</p>
+<p>收集包括对手可能用来收集信息的技术，并且收集的信息来源与跟踪对手的目标有关。通常，收集数据后的下一个目标是窃取（泄露）数据。常见的目标源包括各种驱动器类型、浏览器、音频、视频和电子邮件。常见的采集方式包括截屏和键盘输入。</p>
+<h2 id="13-Command-and-Control-命令与控制"><a href="#13-Command-and-Control-命令与控制" class="headerlink" title="13.Command and Control:命令与控制"></a>13.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0011">Command and Control</a>:<strong>命令与控制</strong></h2><p>对手正试图与受感染的系统通信以控制它们。</p>
+<p>命令和控制由攻击者用来与受害网络中受其控制的系统通信的技术组成。攻击者通常试图模仿正常的、预期的流量以避免检测。根据受害者的网络结构和防御，攻击者可以通过多种方式建立具有各种隐身级别的指挥和控制。</p>
+<h2 id="14-Exfiltration-数据回传"><a href="#14-Exfiltration-数据回传" class="headerlink" title="14.Exfiltration:数据回传"></a>14.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0010">Exfiltration</a>:<strong>数据回传</strong></h2><p>对手正试图窃取数据。</p>
+<p>渗透包括攻击者可能用来从您的网络窃取数据的技术。一旦收集到数据，攻击者通常会将其打包以避免在删除时被发现。这可以包括压缩和加密。从目标网络获取数据的技术通常包括通过其命令和控制通道或备用通道传输数据，还可能包括对传输设置大小限制。</p>
+<h2 id="15-Impact-影响"><a href="#15-Impact-影响" class="headerlink" title="15.Impact:影响"></a>15.<a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0040">Impact</a>:<strong>影响</strong></h2><p>对手试图操纵、中断或破坏您的系统和数据。</p>
+<p>影响包括攻击者用来通过操纵业务和操作流程来破坏可用性或破坏完整性的技术。用于影响的技术可能包括破坏或篡改数据。在某些情况下，业务流程看起来不错，但可能已被更改以使对手的目标受益。攻击者可能会使用这些技术来实现其最终目标或为泄露机密提供掩护。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Aspirepig</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://aspirepig.cn/2021/12/01/mitre-att-ck-xue-xi-yi/">https://aspirepig.cn/2021/12/01/mitre-att-ck-xue-xi-yi/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Aspirepig</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/APT/">
+                                    <span class="chip bg-color">APT</span>
+                                </a>
+                            
+                                <a href="/tags/MITRE/">
+                                    <span class="chip bg-color">MITRE</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'eeb203cbafbf211b9d6b',
+        clientSecret: '54c58335381911e065959f2f3debcb57e3c24629',
+        repo: 'gittalk',
+        owner: 'aspirepigshadow',
+        admin: "aspirepigshadow",
+        id: '2021-12-01T16-28-50',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2021/12/03/mitre-att-ck-xue-xi-navigator-er/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="MITRE ATT&amp;CK学习-Navigator">
+                        
+                        <span class="card-title">MITRE ATT&amp;CK学习-Navigator</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/APT/">
+                        <span class="chip bg-color">APT</span>
+                    </a>
+                    
+                    <a href="/tags/MITRE/">
+                        <span class="chip bg-color">MITRE</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/11/29/cs-yin-cang-pian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="CS隐藏篇">
+                        
+                        <span class="card-title">CS隐藏篇</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <a href="/about" target="_blank">Aspirepig</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">36.4k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/AspirePig" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?f22d47f7e2eff37039f9e60a3d9c9940";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
