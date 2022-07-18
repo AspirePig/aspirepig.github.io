@@ -4,11 +4,30 @@
   
     
     <entry>
+      <title>HTB学习</title>
+      <link href="/2022/07/18/htb-xue-xi/"/>
+      <url>/2022/07/18/htb-xue-xi/</url>
+      
+        <content type="html"><![CDATA[<ol><li><h2 id="PostgreSQL-run-command"><a href="#PostgreSQL-run-command" class="headerlink" title="PostgreSQL  run command"></a>PostgreSQL  run command</h2></li></ol><p>利用PostgreSQL   sql 注入， 使用 copy from 可以执行系统命令</p><pre class="language-none"><code class="language-none">DROP TABLE IF EXISTS cmd_exec;-- Create a table to contain the result of my commandCREATE TABLE cmd_exec(cmd_output text); -- Execute the command and store the resultCOPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$'''; </code></pre><p>详细用法，参考：</p><ul><li><a href="https://medium.com/r3d-buck3t/command-execution-with-postgresql-copy-command-a79aef9c2767">https://medium.com/r3d-buck3t/command-execution-with-postgresql-copy-command-a79aef9c2767</a></li><li><a href="https://erichogue.ca/2022/07/HTBBusinessCTF/DebuggerUnchained">https://erichogue.ca/2022/07/HTBBusinessCTF/DebuggerUnchained</a></li></ul><h3 id="2-flask-debug模式-pin-rce"><a href="#2-flask-debug模式-pin-rce" class="headerlink" title="2.flask debug模式 pin rce"></a>2.flask debug模式 pin rce</h3><p>配合任意文件读取漏洞，获取到生成PIN码的关键参数，即可计算出PIN码</p><p>参考：<a href="https://www.kingkk.com/2018/08/Flask-debug-pin%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">https://www.kingkk.com/2018/08/Flask-debug-pin%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/</a></p><h2 id="3-微软-MSDT-远程代码执行"><a href="#3-微软-MSDT-远程代码执行" class="headerlink" title="3.微软 MSDT 远程代码执行"></a>3.微软 MSDT 远程代码执行</h2><p> word 目录下的_rels 下的document.xml.rels插入恶意mhtml，不需要允许宏，即可利用MSDT 诊断 执行任意命令</p><p>工具使用：<a href="https://github.com/komomon/CVE-2022-30190-follina-Office-MSDT-Fixed">https://github.com/komomon/CVE-2022-30190-follina-Office-MSDT-Fixed</a></p><p>参考：<a href="https://blog.csdn.net/qq_17754023/article/details/125112334">https://blog.csdn.net/qq_17754023/article/details/125112334</a></p><h2 id="4-流量分析技巧"><a href="#4-流量分析技巧" class="headerlink" title="4.流量分析技巧"></a>4.流量分析技巧</h2><ul><li>wireshark export HTTP文件，follow TCP/HTTP stream</li><li>上传到 Arkime 进行分析</li></ul><p><img src="/assets/image-20220718194335947.png" alt="image-20220718194335947"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> HTB </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SOC技术及搭建</title>
       <link href="/2022/04/24/soc-ji-zhu-ji-da-jian/"/>
       <url>/2022/04/24/soc-ji-zhu-ji-da-jian/</url>
       
-        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>留坑待完善</p><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="/assets/image-20220425141722608.png" alt="image-20220425141722608"></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>留坑待完善</p><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="/assets/image-20220503105655223.png" alt="image-20220503105655223"></p>]]></content>
       
       
       
