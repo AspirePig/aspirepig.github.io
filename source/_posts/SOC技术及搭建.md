@@ -14,7 +14,27 @@ tags:
 
 ## 背景
 
-留坑待完善
+使用到的组件：
+
+kibana—security模块
+
+zeek：开源流量检测
+
+suricata：开源流量检测
+
+wazuh：开源HIDS
+
+packetbeat：终端网络抓包
+
+openEDR：收集Windows network、process、file 信息
+
+winlogbeat：收集Windows日志信息
+
+filebeat：传输日志
+
+
+
+
 
 ## 架构图
 
