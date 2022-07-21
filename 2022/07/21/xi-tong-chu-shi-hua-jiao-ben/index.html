@@ -5,10 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="系统初始化脚本, 网络安全">
-    <meta name="description" content="linux系统初始化
-ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    <meta name="description" content="linux系统初始化ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-if ! crontab -l |grep ntpdate &amp;amp;&amp;gt;/dev/null ; th">
+if ! crontab -l |grep ntpdate &amp;amp;&amp;gt;/dev/null ; the">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -451,7 +450,7 @@ if ! crontab -l |grep ntpdate &amp;amp;&amp;gt;/dev/null ; th">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    211
+                    326
                 </div>
                 
 
@@ -471,8 +470,7 @@ if ! crontab -l |grep ntpdate &amp;amp;&amp;gt;/dev/null ; th">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>linux系统初始化</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+                <h2 id="linux系统初始化"><a href="#linux系统初始化" class="headerlink" title="linux系统初始化"></a>linux系统初始化</h2><pre class="language-shell" data-language="shell"><code class="language-shell">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 if ! crontab -l |grep ntpdate &amp;&gt;/dev/null ; then
 (echo "* 1 * * * ntpdate time.windows.com &gt;/dev/null 2&gt;&amp;1";crontab -l) |crontab
@@ -515,6 +513,36 @@ EOF
 
 yum install gcc make autoconf vim sysstat net-tools iostat iftop iotp lrzsz -y</code></pre>
 
+
+
+<h2 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h2><pre class="language-none"><code class="language-none">#python2
+wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+python2 get-pip.py
+
+#python3
+wget https://bootstrap.pypa.io/get-pip.py
+
+python3 get-pip.py</code></pre>
+
+
+
+<h3 id="替换PIP源"><a href="#替换PIP源" class="headerlink" title="替换PIP源"></a>替换PIP源</h3><blockquote>
+<p>~/.pip/pip.conf</p>
+</blockquote>
+<pre class="language-none"><code class="language-none">[global]
+index-url =http://mirrors.aliyun.com/pypi/simple/
+[install]
+trusted-host = mirrors.aliyun.com</code></pre>
+
+
+
+<h2 id="替换YUM源"><a href="#替换YUM源" class="headerlink" title="替换YUM源"></a>替换YUM源</h2><pre class="language-none"><code class="language-none">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+yum clean all yum makecache</code></pre>
+
+
+
+<p>其他软件 参考<br><a href="https://aspirepig.cn/2021/12/03/ruan-jian-tui-jian-ji-chang-yong-ming-ling/">https://aspirepig.cn/2021/12/03/ruan-jian-tui-jian-ji-chang-yong-ming-ling/</a></p>
 
                 
             </div>
@@ -1011,7 +1039,7 @@ yum install gcc make autoconf vim sysstat net-tools iostat iftop iotp lrzsz -y</
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">37.1k</span>
+                        class="white-color">37.2k</span>
             
             
             
