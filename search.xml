@@ -27,7 +27,7 @@
       <link href="/2022/04/24/soc-ji-zhu-ji-da-jian/"/>
       <url>/2022/04/24/soc-ji-zhu-ji-da-jian/</url>
       
-        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>留坑待完善</p><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="/assets/image-20220503105655223.png" alt="image-20220503105655223"></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>使用到的组件：</p><p>kibana—security模块</p><p>zeek：开源流量检测</p><p>suricata：开源流量检测</p><p>wazuh：开源HIDS</p><p>packetbeat：终端网络抓包</p><p>openEDR：收集Windows network、process、file 信息</p><p>winlogbeat：收集Windows日志信息</p><p>filebeat：传输日志</p><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="/assets/image-20220503105655223.png" alt="image-20220503105655223"></p>]]></content>
       
       
       
@@ -914,9 +914,9 @@
       
         <tags>
             
-            <tag> misc </tag>
-            
             <tag> windows </tag>
+            
+            <tag> misc </tag>
             
         </tags>
       
@@ -1080,9 +1080,9 @@
       
         <tags>
             
-            <tag> misc </tag>
-            
             <tag> windows </tag>
+            
+            <tag> misc </tag>
             
         </tags>
       

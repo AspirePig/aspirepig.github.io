@@ -5,9 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SOC技术及搭建, 网络安全">
-    <meta name="description" content="背景留坑待完善
-架构图
-">
+    <meta name="description" content="背景使用到的组件：
+kibana—security模块
+zeek：开源流量检测
+suricata：开源流量检测
+wazuh：开源HIDS
+packetbeat：终端网络抓包
+openEDR：收集Windows network、process">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -466,7 +470,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    10
+                    62
                 </div>
                 
 
@@ -486,7 +490,15 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>留坑待完善</p>
+                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>使用到的组件：</p>
+<p>kibana—security模块</p>
+<p>zeek：开源流量检测</p>
+<p>suricata：开源流量检测</p>
+<p>wazuh：开源HIDS</p>
+<p>packetbeat：终端网络抓包</p>
+<p>openEDR：收集Windows network、process、file 信息</p>
+<p>winlogbeat：收集Windows日志信息</p>
+<p>filebeat：传输日志</p>
 <h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="/assets/image-20220503105655223.png" alt="image-20220503105655223"></p>
 
                 
@@ -1014,7 +1026,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">36.6k</span>
+                        class="white-color">36.7k</span>
             
             
             
