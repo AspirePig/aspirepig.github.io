@@ -4,12 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="openwrt固件路由器设置定时重启, 网络安全">
-    <meta name="description" content="计划任务中添加命令
-00 04 * * * sleep 10 &amp;amp;&amp;amp; touch /etc/banner &amp;amp;&amp;amp; reboot  //每天凌晨4点自动重启
+    <meta name="keywords" content="系统初始化脚本, 网络安全">
+    <meta name="description" content="linux系统初始化
+ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
- 然后在ssh连接到路由器，执行
-/etc/init.">
+if ! crontab -l |grep ntpdate &amp;amp;&amp;gt;/dev/null ; th">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +20,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>openwrt固件路由器设置定时重启 | Aspirepig</title>
+    <title>系统初始化脚本 | Aspirepig</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -306,12 +305,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">openwrt固件路由器设置定时重启</h1>
+                    <h1 class="description center-align post-title">系统初始化脚本</h1>
                 </div>
             </div>
         </div>
@@ -427,14 +426,6 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/misc/">
-                                <span class="chip bg-color">misc</span>
-                            </a>
-                        
-                            <a href="/tags/tools/">
-                                <span class="chip bg-color">tools</span>
-                            </a>
-                        
                             <a href="/tags/linux/">
                                 <span class="chip bg-color">linux</span>
                             </a>
@@ -444,19 +435,6 @@
                 </div>
                 <div class="col s5 right-align">
                     
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/linux/" class="post-category">
-                                linux
-                            </a>
-                        
-                            <a href="/categories/misc/" class="post-category">
-                                misc
-                            </a>
-                        
-                    </div>
-                    
                 </div>
             </div>
 
@@ -464,7 +442,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2017-01-20
+                    2022-07-21
                 </div>
                 
 
@@ -473,7 +451,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    48
+                    211
                 </div>
                 
 
@@ -493,11 +471,51 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>计划任务中添加命令</p>
-<pre class="language-none"><code class="language-none">00 04 * * * sleep 10 &amp;&amp; touch /etc/banner &amp;&amp; reboot  //每天凌晨4点自动重启</code></pre>
+                <p>linux系统初始化</p>
+<pre class="language-shell" data-language="shell"><code class="language-shell">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-<p><img src="https://aspirepig-1251964320.cos.ap-shanghai.myqcloud.com/wp-content/uploads/2017/01/1TG1HZIEBZ1DPVL4A2-300x121.png"> 然后在ssh连接到路由器，执行</p>
-<pre class="language-none"><code class="language-none">/etc/init.d/cron restart</code></pre>
+if ! crontab -l |grep ntpdate &amp;&gt;/dev/null ; then
+(echo "* 1 * * * ntpdate time.windows.com &gt;/dev/null 2&gt;&amp;1";crontab -l) |crontab
+fi
+
+sed -i '/SELINUX/{s/enforcing/disabled/}'  /etc/selinux/config
+
+if egrep "7.[0-9]" /etc/redhat-release &amp;&gt;/dev/null; then
+systemctl stop firewalld
+systemctl disable firewalld
+elif egrep "6.[0-9]" /etc/redhat-release &amp;&gt;/dev/null; then
+service iptables stop
+chkconfig iptables off
+fi
+
+if ! grep HISTTIMEFORMAT /etc/bashrc; then
+echo 'export HISTTIMEFORMAT="%F %T `whoami` "' &gt;&gt; /etc/bashrc
+fi
+
+if ! grep "TMOUT=600" /etc/profile &amp;&gt;/dev/null; then
+echo "export TMOUT=600" &gt;&gt; /etc/profile
+fi
+
+sed -i 's/^MAILTO=root/MAILTO=""/'' /etc/crontab
+
+if ! grep "* soft nofile 65535" /etc/security/limits.conf &amp;&gt;/dev/null; then
+cat &gt;&gt; /etc/security/limits.conf &lt;&lt; EOF
+* soft nofile 65535
+* hard nofile 65535
+EOF
+fi
+
+cat &gt;&gt; /etc/sysctl.conf &lt;&lt; EOF
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_max_tw_buckets = 20480
+net.ipv4.tcp_max_syn_backlog = 20480
+net.core.netdev_max_backlog = 262144
+net.ipv4.tcp_fin_timeout = 20
+EOF
+
+yum install gcc make autoconf vim sysstat net-tools iostat iftop iotp lrzsz -y</code></pre>
+
+
                 
             </div>
             <hr/>
@@ -523,7 +541,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://aspirepig.cn/2017/01/20/openwrt-gu-jian-lu-you-qi-she-zhi-ding-shi-chong-qi/">https://aspirepig.cn/2017/01/20/openwrt-gu-jian-lu-you-qi-she-zhi-ding-shi-chong-qi/</a>
+                    <a href="https://aspirepig.cn/2022/07/21/xi-tong-chu-shi-hua-jiao-ben/">https://aspirepig.cn/2022/07/21/xi-tong-chu-shi-hua-jiao-ben/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -560,14 +578,6 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/misc/">
-                                    <span class="chip bg-color">misc</span>
-                                </a>
-                            
-                                <a href="/tags/tools/">
-                                    <span class="chip bg-color">tools</span>
-                                </a>
                             
                                 <a href="/tags/linux/">
                                     <span class="chip bg-color">linux</span>
@@ -741,7 +751,7 @@
         repo: 'gittalk',
         owner: 'aspirepigshadow',
         admin: "aspirepigshadow",
-        id: '2017-01-20T18-03-10',
+        id: '2022-07-21T12-14-21',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -769,17 +779,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2017/01/23/ubuntu-an-zhuang-zhong-wen-man-shou-ce/">
+                <a href="/2022/07/21/xi-tong-chu-shi-hua-jiao-ben/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="ubuntu安装中文man手册">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="系统初始化脚本">
                         
-                        <span class="card-title">ubuntu安装中文man手册</span>
+                        <span class="card-title">系统初始化脚本</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -789,31 +800,20 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2017-01-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-21
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/linux/" class="post-category">
-                                    linux
-                                </a>
-                            
-                            <a href="/categories/misc/" class="post-category">
-                                    misc
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/tags/misc/">
-                        <span class="chip bg-color">misc</span>
-                    </a>
                     
                     <a href="/tags/linux/">
                         <span class="chip bg-color">linux</span>
@@ -830,13 +830,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2017/01/11/shi-yong-python-fa-song-tong-guo-qq-you-xiang-fu-wu-qi-fa-song-you-jian/">
+                <a href="/2022/07/18/htb-xue-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="使用python发送通过qq邮箱服务器发送邮件">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="HTB学习">
                         
-                        <span class="card-title">使用python发送通过qq邮箱服务器发送邮件</span>
+                        <span class="card-title">HTB学习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -847,24 +847,12 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2017-01-11
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-18
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/misc/" class="post-category">
-                                    misc
-                                </a>
-                            
-                            <a href="/categories/python/" class="post-category">
-                                    python
-                                </a>
-                            
-                            <a href="/categories/tools/" class="post-category">
-                                    tools
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
                             
                         </span>
                     </div>
@@ -872,16 +860,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/misc/">
-                        <span class="chip bg-color">misc</span>
-                    </a>
-                    
-                    <a href="/tags/python/">
-                        <span class="chip bg-color">python</span>
-                    </a>
-                    
-                    <a href="/tags/tools/">
-                        <span class="chip bg-color">tools</span>
+                    <a href="/tags/HTB/">
+                        <span class="chip bg-color">HTB</span>
                     </a>
                     
                 </div>

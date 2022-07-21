@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>系统初始化脚本</title>
+      <link href="/2022/07/21/xi-tong-chu-shi-hua-jiao-ben/"/>
+      <url>/2022/07/21/xi-tong-chu-shi-hua-jiao-ben/</url>
+      
+        <content type="html"><![CDATA[<p>linux系统初始化</p><pre class="language-shell" data-language="shell"><code class="language-shell">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtimeif ! crontab -l |grep ntpdate &amp;&gt;/dev/null ; then(echo "* 1 * * * ntpdate time.windows.com &gt;/dev/null 2&gt;&amp;1";crontab -l) |crontabfised -i '/SELINUX/{s/enforcing/disabled/}'  /etc/selinux/configif egrep "7.[0-9]" /etc/redhat-release &amp;&gt;/dev/null; thensystemctl stop firewalldsystemctl disable firewalldelif egrep "6.[0-9]" /etc/redhat-release &amp;&gt;/dev/null; thenservice iptables stopchkconfig iptables offfiif ! grep HISTTIMEFORMAT /etc/bashrc; thenecho 'export HISTTIMEFORMAT="%F %T `whoami` "' &gt;&gt; /etc/bashrcfiif ! grep "TMOUT=600" /etc/profile &amp;&gt;/dev/null; thenecho "export TMOUT=600" &gt;&gt; /etc/profilefised -i 's/^MAILTO=root/MAILTO=""/'' /etc/crontabif ! grep "* soft nofile 65535" /etc/security/limits.conf &amp;&gt;/dev/null; thencat &gt;&gt; /etc/security/limits.conf &lt;&lt; EOF* soft nofile 65535* hard nofile 65535EOFficat &gt;&gt; /etc/sysctl.conf &lt;&lt; EOFnet.ipv4.tcp_syncookies = 1net.ipv4.tcp_max_tw_buckets = 20480net.ipv4.tcp_max_syn_backlog = 20480net.core.netdev_max_backlog = 262144net.ipv4.tcp_fin_timeout = 20EOFyum install gcc make autoconf vim sysstat net-tools iostat iftop iotp lrzsz -y</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>HTB学习</title>
       <link href="/2022/07/18/htb-xue-xi/"/>
       <url>/2022/07/18/htb-xue-xi/</url>
