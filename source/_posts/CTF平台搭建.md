@@ -144,3 +144,23 @@ docker-compose up -d
 测试
 
 ![image-20221127215258486](/assets/image-20221127215258486.png)
+
+
+
+
+
+## 制作靶机
+
+```
+#导出镜像
+docker export -o  pwcupload test2
+#导入镜像
+docker import -c 'CMD ["bash","/run.sh"]' pwcupload pwcupload:latest
+#启动容器
+docker run --name test1  -d  --net mynet pwcupload:latest 
+
+#可以在/run.sh 中 将环境变量中的flag 写入文件
+```
+
+
+
