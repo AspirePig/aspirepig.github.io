@@ -449,7 +449,7 @@ ctf-whale https://github.com/glzjin/CTFd-Wha">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    541
+                    599
                 </div>
                 
 
@@ -570,6 +570,17 @@ docker-compose up -d </code></pre>
 <p><img src="/assets/image-20221127144518490.png" alt="image-20221127144518490"></p>
 <p>测试</p>
 <p><img src="/assets/image-20221127215258486.png" alt="image-20221127215258486"></p>
+<h2 id="制作靶机"><a href="#制作靶机" class="headerlink" title="制作靶机"></a>制作靶机</h2><pre class="language-none"><code class="language-none">#导出镜像
+docker export -o  pwcupload test2
+#导入镜像
+docker import -c 'CMD ["bash","/run.sh"]' pwcupload pwcupload:latest
+#启动容器
+docker run --name test1  -d  --net mynet pwcupload:latest 
+
+#可以在/run.sh 中 将环境变量中的flag 写入文件</code></pre>
+
+
+
 
                 
             </div>
@@ -1054,7 +1065,7 @@ docker-compose up -d </code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">38.2k</span>
+                        class="white-color">38.3k</span>
             
             
             
