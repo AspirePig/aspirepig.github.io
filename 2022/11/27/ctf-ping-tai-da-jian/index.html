@@ -457,7 +457,7 @@ ctf-whale https://github.com/glzjin/CTFd-Wha">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    596
+                    595
                 </div>
                 
 
@@ -545,7 +545,7 @@ push "route 172.18.0.0 255.255.255.0"
 <p><code>/var/lib/docker/volumes/ovpn-data-example/_data/ovpn_env.sh</code> 中的 declare -x OVPN_DISABLE_PUSH_BLOCK_DNS=0 改为 1</p>
 <p>继续操作启动  ovpn</p>
 <pre class="language-none"><code class="language-none">
-docker run --name=openvpn -v $OVPN_DATA:/etc/openvpn -d -p 443:443/tcp --cap-add=NET_ADMIN --net  ctfd_frp-containers kylemanna/openvpn
+docker run --name=openvpn -v $OVPN_DATA:/etc/openvpn -d -p 443:443/tcp --cap-add=NET_ADMIN --net ovpn_network kylemanna/openvpn
 
 #创建用户 .ovpn
 docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full asp nopass
