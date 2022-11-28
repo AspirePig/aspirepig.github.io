@@ -98,7 +98,7 @@ push "route 172.18.0.0 255.255.255.0"
 
 ```
 
-docker run --name=openvpn -v $OVPN_DATA:/etc/openvpn -d -p 443:443/tcp --cap-add=NET_ADMIN --net  ctfd_frp-containers kylemanna/openvpn
+docker run --name=openvpn -v $OVPN_DATA:/etc/openvpn -d -p 443:443/tcp --cap-add=NET_ADMIN --net ovpn_network kylemanna/openvpn
 
 #创建用户 .ovpn
 docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full asp nopass
