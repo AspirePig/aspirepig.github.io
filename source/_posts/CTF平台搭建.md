@@ -104,10 +104,35 @@ docker run --name=openvpn -v $OVPN_DATA:/etc/openvpn -d -p 443:443/tcp --cap-add
 docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full asp nopass
 docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient asp > asp.ovpn
 
-#检查 asp.ovpn  确保 端口 协议 正确  443 tcp
-#注释asp.ovpn 中的 redirect-gateway def1
+#检查 asp.ovpn  
+确保 端口 协议 正确  443 tcp
+注释asp.ovpn 中的 redirect-gateway def1
+添加 comp-lzo
 
 ```
+
+如需开启单个证书同时登陆，可在服务端添加 duplicate-cn
+
+证书注销：
+
+```
+#查看路径
+docker volume inspect ovpn-data-example
+
+#删除用户证书
+rm ***/_data/pki/private/CLIENTNAME.key
+
+#删除请求
+rm ***/_data/pki/reqs/CLIENTNAME.req
+
+#删除client 所在行
+vim ***/_data/pki/index.txt
+
+```
+
+
+
+
 
 
 
