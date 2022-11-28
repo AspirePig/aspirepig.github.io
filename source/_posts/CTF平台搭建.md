@@ -2,7 +2,9 @@
 title: CTF平台搭建
 typora-root-url: ..
 date: 2022-11-27 13:52:03
-tags:
+tags: 
+ - ctfd
+ - docker
 ---
 
 
@@ -111,26 +113,22 @@ docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient asp 
 
 ## ctfd & ctf-whale 安装 
 
-```
-git clone https://github.com/CTFd/CTFd.git
-cd CTFd/
-git reset a33a31b1f8cb2f7a55685de968b9083d9a035d72  --hard #本文使用版本
-cd  CTFd/plugins
-git clone https://hub.yzuu.cf/frankli0324/ctfd-whale.git
-```
+修改ctf-whale 代码，集成在 ctfd中
 
-或者使用我修改过的版本
+修改 docker-compose 和 Dockfile 
 
-以容器启动，暴露容器IP，使用openvpn连接后进行访问
+修改为 靶机以容器启动，返回容器IP到前端，不直接暴露到公网
+
+用户使用openvpn连接后进行访问
+
+ctfd 版本： 3.5.0
 
 ```
 git clone https://github.com/AspirePig/ctfd_with_docker
 cd ctfd_with_docker
 ```
 
-
-
-直接启动
+编译启动
 
 ```
 docker-compose build
