@@ -64,7 +64,7 @@ apt-get install printer-driver-postscript-hp  #这个好像没成功，也没管
 
 开始解决 缺少 linux-headers 的问题
 
-可以到  http://old.kali.org/kali/pool/main/l/linux/ 下载对应版本
+可以到 https://kali.download/kali/pool/main/l/linux/ 下载对应版本
 
 ### 开启ssh
 
@@ -82,7 +82,7 @@ ssh -antp
 update-rc.do ssh enable   #开启开机自启
 ```
 
-使用 ssh登陆后，上传刚刚下载的三个文件，依次安装
+使用 ssh登陆后，上传刚刚下载的三个文件，依次安装（视实际情况进行下载）
 
 ```bash
 dpkg -i linux-kbuild-5.10_5.10.46-4kali1_amd64.deb     

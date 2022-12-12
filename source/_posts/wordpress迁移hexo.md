@@ -237,7 +237,7 @@ git push -u origin main
    git push -u origin main
    ```
 
-4. Mac：安装好npm，hexo ，clone项目，并在其他目录初始化一个 hexo 项目，将其中的node_modules 目录拷贝到 clone 下来的 目录中
+5. Mac：安装好npm，hexo ，clone项目，并在其他目录初始化一个 hexo 项目，将其中的node_modules 目录拷贝到 clone 下来的 目录中
 
    ```bash
    sudo npm install -g hexo-cli  #安装hexo
@@ -248,6 +248,8 @@ git push -u origin main
    cp -rf hexo_tmp/node_modules myblog/   #复制一个初始化好的node_modules
    cd myblog
    npm install  #自动安装好在Windows上安装过的模块
+   #r如果安装慢，可以更改npm 源
+   npm config set registry https://registry.npm.taobao.org
    ```
 
 5. Mac：修改文章，测试各是否正常可用
