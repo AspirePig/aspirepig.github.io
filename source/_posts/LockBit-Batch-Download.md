@@ -173,7 +173,7 @@ def downloadfiles():
                 count = count + 1
                 continue
             print("start download: {}/{} ==> {}".format(count + 1, len(files), file))
-            downloadlink = "http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/ajax/listing-post?file-download=true&folder-id=1130&data-dir="+quote(file[1:])
+            downloadlink = "http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/ajax/listing-post?file-download=true&folder-id=1130&data-dir="+quote(html.unescape(file[1:]))
 
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
