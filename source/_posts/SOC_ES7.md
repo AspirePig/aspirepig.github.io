@@ -19,7 +19,13 @@ tags: [elk, soc]
 
 # 0x01 环境准备
 
-概述
+概述 整个文档可以查看wazuh all in one 安装文档
+
+https://documentation.wazuh.com/current/deployment-options/elastic-stack/all-in-one-deployment/index.html
+
+卸载文档：
+
+https://documentation.wazuh.com/current/user-manual/uninstall/elastic-stack.html
 
 ```
 VM1:Ubuntu 22.04.3 LTS
@@ -229,7 +235,12 @@ curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring 
 
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
 
-apt-get update && apt-get -y install wazuh-manager=4.5
+apt-get update && apt-get -y install wazuh-manager=4.5.3
+
+#打开archives.json
+vim /var/ossec/etc/ossec.conf
+<logall_json>yes</logall_json>
+
 
 #设置开机自启动并启动wazuh manager
 systemctl daemon-reload
@@ -281,7 +292,7 @@ filebeat.modules:
     alerts:
       enabled: true
     archives:
-      enabled: false
+      enabled: true
 
 logging.level: info
 logging.to_files: true
@@ -355,6 +366,8 @@ systemctl restart kibana
 
 测试在 Kali 安装 wazuh-agent
 
+可参考文档 https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html
+
 ```
 curl -so wazuh-agent.deb https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.5.3-1_amd64.deb && sudo WAZUH_MANAGER='192.168.137.134' dpkg -i ./wazuh-agent.deb
 
@@ -371,7 +384,79 @@ sudo systemctl start wazuh-agent
 
 
 
-# 0x06 Wazuh-decoder
+# 0x06 Wazuh-decoders&rules
+
+语法文档：https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html
+
+#### 1.自定义规则
+
+参考文档 https://documentation.wazuh.com/current/user-manual/ruleset/custom.html
+
+> 自定义的rule id应当使用  100000 到120000 
+>
+> 示例日志
+
+```
+Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100'
+```
+
+在 `/var/ossec/etc/decoders/local_decoder.xml` 中插入如下新的 decoder
+
+```
+<group name="custom_rules_example,">
+  <rule id="100010" level="0">
+    <program_name>example</program_name>
+    <description>User logged</description>
+  </rule>
+</group>
+```
+
+在 `/var/ossec/etc/decoders/local_decoder.xml` 中插入如下新的 rule
+
+```
+<group name="custom_rules_example,">
+  <rule id="100010" level="0">
+    <program_name>example</program_name>
+    <description>User logged</description>
+  </rule>
+</group>
+```
+
+执行 `/var/ossec/bin/wazuh-logtest`
+
+```
+#输入
+Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100'
+
+**Phase 1: Completed pre-decoding.
+        full event: 'Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100''
+        timestamp: 'Dec 25 20:45:02'
+        hostname: 'MyHost'
+        program_name: 'example'
+
+**Phase 2: Completed decoding.
+        name: 'example'
+        dstuser: 'admin'
+        srcip: '192.168.1.100'
+
+**Phase 3: Completed filtering (rules).
+        id: '100010'
+        level: '0'
+        description: 'User logged'
+        groups: '['custom_rules_example']'
+        firedtimes: '1'
+        mail: 'False'
+
+
+#重启 wazuh agent ，使该decoder和rules 生效
+systemctl restart wazuh-manager
+```
+
+
+
+
+
+# 0x07 Wazuh-日志采集
 
 
 
@@ -391,7 +476,7 @@ sudo systemctl start wazuh-agent
 
 
 
-# 0x07 Wazuh-rule
+# 0x07 Wazuh
 
 
 
