@@ -8,13 +8,8 @@
     <meta name="description" content="0x00 序言搭建SOC完整架构尝试
 架构图如下
 
-0x01 环境准备概述
-VM1:Ubuntu 22.04.3 LTS
-
-
-
-0x02 Ubuntu VM安装此处不做过多详细介绍，网上教程很多
-下载 ISO https://release">
+0x01 环境准备概述 整个文档可以查看wazuh all in one 安装文档
+https://documentation.wazuh.com/current/deployment-o">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -461,7 +456,7 @@ VM1:Ubuntu 22.04.3 LTS
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.4k
+                    1.7k
                 </div>
                 
 
@@ -484,7 +479,10 @@ VM1:Ubuntu 22.04.3 LTS
                 <h1 id="0x00-序言"><a href="#0x00-序言" class="headerlink" title="0x00 序言"></a>0x00 序言</h1><p>搭建SOC完整架构尝试</p>
 <p>架构图如下</p>
 <p><img src="/assets/image-20231011175154949.png" alt="image-20231011175154949"></p>
-<h1 id="0x01-环境准备"><a href="#0x01-环境准备" class="headerlink" title="0x01 环境准备"></a>0x01 环境准备</h1><p>概述</p>
+<h1 id="0x01-环境准备"><a href="#0x01-环境准备" class="headerlink" title="0x01 环境准备"></a>0x01 环境准备</h1><p>概述 整个文档可以查看wazuh all in one 安装文档</p>
+<p><a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/deployment-options/elastic-stack/all-in-one-deployment/index.html">https://documentation.wazuh.com/current/deployment-options/elastic-stack/all-in-one-deployment/index.html</a></p>
+<p>卸载文档：</p>
+<p><a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/uninstall/elastic-stack.html">https://documentation.wazuh.com/current/user-manual/uninstall/elastic-stack.html</a></p>
 <pre class="language-none"><code class="language-none">VM1:Ubuntu 22.04.3 LTS</code></pre>
 
 
@@ -630,7 +628,12 @@ systemctl status kibana.service</code></pre>
 
 <span class="token builtin class-name">echo</span> <span class="token string">"deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main"</span> <span class="token operator">|</span> <span class="token function">tee</span> -a /etc/apt/sources.list.d/wazuh.list
 
-<span class="token function">apt-get</span> update <span class="token operator">&amp;&amp;</span> <span class="token function">apt-get</span> -y <span class="token function">install</span> wazuh-manager<span class="token operator">=</span><span class="token number">4.5</span>
+<span class="token function">apt-get</span> update <span class="token operator">&amp;&amp;</span> <span class="token function">apt-get</span> -y <span class="token function">install</span> wazuh-manager<span class="token operator">=</span><span class="token number">4.5</span>.3
+
+<span class="token comment">#打开archives.json</span>
+<span class="token function">vim</span> /var/ossec/etc/ossec.conf
+<span class="token operator">&lt;</span>logall_json<span class="token operator">&gt;</span>yes<span class="token operator">&lt;</span>/logall_json<span class="token operator">&gt;</span>
+
 
 <span class="token comment">#设置开机自启动并启动wazuh manager</span>
 systemctl daemon-reload
@@ -673,7 +676,7 @@ filebeat.modules:
     alerts:
       enabled: true
     archives:
-      enabled: false
+      enabled: true
 
 logging.level: info
 logging.to_files: true
@@ -730,6 +733,7 @@ systemctl restart kibana
 
 
 <h1 id="0x06-Wazuh-agent安装"><a href="#0x06-Wazuh-agent安装" class="headerlink" title="0x06 Wazuh-agent安装"></a>0x06 Wazuh-agent安装</h1><p>测试在 Kali 安装 wazuh-agent</p>
+<p>可参考文档 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html">https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html</a></p>
 <pre class="language-none"><code class="language-none">curl -so wazuh-agent.deb https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.5.3-1_amd64.deb &amp;&amp; sudo WAZUH_MANAGER='192.168.137.134' dpkg -i ./wazuh-agent.deb
 
 sudo systemctl daemon-reload
@@ -738,7 +742,62 @@ sudo systemctl start wazuh-agent</code></pre>
 
 <p>再次查看 kibana，可以看到 agent 已经上线</p>
 <p><img src="/assets/image-20231011211432342.png" alt="image-20231011211432342"></p>
-<h1 id="0x06-Wazuh-decoder"><a href="#0x06-Wazuh-decoder" class="headerlink" title="0x06 Wazuh-decoder"></a>0x06 Wazuh-decoder</h1><h4 id="1-Agent上报"><a href="#1-Agent上报" class="headerlink" title="1. Agent上报"></a>1. Agent上报</h4><h4 id="2-Syslog上报"><a href="#2-Syslog上报" class="headerlink" title="2.Syslog上报"></a>2.Syslog上报</h4><h4 id="3-Windows事件日志"><a href="#3-Windows事件日志" class="headerlink" title="3. Windows事件日志"></a>3. Windows事件日志</h4><h4 id="4-Docker日志"><a href="#4-Docker日志" class="headerlink" title="4.Docker日志"></a>4.Docker日志</h4><h1 id="0x07-Wazuh-rule"><a href="#0x07-Wazuh-rule" class="headerlink" title="0x07 Wazuh-rule"></a>0x07 Wazuh-rule</h1><h1 id="0x08-Jira安装"><a href="#0x08-Jira安装" class="headerlink" title="0x08 Jira安装"></a>0x08 Jira安装</h1>
+<h1 id="0x06-Wazuh-decoders-amp-rules"><a href="#0x06-Wazuh-decoders-amp-rules" class="headerlink" title="0x06 Wazuh-decoders&amp;rules"></a>0x06 Wazuh-decoders&amp;rules</h1><p>语法文档：<a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html">https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html</a></p>
+<h4 id="1-自定义规则"><a href="#1-自定义规则" class="headerlink" title="1.自定义规则"></a>1.自定义规则</h4><p>参考文档 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/ruleset/custom.html">https://documentation.wazuh.com/current/user-manual/ruleset/custom.html</a></p>
+<blockquote>
+<p>自定义的rule id应当使用  100000 到120000 </p>
+<p>示例日志</p>
+</blockquote>
+<pre class="language-none"><code class="language-none">Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100'</code></pre>
+
+<p>在 <code>/var/ossec/etc/decoders/local_decoder.xml</code> 中插入如下新的 decoder</p>
+<pre class="language-none"><code class="language-none">&lt;group name="custom_rules_example,"&gt;
+  &lt;rule id="100010" level="0"&gt;
+    &lt;program_name&gt;example&lt;/program_name&gt;
+    &lt;description&gt;User logged&lt;/description&gt;
+  &lt;/rule&gt;
+&lt;/group&gt;</code></pre>
+
+<p>在 <code>/var/ossec/etc/decoders/local_decoder.xml</code> 中插入如下新的 rule</p>
+<pre class="language-none"><code class="language-none">&lt;group name="custom_rules_example,"&gt;
+  &lt;rule id="100010" level="0"&gt;
+    &lt;program_name&gt;example&lt;/program_name&gt;
+    &lt;description&gt;User logged&lt;/description&gt;
+  &lt;/rule&gt;
+&lt;/group&gt;</code></pre>
+
+<p>执行 <code>/var/ossec/bin/wazuh-logtest</code></p>
+<pre class="language-none"><code class="language-none">#输入
+Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100'
+
+**Phase 1: Completed pre-decoding.
+        full event: 'Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100''
+        timestamp: 'Dec 25 20:45:02'
+        hostname: 'MyHost'
+        program_name: 'example'
+
+**Phase 2: Completed decoding.
+        name: 'example'
+        dstuser: 'admin'
+        srcip: '192.168.1.100'
+
+**Phase 3: Completed filtering (rules).
+        id: '100010'
+        level: '0'
+        description: 'User logged'
+        groups: '['custom_rules_example']'
+        firedtimes: '1'
+        mail: 'False'
+
+
+#重启 wazuh agent ，使该decoder和rules 生效
+systemctl restart wazuh-manager</code></pre>
+
+
+
+
+
+<h1 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h1><h4 id="1-Agent上报"><a href="#1-Agent上报" class="headerlink" title="1. Agent上报"></a>1. Agent上报</h4><h4 id="2-Syslog上报"><a href="#2-Syslog上报" class="headerlink" title="2.Syslog上报"></a>2.Syslog上报</h4><h4 id="3-Windows事件日志"><a href="#3-Windows事件日志" class="headerlink" title="3. Windows事件日志"></a>3. Windows事件日志</h4><h4 id="4-Docker日志"><a href="#4-Docker日志" class="headerlink" title="4.Docker日志"></a>4.Docker日志</h4><h1 id="0x07-Wazuh"><a href="#0x07-Wazuh" class="headerlink" title="0x07 Wazuh"></a>0x07 Wazuh</h1><h1 id="0x08-Jira安装"><a href="#0x08-Jira安装" class="headerlink" title="0x08 Jira安装"></a>0x08 Jira安装</h1>
                 
             </div>
             <hr/>
@@ -1246,7 +1305,7 @@ sudo systemctl start wazuh-agent</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">41.2k</span>
+                        class="white-color">41.6k</span>
             
             
             
