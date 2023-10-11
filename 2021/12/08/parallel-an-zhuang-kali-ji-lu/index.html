@@ -453,7 +453,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    488
+                    496
                 </div>
                 
 
@@ -506,7 +506,7 @@ deb-src http://mirrors.ustc.edu.cn/kali/ kali-rolling main contrib non-free
 </code></pre>
 
 <p>开始解决 缺少 linux-headers 的问题</p>
-<p>可以到  <a target="_blank" rel="noopener" href="http://old.kali.org/kali/pool/main/l/linux/">http://old.kali.org/kali/pool/main/l/linux/</a> 下载对应版本</p>
+<p>可以到 <a target="_blank" rel="noopener" href="https://kali.download/kali/pool/main/l/linux/">https://kali.download/kali/pool/main/l/linux/</a> 下载对应版本</p>
 <h3 id="开启ssh"><a href="#开启ssh" class="headerlink" title="开启ssh"></a>开启ssh</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vim</span> /etc/ssh/sshd_config</code></pre>
 
 <p><img src="/assets/image-20211208102727047.png" alt="image-20211208102727047"></p>
@@ -515,7 +515,7 @@ deb-src http://mirrors.ustc.edu.cn/kali/ kali-rolling main contrib non-free
 <span class="token function">ssh</span> -antp
 update-rc.do <span class="token function">ssh</span> <span class="token builtin class-name">enable</span>   <span class="token comment">#开启开机自启</span></code></pre>
 
-<p>使用 ssh登陆后，上传刚刚下载的三个文件，依次安装</p>
+<p>使用 ssh登陆后，上传刚刚下载的三个文件，依次安装（视实际情况进行下载）</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">dpkg -i linux-kbuild-5.10_5.10.46-4kali1_amd64.deb     
 dpkg -i linux-headers-5.10.0-kali9-common_5.10.46-4kali1_all.deb 
 dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb</code></pre>
@@ -558,7 +558,7 @@ dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb</code></pre>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://aspirepig.cn/2021/12/08/parallel-an-zhuang-kali-ji-lu/">https://aspirepig.cn/2021/12/08/parallel-an-zhuang-kali-ji-lu/</a>
+                    <a href="https://blog.aspirepig.top/2021/12/08/parallel-an-zhuang-kali-ji-lu/">https://blog.aspirepig.top/2021/12/08/parallel-an-zhuang-kali-ji-lu/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1026,7 +1026,7 @@ dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb</code></pre>
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2022</span>
+                <span id="year">2019-2023</span>
             
             <a href="/about" target="_blank">Aspirepig</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1034,7 +1034,7 @@ dpkg -i linux-headers-5.10.0-kali9-amd64_5.10.46-4kali1_amd64.deb</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">38.3k</span>
+                        class="white-color">38.5k</span>
             
             
             

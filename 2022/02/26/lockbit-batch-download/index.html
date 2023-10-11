@@ -614,7 +614,7 @@ Cookie <span class="token operator">=</span> <span class="token string">'res=5F4
                 count <span class="token operator">=</span> count <span class="token operator">+</span> <span class="token number">1</span>
                 <span class="token keyword">continue</span>
             <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"start download: {}/{} ==&gt; {}"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>files<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            downloadlink <span class="token operator">=</span> <span class="token string">"http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/ajax/listing-post?file-download=true&amp;folder-id=1130&amp;data-dir="</span><span class="token operator">+</span>quote<span class="token punctuation">(</span><span class="token builtin">file</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            downloadlink <span class="token operator">=</span> <span class="token string">"http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/ajax/listing-post?file-download=true&amp;folder-id=1130&amp;data-dir="</span><span class="token operator">+</span>quote<span class="token punctuation">(</span>html<span class="token punctuation">.</span>unescape<span class="token punctuation">(</span><span class="token builtin">file</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
             headers <span class="token operator">=</span> <span class="token punctuation">{</span>
                 <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> <span class="token string">'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'</span><span class="token punctuation">,</span>
@@ -701,7 +701,7 @@ python3  download.py <span class="token operator">&amp;</span>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://aspirepig.cn/2022/02/26/lockbit-batch-download/">https://aspirepig.cn/2022/02/26/lockbit-batch-download/</a>
+                    <a href="https://blog.aspirepig.top/2022/02/26/lockbit-batch-download/">https://blog.aspirepig.top/2022/02/26/lockbit-batch-download/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1189,7 +1189,7 @@ python3  download.py <span class="token operator">&amp;</span>
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2022</span>
+                <span id="year">2019-2023</span>
             
             <a href="/about" target="_blank">Aspirepig</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1197,7 +1197,7 @@ python3  download.py <span class="token operator">&amp;</span>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">38.3k</span>
+                        class="white-color">38.5k</span>
             
             
             
