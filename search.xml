@@ -8,7 +8,7 @@
       <link href="/2023/10/11/chatgpt-next-web/"/>
       <url>/2023/10/11/chatgpt-next-web/</url>
       
-        <content type="html"><![CDATA[<h2 id="00-项目地址"><a href="#00-项目地址" class="headerlink" title="00 项目地址"></a>00 项目地址</h2><p><a href="https://github.com/Yidadaa/ChatGPT-Next-Web">https://github.com/Yidadaa/ChatGPT-Next-Web</a></p><h2 id="01-ChatGPT-Next-web-搭建"><a href="#01-ChatGPT-Next-web-搭建" class="headerlink" title="01 ChatGPT-Next-web 搭建"></a>01 ChatGPT-Next-web 搭建</h2><p>使用docker搭建命令如下：</p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">80</span>:3000 -e <span class="token assign-left variable">OPENAI_API_KEY</span><span class="token operator">=</span>sk-6xxxxxx -e <span class="token assign-left variable">CODE</span><span class="token operator">=</span>password  yidadaa/chatgpt-next-web</code></pre><p>如果不能 F/Q 可使用以下两种方式:</p><p>第三方 API 服务</p><p>例如 <a href="https://openkey.cloud/">https://openkey.cloud/</a></p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">80</span>:3000 -e <span class="token assign-left variable">OPENAI_API_KEY</span><span class="token operator">=</span>sk-txxxxxx -e <span class="token assign-left variable">CODE</span><span class="token operator">=</span>password -e <span class="token assign-left variable">BASE_URL</span><span class="token operator">=</span>https://openkey.cloud yidadaa/chatgpt-next-web</code></pre><p>配置代理的方式</p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">80</span>:3000 -e <span class="token assign-left variable">OPENAI_API_KEY</span><span class="token operator">=</span>sk-6xxxxxx -e <span class="token assign-left variable">CODE</span><span class="token operator">=</span>password -e <span class="token assign-left variable">PROXY_URL</span><span class="token operator">=</span>http://localhost:7890 yidadaa/chatgpt-next-web</code></pre><h2 id="03-测试使用"><a href="#03-测试使用" class="headerlink" title="03 测试使用"></a>03 测试使用</h2><p>搭建完成效果如图</p><p><img src="/assets/image-20231011161446196.png" alt="image-20231011161446196"></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="00-项目地址"><a href="#00-项目地址" class="headerlink" title="00 项目地址"></a>00 项目地址</h2><p><a href="https://github.com/Yidadaa/ChatGPT-Next-Web">https://github.com/Yidadaa/ChatGPT-Next-Web</a></p><h2 id="01-ChatGPT-Next-web-搭建"><a href="#01-ChatGPT-Next-web-搭建" class="headerlink" title="01 ChatGPT-Next-web 搭建"></a>01 ChatGPT-Next-web 搭建</h2><p>使用docker搭建命令如下：</p><p>例如在这此处买账号带key <a href="https://www.51chatgpt.info/">https://www.51chatgpt.info/</a></p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">80</span>:3000 -e <span class="token assign-left variable">OPENAI_API_KEY</span><span class="token operator">=</span>sk-6xxxxxx -e <span class="token assign-left variable">CODE</span><span class="token operator">=</span>password  yidadaa/chatgpt-next-web</code></pre><p>如果不能 F/Q 可使用以下两种方式:</p><p>第三方 API 服务</p><p>例如 <a href="https://openkey.cloud/">https://openkey.cloud/</a></p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">80</span>:3000 -e <span class="token assign-left variable">OPENAI_API_KEY</span><span class="token operator">=</span>sk-txxxxxx -e <span class="token assign-left variable">CODE</span><span class="token operator">=</span>password -e <span class="token assign-left variable">BASE_URL</span><span class="token operator">=</span>https://openkey.cloud yidadaa/chatgpt-next-web</code></pre><p>配置代理的方式</p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">80</span>:3000 -e <span class="token assign-left variable">OPENAI_API_KEY</span><span class="token operator">=</span>sk-6xxxxxx -e <span class="token assign-left variable">CODE</span><span class="token operator">=</span>password -e <span class="token assign-left variable">PROXY_URL</span><span class="token operator">=</span>http://localhost:7890 yidadaa/chatgpt-next-web</code></pre><h2 id="03-测试使用"><a href="#03-测试使用" class="headerlink" title="03 测试使用"></a>03 测试使用</h2><p>搭建完成效果如图</p><p><img src="/assets/image-20231011161446196.png" alt="image-20231011161446196"></p>]]></content>
       
       
       
@@ -776,9 +776,9 @@
       
       <categories>
           
-          <category> OS X </category>
-          
           <category> tools </category>
+          
+          <category> OS X </category>
           
       </categories>
       
@@ -1045,11 +1045,11 @@
           
           <category> misc </category>
           
-          <category> OS X </category>
-          
           <category> tools </category>
           
           <category> github </category>
+          
+          <category> OS X </category>
           
       </categories>
       
@@ -1105,9 +1105,9 @@
       
       <categories>
           
-          <category> OS X </category>
-          
           <category> tools </category>
+          
+          <category> OS X </category>
           
       </categories>
       
