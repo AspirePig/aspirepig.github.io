@@ -1,7 +1,7 @@
 ---
 title: SOC_ES8
 typora-root-url: ..
-date: 2023-10-11 16:35:28
+date: 2023-10-11 18:35:28
 tags: [elk, soc]
 ---
 
