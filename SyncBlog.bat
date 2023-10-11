@@ -1,3 +1,3 @@
-cd C:\个人文件夹\aspirepig.github.io
+cd C:\\Users\\admin\\myblog
 hexo cl && hexo g -d
 pause

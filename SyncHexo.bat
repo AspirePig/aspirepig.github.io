@@ -1,4 +1,4 @@
-cd C:\\个人文件夹\\aspirepig.github.io
+cd C:\\Users\\admin\\myblog
 git add .
 git commit -m "update"
 git push
