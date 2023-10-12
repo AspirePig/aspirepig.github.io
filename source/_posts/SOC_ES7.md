@@ -185,7 +185,7 @@ xpack.reporting.encryptionKey: iGhu317CGomTQ3UH1nQwYF7yZ8asWPKHHYMwjBUJ
 
 ```
 
-操作 elasticsearch
+操作 kibana
 
 ```bash
 #设置开机自启
@@ -206,12 +206,6 @@ systemctl status kibana.service
 <img src="/assets/image-20231011204040638.png" alt="image-20231011204040638" style="zoom:80%;" />
 
 至此，已经完成ES和Kibana的安装,我们的数据存储和浏览的核心组件。
-
-
-
-后续将会讲解如何引入其他组件，如数据采集、数据处理、规则判断、告警生命周期。
-
-
 
 # 0x04 wazuh-server安装
 
@@ -326,13 +320,13 @@ chmod go+r /etc/filebeat/wazuh-template.json
 curl -s https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.2.tar.gz | tar -xvz -C /usr/share/filebeat/module
 
 
-#启动filebeat
+#启动 filebeat
 systemctl daemon-reload
 systemctl enable filebeat
 systemctl start filebeat
 ```
 
-查看Kibana，可以看到 alerts的日志了
+查看Kibana，可以看到 alerts 和的日志了
 
 ![image-20231011205448375](/assets/image-20231011205448375.png)
 
@@ -661,6 +655,11 @@ curl --location --request POST 'https://aspirepigsoc.atlassian.net/rest/api/2/is
 
 由于需要使用 Python 3.11 ，此处使用 docker 安装方法.配置如下
 
+```
+#安装docker
+apt install docker.io
+```
+
 创建目录: `/opt/elastalert/`
 
 elastalert.yaml：
@@ -744,13 +743,15 @@ print(response.text)
 创建完成后，启动容器
 
 ```yaml
+cd /opt/elastalert
+
 #启动
 docker run -d --name elastalert --restart=always \
 -v $(pwd)/elastalert.yaml:/opt/elastalert/config.yaml \
 -v $(pwd)/rules:/opt/elastalert/rules \
 jertel/elastalert2 --verbose
 
-
+#查看日志，或者在kibana查看(成功的前提下)
 docker logs -f elastalert
 ```
 
