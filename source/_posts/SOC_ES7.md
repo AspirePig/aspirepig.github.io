@@ -388,7 +388,7 @@ sudo systemctl start wazuh-agent
 
 语法文档：https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html
 
-#### 1.自定义规则
+#### 1.自定义decoder & rule
 
 参考文档 https://documentation.wazuh.com/current/user-manual/ruleset/custom.html
 
@@ -454,6 +454,80 @@ systemctl restart wazuh-manager
 
 
 
+#### 2.修改已有rule
+
+修改时，建议将原有的规则直接拷贝出来到 自定义规则下`/var/ossec/etc/rules/` ，使用 `overwrite="yes"` tag将原因规则覆盖，防止升级导致规则丢失。
+
+示例修改 ssh rule 5710：
+
+1. 拷贝 `/var/ossec/ruleset/rules/0095-sshd_rules.xml` 中的 5710规则
+
+   ```
+   <group name="syslog,sshd,">
+     ...
+     <rule id="5710" level="5">
+       <if_sid>5700</if_sid>
+       <match>illegal user|invalid user</match>
+       <description>sshd: Attempt to login using a non-existent user</description>
+       <mitre>
+         <id>T1110</id>
+       </mitre>
+       <group>invalid_login,authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+     </rule>
+     ...
+   </group>
+   ```
+
+2. 粘贴到自定义规则文件中 `/var/ossec/etc/rules/local_rules.xml` ,并设置 `overwrite="yes"`
+
+```
+<group name="syslog,sshd,">
+  <rule id="5710" level="10" overwrite="yes">
+    <if_sid>5700</if_sid>
+    <match>illegal user|invalid user</match>
+    <description>sshd: Attempt to login using a non-existent user</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>invalid_login,authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+</group>
+```
+
+3. 重启wazuh `systemctl restart wazuh-manager`
+
+#### 3.修改已有decoder
+
+覆盖 decoder 需要整个文件进行覆盖，并修改 loading list
+
+例如想要 修改 `0310-ssh_decoders.xml` ， 步骤如下
+
+1.  `cp /var/ossec/ruleset/decoders/0310-ssh_decoders.xml /var/ossec/etc/decoders` 
+
+2. 编辑 `/var/ossec/etc/ossec.conf`，设置  `<decoder_exclude>` 如下
+
+   ```
+   <ruleset>
+     <!-- Default ruleset -->
+     <decoder_dir>ruleset/decoders</decoder_dir>
+     <rule_dir>ruleset/rules</rule_dir>
+     <rule_exclude>0215-policy_rules.xml</rule_exclude>
+     <list>etc/lists/audit-keys</list>
+   
+     <!-- User-defined ruleset -->
+     <decoder_dir>etc/decoders</decoder_dir>
+     <rule_dir>etc/rules</rule_dir>
+     <decoder_exclude>ruleset/decoders/0310-ssh_decoders.xml</decoder_exclude>
+   </ruleset>
+   ```
+
+3. 编辑 `/var/ossec/etc/decoders/0310-ssh_decoders.xml`
+4. 重启wazuh server `systemctl restart wazuh-manager`
+
+测试 
+
+![image-20231012110801694](/assets/image-20231012110801694.png)
+
 
 
 # 0x07 Wazuh-日志采集
@@ -482,3 +556,200 @@ systemctl restart wazuh-manager
 
 # 0x08 Jira安装
 
+此处暂时省略，使用 JIRA cloud 在线环境
+
+
+
+#### 1.创建JRIA项目
+
+JIRA 大致步骤：
+
+1. 创建项目
+2. 创建字段及字段方案
+3. 创建工作流工作流方案
+4. 创建屏幕及屏幕方案
+5. 人员、权限
+6. API服务
+
+浅浅配置一下，大概如图。
+
+![image-20231012123334491](/assets/image-20231012123334491.png)
+
+
+
+需求：
+
+> 我们需要自动将 wazuh alerts中rule.level > = 10 的 日志创建为一张ticket
+
+方案有几种：
+
+1. 使用脚本调用ES API查询数据，再请求 JIRA API 创建Ticket
+2. 使用 kibana 自带 security/watcher 功能创建rule，并配置webhook、JRIA action，创建ticket
+3. 使用 Elastalert，并调用脚本请求JIRA api创建ticket
+
+需要使用到两个东西，一个是调用JIRA API，创建ticket ，参考文档
+
+https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/#authentication
+
+快速上手：参考 https://juejin.cn/post/7023617578324983839
+
+另一个是使用脚本查询Elasticsearch，参考文档
+
+
+
+#### 2.使用jIRA创建一个 Token
+
+![image-20231012124606703](/assets/image-20231012124606703.png)
+
+
+
+构造认证头
+
+```bash
+echo -n user@example.com:api_token_string | base64
+```
+
+
+
+构造 查询 请求测试
+
+```bash
+curl --location --request GET 'https://aspirepigsoc.atlassian.net/rest/api/2/search?jql=project%20%3D%20SOC' \
+--header 'Authorization: Basic YXNwaXJlcGlxxxxx' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+```
+
+测试能否正常调用API接口创建Ticket
+
+```
+curl --location --request POST 'https://aspirepigsoc.atlassian.net/rest/api/2/issue' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic YXNwaXJlcxxxx' \
+--data-raw '{
+  "fields": {
+    "issuetype": {
+      "id": "10010"
+    },
+    "project": {
+      "id": "10001"
+    },
+    "summary": "test alert001",
+    "description": "Description - Hevo is a No Code Data Pipeline"
+  }
+}'
+```
+
+
+
+![image-20231012133348832](/assets/image-20231012133348832.png)
+
+
+
+#### 3.elastalert2安装与配置
+
+查看文档进行安装：https://elastalert2.readthedocs.io/en/latest/running_elastalert.html#as-a-docker-container
+
+由于需要使用 Python 3.11 ，此处使用 docker 安装方法.配置如下
+
+创建目录: `/opt/elastalert/`
+
+elastalert.yaml：
+
+```
+rules_folder: /opt/elastalert/rules
+
+run_every:
+  seconds: 30
+
+buffer_time:
+  minutes: 15
+
+es_host: 192.168.137.134
+es_port: 9200
+
+writeback_index: elastalert_status
+
+alert_time_limit:
+  days: 2
+```
+
+soc.yaml
+
+```
+name: "soc"
+type: "any"
+index: "wazuh-alerts-4.x*"
+is_enabled: true
+realert:
+  minutes: 0
+buffer_time:
+  minutes: 120
+filter:
+- range:
+    rule.level:
+      from: 9
+      to: 15
+
+include: ["rule.description", "full_log"]
+
+
+alert:
+  - command
+  - debug
+command: ["python3","/opt/elastalert/rules/test.py","{rule[description]}", "{full_log}"]
+```
+
+test.py
+
+```
+import sys
+import requests
+import json
+
+url = "https://aspirepigsoc.atlassian.net/rest/api/2/issue"
+
+payload = json.dumps({
+  "fields": {
+    "issuetype": {
+      "id": "10010"
+    },
+    "project": {
+      "id": "10001"
+    },
+    "summary": sys.argv[1],
+    "description": sys.argv[2]
+  }
+})
+headers = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'Authorization': 'Basic YXNwaXJlcGlnQGxxxx'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+创建完成后，启动容器
+
+```yaml
+#启动
+docker run -d --name elastalert --restart=always \
+-v $(pwd)/elastalert.yaml:/opt/elastalert/config.yaml \
+-v $(pwd)/rules:/opt/elastalert/rules \
+jertel/elastalert2 --verbose
+
+
+docker logs -f elastalert
+```
+
+触发指定level的日志，查看是否正常创建 Ticket
+
+![image-20231012172806105](/assets/image-20231012172806105.png)
+
+
+
+到目前，已经可以自动化创建 Ticket 了，如果需要补充更多字段，就得需要更多时间去完成日志源，做wazuh 的decoder、ruleset， 做JIRA的页面显示自动化、字段、页面配置、做Elastalert的配置字段优化等等
