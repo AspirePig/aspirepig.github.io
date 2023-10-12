@@ -598,7 +598,7 @@ xpack.security.encryptionKey: iGhu317CGomTQ3UH1nQwYF7yZ8asWPKHHYMwjBUJ
 xpack.reporting.encryptionKey: iGhu317CGomTQ3UH1nQwYF7yZ8asWPKHHYMwjBUJ
 </code></pre>
 
-<p>操作 elasticsearch</p>
+<p>操作 kibana</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#设置开机自启</span>
 systemctl <span class="token builtin class-name">enable</span> kibana.service
 
@@ -615,7 +615,6 @@ systemctl status kibana.service</code></pre>
 <img src="/assets/image-20231011204040638.png" alt="image-20231011204040638" style="zoom:80%;">
 
 <p>至此，已经完成ES和Kibana的安装,我们的数据存储和浏览的核心组件。</p>
-<p>后续将会讲解如何引入其他组件，如数据采集、数据处理、规则判断、告警生命周期。</p>
 <h1 id="0x04-wazuh-server安装"><a href="#0x04-wazuh-server安装" class="headerlink" title="0x04 wazuh-server安装"></a>0x04 wazuh-server安装</h1><p>Wazuh 架构图：</p>
 <p>本文主要使用 wazuh 做日志收集、规则判断</p>
 <p><img src="/assets/image-20231011182108967.png" alt="image-20231011182108967"></p>
@@ -707,12 +706,12 @@ seccomp:
 <span class="token function">curl</span> -s https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.2.tar.gz <span class="token operator">|</span> <span class="token function">tar</span> -xvz -C /usr/share/filebeat/module
 
 
-<span class="token comment">#启动filebeat</span>
+<span class="token comment">#启动 filebeat</span>
 systemctl daemon-reload
 systemctl <span class="token builtin class-name">enable</span> filebeat
 systemctl start filebeat</code></pre>
 
-<p>查看Kibana，可以看到 alerts的日志了</p>
+<p>查看Kibana，可以看到 alerts 和的日志了</p>
 <p><img src="/assets/image-20231011205448375.png" alt="image-20231011205448375"></p>
 <h1 id="0x05-Kibana-Wazuh-Plugin安装"><a href="#0x05-Kibana-Wazuh-Plugin安装" class="headerlink" title="0x05 Kibana-Wazuh-Plugin安装"></a>0x05 Kibana-Wazuh-Plugin安装</h1><p>访问 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk">https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk</a> 查找对应版本的离线安装包</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /tmp
@@ -916,6 +915,9 @@ systemctl restart wazuh-manager</code></pre>
 <p><img src="/assets/image-20231012133348832.png" alt="image-20231012133348832"></p>
 <h4 id="3-elastalert2安装与配置"><a href="#3-elastalert2安装与配置" class="headerlink" title="3.elastalert2安装与配置"></a>3.elastalert2安装与配置</h4><p>查看文档进行安装：<a target="_blank" rel="noopener" href="https://elastalert2.readthedocs.io/en/latest/running_elastalert.html#as-a-docker-container">https://elastalert2.readthedocs.io/en/latest/running_elastalert.html#as-a-docker-container</a></p>
 <p>由于需要使用 Python 3.11 ，此处使用 docker 安装方法.配置如下</p>
+<pre class="language-none"><code class="language-none">#安装docker
+apt install docker.io</code></pre>
+
 <p>创建目录: <code>/opt/elastalert/</code></p>
 <p>elastalert.yaml：</p>
 <pre class="language-none"><code class="language-none">rules_folder: /opt/elastalert/rules
@@ -987,13 +989,15 @@ response = requests.request("POST", url, headers=headers, data=payload)
 print(response.text)</code></pre>
 
 <p>创建完成后，启动容器</p>
-<pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment">#启动</span>
+<pre class="language-yaml" data-language="yaml"><code class="language-yaml">cd /opt/elastalert
+
+<span class="token comment">#启动</span>
 docker run <span class="token punctuation">-</span>d <span class="token punctuation">-</span><span class="token punctuation">-</span>name elastalert <span class="token punctuation">-</span><span class="token punctuation">-</span>restart=always \
 <span class="token punctuation">-</span>v $(pwd)/elastalert.yaml<span class="token punctuation">:</span>/opt/elastalert/config.yaml \
 <span class="token punctuation">-</span>v $(pwd)/rules<span class="token punctuation">:</span>/opt/elastalert/rules \
 jertel/elastalert2 <span class="token punctuation">-</span><span class="token punctuation">-</span>verbose
 
-
+<span class="token comment">#查看日志，或者在kibana查看(成功的前提下)</span>
 docker logs <span class="token punctuation">-</span>f elastalert</code></pre>
 
 <p>触发指定level的日志，查看是否正常创建 Ticket</p>
