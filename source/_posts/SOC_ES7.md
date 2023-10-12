@@ -550,7 +550,15 @@ systemctl restart wazuh-manager
 
 
 
-# 0x07 Wazuh
+#### 5.其他安全产品日志
+
+
+
+# 0x07 Wazuh-日志收集总结
+
+
+
+
 
 
 
