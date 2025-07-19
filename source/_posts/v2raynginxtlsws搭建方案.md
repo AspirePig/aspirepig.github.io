@@ -68,7 +68,7 @@ systemctl enable v2ray
 server
     {
     listen 443 ssl http2;
-    server_name     myblog.aspirepig.cn;
+    server_name     myblog.xxx;
     index index.html index.htm ;
     root  /home/wwwroot/v2ray;
     ssl_certificate /usr/local/nginx/conf/ssl/v2ray.crt;

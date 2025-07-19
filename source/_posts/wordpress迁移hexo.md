@@ -106,7 +106,7 @@ deploy:
 
 打开博客所在 GitHub 仓库，Settings -> 下拉找到 GitHub Pages ->custom domain ，填入自己的域名，配置如下图。
 
-进入本地博客 source 目录，创建 文件  CNAME ，内容为 自己的域名，如 aspirepig.cn
+进入本地博客 source 目录，创建 文件  CNAME ，内容为 自己的域名，如 xxx.cn
 
 ```bash
 hexo clean   # 清除缓存文件等

@@ -106,7 +106,7 @@ server {
 
 ## 4.cloudflare CDN
 
-使用CDN可以隐藏真实IP，cloudflare 注册及启用cdn不再此介绍，可参考另一篇文章 https://aspirepig.cn/2021/11/23/wordpress-qian-yi-hexo/ 中第六部分 **6.使用 cloudflare 免费CDN加速访问（可选）**
+使用CDN可以隐藏真实IP，cloudflare 注册及启用cdn不再此介绍，可参考另一篇文章 https://aspirepig.github.io/2021/11/23/wordpress-qian-yi-hexo/ 中第六部分 **6.使用 cloudflare 免费CDN加速访问（可选）**
 
 配置完成后，此处我们配置禁用缓存，防止产生某些回连问题。
 
