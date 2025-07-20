@@ -249,7 +249,7 @@ Wazuh 启动后，需要将Wazuh的日志，发送到ES，此处使用 FileBeat 
 
 要确保Wazuh将警报记录到/var/ossec/logs/alers/alerts.json，请检查Wazuh服务器配置/var/ossec/etc/ossec.conf文件中的 jsonout_output 选项是否设置为yes。
 
-#### FileBeat 安装与配置
+### FileBeat 安装与配置
 
 ```bash
 apt-get -y install filebeat=7.17.13
@@ -356,7 +356,7 @@ systemctl restart kibana
 
 
 
-# 0x06 Wazuh-agent安装
+###  Wazuh-agent安装
 
 测试在 Kali 安装 wazuh-agent
 
@@ -382,7 +382,7 @@ sudo systemctl start wazuh-agent
 
 语法文档：https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html
 
-#### 1.自定义decoder & rule
+### 1.自定义decoder & rule
 
 参考文档 https://documentation.wazuh.com/current/user-manual/ruleset/custom.html
 
@@ -397,15 +397,18 @@ Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100'
 在 `/var/ossec/etc/decoders/local_decoder.xml` 中插入如下新的 decoder
 
 ```
-<group name="custom_rules_example,">
-  <rule id="100010" level="0">
-    <program_name>example</program_name>
-    <description>User logged</description>
-  </rule>
-</group>
+<decoder name="example">
+  <program_name>^example</program_name>
+</decoder>
+
+<decoder name="example">
+  <parent>example</parent>
+  <regex>User '(\w+)' logged from '(\d+.\d+.\d+.\d+)'</regex>
+  <order>user, srcip</order>
+</decoder>
 ```
 
-在 `/var/ossec/etc/decoders/local_rule.xml` 中插入如下新的 rule
+在 `/var/ossec/etc/rules/local_rules.xml` 中插入如下新的 rule
 
 ```
 <group name="custom_rules_example,">
@@ -448,7 +451,7 @@ systemctl restart wazuh-manager
 
 
 
-#### 2.修改已有rule
+### 2.修改已有rule
 
 修改时，建议将原有的规则直接拷贝出来到 自定义规则下`/var/ossec/etc/rules/` ，使用 `overwrite="yes"` tag将原因规则覆盖，防止升级导致规则丢失。
 
@@ -490,7 +493,7 @@ systemctl restart wazuh-manager
 
 3. 重启wazuh `systemctl restart wazuh-manager`
 
-#### 3.修改已有decoder
+### 3.修改已有decoder
 
 覆盖 decoder 需要整个文件进行覆盖，并修改 loading list
 
@@ -528,7 +531,7 @@ systemctl restart wazuh-manager
 
 
 
-#### 1. Agent安装
+### 1. Agent安装
 
 比较简单，以Windows安装为例。 使用 Deploy new agent页面，生成对应的命令行。
 
@@ -542,7 +545,7 @@ Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.5.3-
 net start wazuh
 ```
 
-#### 2.Windows事件日志
+### 2.Windows事件日志
 
 ##### 1.**使用 Wazuh 直接监控进程创建（无需 Sysmon）**
 
@@ -678,7 +681,7 @@ systemctl restart wazuh-manager
 
 ![image-20250720172622807](/assets/image-20250720172622807.png)
 
-#### 3.Syslog/本地文件
+### 3.Syslog/本地文件
 
 使用远程 agent.conf 管理,需要注意本地需要 有权限，才能够正常读取
 
@@ -698,11 +701,11 @@ systemctl restart wazuh-manager
 
 ![image-20250720182401352](/assets/image-20250720182401352.png)
 
-#### 4.其他安全产品日志
+### 4.其他安全产品日志
 
 可拉取json格式日志或者 syslog转发的方式收集，需要编写对应的decoder和rule
 
-# 0x07 Wazuh-日志收集总结
+### 5.Wazuh-日志收集总结
 
 agent会将配置在agent.conf 中要收集的日志全部上报给wazuh， wazuh接收到后会使用 decoder解码
 
@@ -710,13 +713,13 @@ agent会将配置在agent.conf 中要收集的日志全部上报给wazuh， wazu
 
 
 
-# 0x08 Jira安装
+# 0x08 Jira联动
 
-此处暂时省略，使用 JIRA cloud 在线环境
+安装过程此处暂时省略，使用 JIRA cloud 在线环境
 
 
 
-#### 1.创建JRIA项目
+### 1.创建JRIA项目
 
 JIRA 大致步骤：
 
@@ -753,7 +756,7 @@ https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/#authenticatio
 
 
 
-#### 2.使用jIRA创建一个 Token
+### 2.使用jIRA创建一个 Token
 
 ![image-20231012124606703](/assets/image-20231012124606703.png)
 
@@ -803,7 +806,7 @@ curl --location --request POST 'https://aspirepigsoc.atlassian.net/rest/api/2/is
 
 
 
-#### 3.elastalert2安装与配置
+### 3.elastalert2安装与配置
 
 查看文档进行安装：https://elastalert2.readthedocs.io/en/latest/running_elastalert.html#as-a-docker-container
 
