@@ -405,7 +405,7 @@ Dec 25 20:45:02 MyHost example[12345]: User 'admin' logged from '192.168.1.100'
 </group>
 ```
 
-在 `/var/ossec/etc/decoders/local_decoder.xml` 中插入如下新的 rule
+在 `/var/ossec/etc/decoders/local_rule.xml` 中插入如下新的 rule
 
 ```
 <group name="custom_rules_example,">
@@ -528,29 +528,183 @@ systemctl restart wazuh-manager
 
 
 
-#### 1. Agent上报
+#### 1. Agent安装
+
+比较简单，以Windows安装为例。 使用 Deploy new agent页面，生成对应的命令行。
+
+```powershell
+Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.5.3-1.msi -OutFile ${env:tmp}\wazuh-agent.msi; msiexec.exe /i ${env:tmp}\wazuh-agent.msi /q WAZUH_MANAGER='192.168.137.134' WAZUH_REGISTRATION_SERVER='192.168.137.134' WAZUH_AGENT_GROUP='default' WAZUH_AGENT_NAME='Win' 
+```
+
+执行完成后，再执行 以下命令启动 wazuh agent即可
+
+```
+net start wazuh
+```
+
+#### 2.Windows事件日志
+
+##### 1.**使用 Wazuh 直接监控进程创建（无需 Sysmon）**
+
+powershell执行
+
+```powershell
+auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
+```
+
+查询是否设置成功
+
+```powershell
+auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}"
+```
+
+![image-20250720131243299](/assets/image-20250720131243299.png)
+
+在wazuh manager配置rule采集 ID 4688事件日志，
+
+`vim /var/ossec/etc/rules/local_rules.xml`
+
+```xml
+
+<group name="windows,audit,">
+  <rule id="100100" level="3">
+    <if_sid>60103</if_sid>
+    <field name="win.system.eventID">^4688$</field>
+    <description>Windows: A new process has been created</description>
+  </rule>
+</group>
+
+```
+
+重启wazuh manager
+
+```bash
+sudo systemctl restart wazuh-manager
+```
+
+默认情况下agent 是采集了日志，需要manager有decoder 解析，由rule 进行规则判断
+
+![image-20250720144825809](/assets/image-20250720144825809.png)
 
 
 
-#### 2.Syslog上报
+#### 2.**使用Sysmon+ Wazuh 监控进程/网络创建**
+
+##### 1.下载和安装 Sysmon
+
+```
+# 下载 Sysmon
+Invoke-WebRequest -Uri "https://download.sysinternals.com/files/Sysmon.zip" -OutFile "$env:TEMP\Sysmon.zip"
+Expand-Archive -Path "$env:TEMP\Sysmon.zip" -DestinationPath "$env:TEMP\Sysmon"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml" -OutFile "$env:TEMP\sysmonconfig.xml"
+# 安装 Sysmon（需要管理员权限）
+cd "$env:TEMP\Sysmon"
+.\Sysmon.exe -accepteula -i "$env:TEMP\sysmonconfig.xml"
+.\Sysmon.exe -c "$env:TEMP\sysmonconfig.xml"
+```
+
+##### 2. 配置 Wazuh Agent 收集 Sysmon 日志
+
+编辑 Wazuh Agent 配置文件 (`C:\Program Files (x86)\ossec-agent\ossec.conf`)：
+
+```xml
+<ossec_config>
+  <localfile>
+    <location>Microsoft-Windows-Sysmon/Operational</location>
+    <log_format>eventchannel</log_format>
+  </localfile>
+</ossec_config>
+```
+
+##### 3.添加 Wazuh 规则解码 Sysmon 事件
+
+解码器 local_decoder.xml
+
+```xml
+<decoder name="sysmon-full">
+  <parent>windows</parent>
+  <prematch>^Microsoft-Windows-Sysmon</prematch>
+</decoder>
+```
+
+rule： local_rules.xml
+
+```xml
+<group name="sysmon,">
+  <!-- 通用规则：记录所有 Sysmon 事件 -->
+  <rule id="100100" level="3">
+    <if_group>sysmon</if_group>
+    <description>Sysmon: Generic Event - $(win.system.eventID)</description>
+  </rule>
+
+  <!-- 为关键事件设置更高等级 -->
+  <rule id="100101" level="5">
+    <if_sid>100100</if_sid>
+    <field name="win.system.eventID">^1$</field>
+    <description>Sysmon: Process Creation - $(win.eventdata.Image)</description>
+  </rule>
+
+  <rule id="100102" level="5">
+    <if_sid>100100</if_sid>
+    <field name="win.system.eventID">^3$</field>
+    <description>Sysmon: Network Connection - $(win.eventdata.DestinationIp)</description>
+  </rule>
+</group>
+```
+
+##### 4.重启wazuh manager/agent
+
+```bash
+Restart-Service -Name wazuh
+systemctl restart wazuh-manager
+```
+
+即可在kibana上看到相应日志
+
+![image-20250720164646594](/assets/image-20250720164646594.png)
+
+匹配ipconfig.exe 告警示例
+
+```xml
+<group name="sysmon,sysmon_eid1_detections,windows,">
+  <rule id="100300" level="6">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)ipconfig\.exe</field>
+    <options>no_full_log</options>
+    <description>cmd run on host</description>
+  </rule>
+</group>
+```
+
+![image-20250720172622807](/assets/image-20250720172622807.png)
+
+#### 3.Syslog/本地文件
+
+使用远程 agent.conf 管理,需要注意本地需要 有权限，才能够正常读取
+
+```xml
+<agent_config>
+	<localfile>
+		<location>C:\Users\admin\AppData\Local\Temp\a.txt</location>
+		<log_format>syslog</log_format>
+		<only-future-events>yes</only-future-events>
+	</localfile>
+</agent_config>
+```
 
 
 
-#### 3. Windows事件日志
+<img src="/assets/image-20250720182220366.png" alt="image-20250720182220366" style="zoom:80%;" />
 
+![image-20250720182401352](/assets/image-20250720182401352.png)
 
+#### 4.其他安全产品日志
 
-#### 4.Docker日志
-
-
-
-#### 5.其他安全产品日志
-
-
+可拉取json格式日志或者 syslog转发的方式收集，需要编写对应的decoder和rule
 
 # 0x07 Wazuh-日志收集总结
 
-
+agent会将配置在agent.conf 中要收集的日志全部上报给wazuh， wazuh接收到后会使用 decoder解码
 
 
 
