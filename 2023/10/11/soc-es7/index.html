@@ -456,7 +456,7 @@ https://documentation.wazuh.com/current/deployment-o">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    2.9k
+                    3.7k
                 </div>
                 
 
@@ -757,7 +757,7 @@ sudo systemctl start wazuh-agent</code></pre>
   &lt;/rule&gt;
 &lt;/group&gt;</code></pre>
 
-<p>在 <code>/var/ossec/etc/decoders/local_decoder.xml</code> 中插入如下新的 rule</p>
+<p>在 <code>/var/ossec/etc/decoders/local_rule.xml</code> 中插入如下新的 rule</p>
 <pre class="language-none"><code class="language-none">&lt;group name="custom_rules_example,"&gt;
   &lt;rule id="100010" level="0"&gt;
     &lt;program_name&gt;example&lt;/program_name&gt;
@@ -854,7 +854,114 @@ systemctl restart wazuh-manager</code></pre>
 </ol>
 <p>测试 </p>
 <p><img src="/assets/image-20231012110801694.png" alt="image-20231012110801694"></p>
-<h1 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h1><h4 id="1-Agent上报"><a href="#1-Agent上报" class="headerlink" title="1. Agent上报"></a>1. Agent上报</h4><h4 id="2-Syslog上报"><a href="#2-Syslog上报" class="headerlink" title="2.Syslog上报"></a>2.Syslog上报</h4><h4 id="3-Windows事件日志"><a href="#3-Windows事件日志" class="headerlink" title="3. Windows事件日志"></a>3. Windows事件日志</h4><h4 id="4-Docker日志"><a href="#4-Docker日志" class="headerlink" title="4.Docker日志"></a>4.Docker日志</h4><h4 id="5-其他安全产品日志"><a href="#5-其他安全产品日志" class="headerlink" title="5.其他安全产品日志"></a>5.其他安全产品日志</h4><h1 id="0x07-Wazuh-日志收集总结"><a href="#0x07-Wazuh-日志收集总结" class="headerlink" title="0x07 Wazuh-日志收集总结"></a>0x07 Wazuh-日志收集总结</h1><h1 id="0x08-Jira安装"><a href="#0x08-Jira安装" class="headerlink" title="0x08 Jira安装"></a>0x08 Jira安装</h1><p>此处暂时省略，使用 JIRA cloud 在线环境</p>
+<h1 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h1><h4 id="1-Agent安装"><a href="#1-Agent安装" class="headerlink" title="1. Agent安装"></a>1. Agent安装</h4><p>比较简单，以Windows安装为例。 使用 Deploy new agent页面，生成对应的命令行。</p>
+<pre class="language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Invoke-WebRequest</span> <span class="token operator">-</span>Uri https:<span class="token operator">/</span><span class="token operator">/</span>packages<span class="token punctuation">.</span>wazuh<span class="token punctuation">.</span>com<span class="token operator">/</span>4<span class="token punctuation">.</span>x<span class="token operator">/</span>windows<span class="token operator">/</span>wazuh<span class="token operator">-</span>agent<span class="token operator">-</span>4<span class="token punctuation">.</span>5<span class="token punctuation">.</span>3<span class="token operator">-</span>1<span class="token punctuation">.</span>msi <span class="token operator">-</span>OutFile $<span class="token punctuation">{</span>env:tmp<span class="token punctuation">}</span>\wazuh<span class="token operator">-</span>agent<span class="token punctuation">.</span>msi<span class="token punctuation">;</span> msiexec<span class="token punctuation">.</span>exe <span class="token operator">/</span>i $<span class="token punctuation">{</span>env:tmp<span class="token punctuation">}</span>\wazuh<span class="token operator">-</span>agent<span class="token punctuation">.</span>msi <span class="token operator">/</span>q WAZUH_MANAGER=<span class="token string">'192.168.137.134'</span> WAZUH_REGISTRATION_SERVER=<span class="token string">'192.168.137.134'</span> WAZUH_AGENT_GROUP=<span class="token string">'default'</span> WAZUH_AGENT_NAME=<span class="token string">'Win'</span> </code></pre>
+
+<p>执行完成后，再执行 以下命令启动 wazuh agent即可</p>
+<pre class="language-none"><code class="language-none">net start wazuh</code></pre>
+
+<h4 id="2-Windows事件日志"><a href="#2-Windows事件日志" class="headerlink" title="2.Windows事件日志"></a>2.Windows事件日志</h4><h5 id="1-使用-Wazuh-直接监控进程创建（无需-Sysmon）"><a href="#1-使用-Wazuh-直接监控进程创建（无需-Sysmon）" class="headerlink" title="1.使用 Wazuh 直接监控进程创建（无需 Sysmon）"></a>1.<strong>使用 Wazuh 直接监控进程创建（无需 Sysmon）</strong></h5><p>powershell执行</p>
+<pre class="language-powershell" data-language="powershell"><code class="language-powershell">auditpol <span class="token operator">/</span><span class="token function">set</span> <span class="token operator">/</span>subcategory:<span class="token string">"{0CCE922B-69AE-11D9-BED3-505054503030}"</span> <span class="token operator">/</span>success:enable <span class="token operator">/</span>failure:enable</code></pre>
+
+<p>查询是否设置成功</p>
+<pre class="language-powershell" data-language="powershell"><code class="language-powershell">auditpol <span class="token operator">/</span>get <span class="token operator">/</span>subcategory:<span class="token string">"{0CCE922B-69AE-11D9-BED3-505054503030}"</span></code></pre>
+
+<p><img src="/assets/image-20250720131243299.png" alt="image-20250720131243299"></p>
+<p>在wazuh manager配置rule采集 ID 4688事件日志，</p>
+<p><code>vim /var/ossec/etc/rules/local_rules.xml</code></p>
+<pre class="language-xml" data-language="xml"><code class="language-xml">
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>windows,audit,<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rule</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100100<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if_sid</span><span class="token punctuation">&gt;</span></span>60103<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if_sid</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>field</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>win.system.eventID<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>^4688$<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>field</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span>Windows: A new process has been created<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+
+<p>重启wazuh manager</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> systemctl restart wazuh-manager</code></pre>
+
+<p>默认情况下agent 是采集了日志，需要manager有decoder 解析，由rule 进行规则判断</p>
+<p><img src="/assets/image-20250720144825809.png" alt="image-20250720144825809"></p>
+<h4 id="2-使用Sysmon-Wazuh-监控进程-网络创建"><a href="#2-使用Sysmon-Wazuh-监控进程-网络创建" class="headerlink" title="2.使用Sysmon+ Wazuh 监控进程/网络创建"></a>2.<strong>使用Sysmon+ Wazuh 监控进程/网络创建</strong></h4><h5 id="1-下载和安装-Sysmon"><a href="#1-下载和安装-Sysmon" class="headerlink" title="1.下载和安装 Sysmon"></a>1.下载和安装 Sysmon</h5><pre class="language-none"><code class="language-none"># 下载 Sysmon
+Invoke-WebRequest -Uri "https://download.sysinternals.com/files/Sysmon.zip" -OutFile "$env:TEMP\Sysmon.zip"
+Expand-Archive -Path "$env:TEMP\Sysmon.zip" -DestinationPath "$env:TEMP\Sysmon"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml" -OutFile "$env:TEMP\sysmonconfig.xml"
+# 安装 Sysmon（需要管理员权限）
+cd "$env:TEMP\Sysmon"
+.\Sysmon.exe -accepteula -i "$env:TEMP\sysmonconfig.xml"
+.\Sysmon.exe -c "$env:TEMP\sysmonconfig.xml"</code></pre>
+
+<h5 id="2-配置-Wazuh-Agent-收集-Sysmon-日志"><a href="#2-配置-Wazuh-Agent-收集-Sysmon-日志" class="headerlink" title="2. 配置 Wazuh Agent 收集 Sysmon 日志"></a>2. 配置 Wazuh Agent 收集 Sysmon 日志</h5><p>编辑 Wazuh Agent 配置文件 (<code>C:\Program Files (x86)\ossec-agent\ossec.conf</code>)：</p>
+<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ossec_config</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>localfile</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>location</span><span class="token punctuation">&gt;</span></span>Microsoft-Windows-Sysmon/Operational<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>location</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>log_format</span><span class="token punctuation">&gt;</span></span>eventchannel<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>log_format</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>localfile</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ossec_config</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+<h5 id="3-添加-Wazuh-规则解码-Sysmon-事件"><a href="#3-添加-Wazuh-规则解码-Sysmon-事件" class="headerlink" title="3.添加 Wazuh 规则解码 Sysmon 事件"></a>3.添加 Wazuh 规则解码 Sysmon 事件</h5><p>解码器 local_decoder.xml</p>
+<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>decoder</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sysmon-full<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">&gt;</span></span>windows<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prematch</span><span class="token punctuation">&gt;</span></span>^Microsoft-Windows-Sysmon<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prematch</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>decoder</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+<p>rule： local_rules.xml</p>
+<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sysmon,<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token comment">&lt;!-- 通用规则：记录所有 Sysmon 事件 --&gt;</span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rule</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100100<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if_group</span><span class="token punctuation">&gt;</span></span>sysmon<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if_group</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span>Sysmon: Generic Event - $(win.system.eventID)<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
+
+  <span class="token comment">&lt;!-- 为关键事件设置更高等级 --&gt;</span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rule</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100101<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>5<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if_sid</span><span class="token punctuation">&gt;</span></span>100100<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if_sid</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>field</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>win.system.eventID<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>^1$<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>field</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span>Sysmon: Process Creation - $(win.eventdata.Image)<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rule</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100102<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>5<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if_sid</span><span class="token punctuation">&gt;</span></span>100100<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if_sid</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>field</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>win.system.eventID<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>^3$<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>field</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span>Sysmon: Network Connection - $(win.eventdata.DestinationIp)<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+<h5 id="4-重启wazuh-manager-agent"><a href="#4-重启wazuh-manager-agent" class="headerlink" title="4.重启wazuh manager/agent"></a>4.重启wazuh manager/agent</h5><pre class="language-bash" data-language="bash"><code class="language-bash">Restart-Service -Name wazuh
+systemctl restart wazuh-manager</code></pre>
+
+<p>即可在kibana上看到相应日志</p>
+<p><img src="/assets/image-20250720164646594.png" alt="image-20250720164646594"></p>
+<p>匹配ipconfig.exe 告警示例</p>
+<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sysmon,sysmon_eid1_detections,windows,<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rule</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100300<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>6<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if_sid</span><span class="token punctuation">&gt;</span></span>61603<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if_sid</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>field</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>win.eventdata.image<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pcre2<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>(?i)ipconfig\.exe<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>field</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>options</span><span class="token punctuation">&gt;</span></span>no_full_log<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>options</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span>cmd run on host<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+<p><img src="/assets/image-20250720172622807.png" alt="image-20250720172622807"></p>
+<h4 id="3-Syslog-本地文件"><a href="#3-Syslog-本地文件" class="headerlink" title="3.Syslog/本地文件"></a>3.Syslog/本地文件</h4><p>使用远程 agent.conf 管理,需要注意本地需要 有权限，才能够正常读取</p>
+<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>agent_config</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>localfile</span><span class="token punctuation">&gt;</span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>location</span><span class="token punctuation">&gt;</span></span>C:\Users\admin\AppData\Local\Temp\a.txt<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>location</span><span class="token punctuation">&gt;</span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>log_format</span><span class="token punctuation">&gt;</span></span>syslog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>log_format</span><span class="token punctuation">&gt;</span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>only-future-events</span><span class="token punctuation">&gt;</span></span>yes<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>only-future-events</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>localfile</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>agent_config</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+
+
+<img src="/assets/image-20250720182220366.png" alt="image-20250720182220366" style="zoom:80%;">
+
+<p><img src="/assets/image-20250720182401352.png" alt="image-20250720182401352"></p>
+<h4 id="4-其他安全产品日志"><a href="#4-其他安全产品日志" class="headerlink" title="4.其他安全产品日志"></a>4.其他安全产品日志</h4><p>可拉取json格式日志或者 syslog转发的方式收集，需要编写对应的decoder和rule</p>
+<h1 id="0x07-Wazuh-日志收集总结"><a href="#0x07-Wazuh-日志收集总结" class="headerlink" title="0x07 Wazuh-日志收集总结"></a>0x07 Wazuh-日志收集总结</h1><p>agent会将配置在agent.conf 中要收集的日志全部上报给wazuh， wazuh接收到后会使用 decoder解码</p>
+<h1 id="0x08-Jira安装"><a href="#0x08-Jira安装" class="headerlink" title="0x08 Jira安装"></a>0x08 Jira安装</h1><p>此处暂时省略，使用 JIRA cloud 在线环境</p>
 <h4 id="1-创建JRIA项目"><a href="#1-创建JRIA项目" class="headerlink" title="1.创建JRIA项目"></a>1.创建JRIA项目</h4><p>JIRA 大致步骤：</p>
 <ol>
 <li>创建项目</li>
@@ -1509,7 +1616,7 @@ docker logs <span class="token punctuation">-</span>f elastalert</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">43.3k</span>
+                        class="white-color">44.1k</span>
             
             
             
