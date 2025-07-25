@@ -2,7 +2,7 @@
 title: SOC_ES7.17.13
 typora-root-url: ..
 date: 2023-10-11 19:35:28
-tags: [elk, soc]
+tags: [elk, soc, wazuh, JIRA]
 ---
 
 
