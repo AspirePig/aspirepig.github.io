@@ -17,7 +17,7 @@ tags: [filebeat, wazuh, logstatsh, elk]
 
 使用 filebeat 采集，转发到 logstatsh 进行解析拆字段，以下是配置文件
 
-#### 1.1 **Filebeat**:
+## 1Filebeat:
 
 ```yaml
 filebeat.inputs:
@@ -32,7 +32,7 @@ output.logstash:
   hosts: ["127.0.0.1:5044"]
 ```
 
-#### **1.2 Logstatsh:**
+## 2 Logstatsh:
 
 ```json
 input {
@@ -82,7 +82,7 @@ output {
 }
 ```
 
-#### 1.3 ES创建对应的index template:
+## 3 ES创建对应的index template:
 
 ```json
 PUT _index_template/oss_access_logs_template
@@ -164,7 +164,7 @@ ES创建对应的Index patterns，可以在discover 中看到正确解析，并�
 
 使用 wazuh agent 读取文件发送到wazuh-manager，使用wazuh来进行decoder和rule编写
 
-#### 2.1 配置**agent.conf of windows group**
+## 1. 配置agent.conf of windows group
 
 首先配置采集agent log， 需要文件具有可读权限
 
@@ -179,7 +179,7 @@ ES创建对应的Index patterns，可以在discover 中看到正确解析，并�
 
 
 
-#### 2.2 编写对应的decoder
+## 2. 编写对应的decoder
 
 wazuh支持两种正则语法，OSRegex(更快但不支持回溯等操作) 和 PCRE2.
 
@@ -235,7 +235,7 @@ https://regex101.com/ 可在该网站调试 PCRE2 正则语法，bin/wazuh-regex
 
 
 
-#### 2.3 增加字段mapping并重建索引
+## 3. 增加字段mapping并重建索引
 
 可在ES中验证格式是否正确
 
