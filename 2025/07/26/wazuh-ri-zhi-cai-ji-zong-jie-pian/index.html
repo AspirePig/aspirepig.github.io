@@ -4,10 +4,21 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="logstatsh/wazuh采集日志, 网络安全">
-    <meta name="description" content="本文以 阿里云 https://www.alibabacloud.com/help/zh/oss/user-guide/logging oss-accesslog 为例，
-记录两种方法解析该日志
-192.168.0.1 - - [03/Ja">
+    <meta name="keywords" content="Wazuh 日志采集 总结篇, 网络安全">
+    <meta name="description" content="1.概览目前看到的wazuh日志采集方式如下，后文将对每一种方式做一个大概讲解及测试
+
+
+
+收集方式
+配置示例
+适用场景
+支持格式
+备注
+
+
+
+本地日志文件监控
+&amp;lt;localfile&amp;gt;&amp;lt;location&amp;gt;/var/l">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +30,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>logstatsh/wazuh采集日志 | Aspirepig</title>
+    <title>Wazuh 日志采集 总结篇 | Aspirepig</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -304,12 +315,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">logstatsh/wazuh采集日志</h1>
+                    <h1 class="description center-align post-title">Wazuh 日志采集 总结篇</h1>
                 </div>
             </div>
         </div>
@@ -433,14 +444,6 @@
                                 <span class="chip bg-color">wazuh</span>
                             </a>
                         
-                            <a href="/tags/filebeat/">
-                                <span class="chip bg-color">filebeat</span>
-                            </a>
-                        
-                            <a href="/tags/logstatsh/">
-                                <span class="chip bg-color">logstatsh</span>
-                            </a>
-                        
                     </div>
                     
                 </div>
@@ -453,7 +456,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-07-23
+                    2025-07-26
                 </div>
                 
 
@@ -462,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.1k
+                    584
                 </div>
                 
 
@@ -482,197 +485,83 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文以 阿里云 <a target="_blank" rel="noopener" href="https://www.alibabacloud.com/help/zh/oss/user-guide/logging">https://www.alibabacloud.com/help/zh/oss/user-guide/logging</a> oss-accesslog 为例，</p>
-<p>记录两种方法解析该日志</p>
-<pre class="language-none"><code class="language-none">192.168.0.1 - - [03/Jan/2021:14:59:49 +0800] "GET /example.jpg HTTP/1.0" 200 999131 127 "http://www.aliyun.com/product/oss" "curl/7.15.5" "examplebucket.oss-cn-hangzhou.aliyuncs.com" "5FF16B65F05BC932307A3C3C" "true" "16571836914537****" "GetObject" "examplebucket" "example.jpg" 999131 88 "-" 302 "16571836914537****" - "cdn" "standard" "-" "-" "LTAI****************"</code></pre>
-
-<h1 id="1-Filebeat-logstatsh"><a href="#1-Filebeat-logstatsh" class="headerlink" title="1.Filebeat + logstatsh"></a>1.Filebeat + logstatsh</h1><p>使用 filebeat 采集，转发到 logstatsh 进行解析拆字段，以下是配置文件</p>
-<h2 id="1Filebeat"><a href="#1Filebeat" class="headerlink" title="1Filebeat:"></a>1Filebeat:</h2><pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">filebeat.inputs</span><span class="token punctuation">:</span>
-<span class="token punctuation">-</span> <span class="token key atrule">type</span><span class="token punctuation">:</span> log
-  <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-  <span class="token key atrule">paths</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"G:\\oss-logs2\\*.log"</span><span class="token punctuation">]</span>
-  <span class="token key atrule">fields_under_root</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-  <span class="token key atrule">fields</span><span class="token punctuation">:</span>
-    <span class="token key atrule">log_type</span><span class="token punctuation">:</span> ossaccesslog
-
-<span class="token key atrule">output.logstash</span><span class="token punctuation">:</span>
-  <span class="token key atrule">hosts</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"127.0.0.1:5044"</span><span class="token punctuation">]</span></code></pre>
-
-<h2 id="2-Logstatsh"><a href="#2-Logstatsh" class="headerlink" title="2 Logstatsh:"></a>2 Logstatsh:</h2><pre class="language-json" data-language="json"><code class="language-json">input <span class="token punctuation">{</span>
-  beats <span class="token punctuation">{</span>
-    port =&gt; <span class="token number">5044</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-filter <span class="token punctuation">{</span>
-  # 如果你的日志是JSON格式，可以这样解析
-  if <span class="token punctuation">[</span>message<span class="token punctuation">]</span> =~ /^<span class="token punctuation">{</span>.*<span class="token punctuation">}</span>$/ <span class="token punctuation">{</span>
-    json <span class="token punctuation">{</span>
-      source =&gt; <span class="token string">"message"</span>
-      target =&gt; <span class="token string">"json_content"</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-
-  # 对于普通文本日志，可以使用grok模式解析
-  grok <span class="token punctuation">{</span>
-    match =&gt; <span class="token punctuation">{</span> <span class="token string">"message"</span> =&gt; '%<span class="token punctuation">{</span>IPORHOST<span class="token operator">:</span>client_ip<span class="token punctuation">}</span> %<span class="token punctuation">{</span>USER<span class="token operator">:</span>ident<span class="token punctuation">}</span> %<span class="token punctuation">{</span>USER<span class="token operator">:</span>auth<span class="token punctuation">}</span> \<span class="token punctuation">[</span>%<span class="token punctuation">{</span>HTTPDATE<span class="token operator">:</span>timestamp<span class="token punctuation">}</span>\<span class="token punctuation">]</span> <span class="token string">"%{WORD:method} %{URIPATHPARAM:request} HTTP/%{NUMBER:http_version}"</span> %<span class="token punctuation">{</span>NUMBER<span class="token operator">:</span>status_code<span class="token punctuation">}</span> %<span class="token punctuation">{</span>NUMBER<span class="token operator">:</span>bytes_sent<span class="token punctuation">}</span> %<span class="token punctuation">{</span>NUMBER<span class="token operator">:</span>response_time<span class="token punctuation">}</span> <span class="token string">"%{DATA:referrer}"</span> <span class="token string">"%{DATA:user_agent}"</span> <span class="token string">"%{DATA:host}"</span> <span class="token string">"%{DATA:request_id}"</span> <span class="token string">"%{DATA:cache_hit}"</span> <span class="token string">"%{DATA:ssl_protocol}"</span> <span class="token string">"%{DATA:operation}"</span> <span class="token string">"%{DATA:bucket}"</span> <span class="token string">"%{DATA:key}"</span> %<span class="token punctuation">{</span>NUMBER<span class="token operator">:</span>object_size<span class="token punctuation">}</span> %<span class="token punctuation">{</span>NUMBER<span class="token operator">:</span>server_time<span class="token punctuation">}</span> <span class="token string">"%{DATA:error_code}"</span> %<span class="token punctuation">{</span>NUMBER<span class="token operator">:</span>request_length<span class="token punctuation">}</span> <span class="token string">"%{DATA:request_id_2}"</span> %<span class="token punctuation">{</span>DATA<span class="token operator">:</span>signature<span class="token punctuation">}</span> <span class="token string">"%{DATA:storage_class}"</span> <span class="token string">"%{DATA:version_id}"</span> <span class="token string">"%{DATA:requester}"</span>' <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-  #https<span class="token operator">:</span><span class="token comment">//grokdebugger.com/</span>
-  # 日期处理
-  date <span class="token punctuation">{</span>
-    match =&gt; <span class="token punctuation">[</span><span class="token string">"timestamp"</span><span class="token punctuation">,</span> <span class="token string">"dd/MMM/yyyy:HH:mm:ss Z"</span><span class="token punctuation">]</span>
-    locale =&gt; <span class="token string">"en"</span>
-    target =&gt; <span class="token string">"@timestamp"</span>
-    timezone =&gt; <span class="token string">"Asia/Shanghai"</span>
-  <span class="token punctuation">}</span>
-
-  # 移除不需要的字段
-  mutate <span class="token punctuation">{</span>
-    remove_field =&gt; <span class="token punctuation">[</span><span class="token string">"beat"</span><span class="token punctuation">,</span> <span class="token string">"input"</span><span class="token punctuation">,</span> <span class="token string">"source"</span><span class="token punctuation">,</span> <span class="token string">"offset"</span><span class="token punctuation">,</span> <span class="token string">"prospector"</span><span class="token punctuation">]</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-
-  # 可选：同时输出到控制台用于调试
-
-output <span class="token punctuation">{</span>
-  elasticsearch <span class="token punctuation">{</span>
-    hosts =&gt; <span class="token punctuation">[</span><span class="token string">"http://192.168.137.134:9200"</span><span class="token punctuation">]</span>
-    index =&gt; <span class="token string">"ossaccesslogs-%{+YYYY.MM.dd}"</span>
-    template_name =&gt; <span class="token string">"oss_access_logs_template"</span>
-    template_overwrite =&gt; <span class="token boolean">true</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
-
-<h2 id="3-ES创建对应的index-template"><a href="#3-ES创建对应的index-template" class="headerlink" title="3 ES创建对应的index template:"></a>3 ES创建对应的index template:</h2><pre class="language-json" data-language="json"><code class="language-json">PUT _index_template/oss_access_logs_template
-<span class="token punctuation">{</span>
-  <span class="token property">"index_patterns"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"oss-access-logs-*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"template"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"settings"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-      <span class="token property">"number_of_shards"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
-      <span class="token property">"number_of_replicas"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token property">"index.lifecycle.name"</span><span class="token operator">:</span> <span class="token string">"oss_logs_policy"</span><span class="token punctuation">,</span>
-      <span class="token property">"index.codec"</span><span class="token operator">:</span> <span class="token string">"best_compression"</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token property">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-      <span class="token property">"dynamic"</span><span class="token operator">:</span> <span class="token string">"strict"</span><span class="token punctuation">,</span>
-      <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-        <span class="token property">"client_ip"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"ip"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"timestamp"</span><span class="token operator">:</span> <span class="token punctuation">{</span> 
-          <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"date"</span><span class="token punctuation">,</span>
-          <span class="token property">"format"</span><span class="token operator">:</span> <span class="token string">"strict_date_optional_time||epoch_millis"</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"method"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"request"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span> <span class="token property">"fields"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"keyword"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"http_version"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"status_code"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"integer"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"bytes_sent"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"long"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"response_time"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"long"</span><span class="token punctuation">,</span> <span class="token property">"doc_values"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"referrer"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"user_agent"</span><span class="token operator">:</span> <span class="token punctuation">{</span> 
-          <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
-          <span class="token property">"fields"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"keyword"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">,</span> <span class="token property">"ignore_above"</span><span class="token operator">:</span> <span class="token number">1024</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"host"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"request_id"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"cache_hit"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"boolean"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"ssl_protocol"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"operation"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"bucket"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"key"</span><span class="token operator">:</span> <span class="token punctuation">{</span> 
-          <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
-          <span class="token property">"fields"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"path"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"object_size"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"long"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"server_time"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"long"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token property">"geoip"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-          <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-            <span class="token property">"country_name"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token property">"location"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"geo_point"</span> <span class="token punctuation">}</span>
-          <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-      <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
-
-
-
-<p>先启动 logstatsh:</p>
-<pre class="language-none"><code class="language-none">logstash -f G:\tools\logstash-7.17.13\config\my.conf</code></pre>
-
-<p>在启动 filebeat:</p>
-<pre class="language-none"><code class="language-none">filebeat.exe -e</code></pre>
-
-
-
-<p>ES创建对应的Index patterns，可以在discover 中看到正确解析，并且使用该时间作为date排序</p>
-<p><img src="/assets/image-20250723142732059.png" alt="image-20250723142732059"></p>
-<h1 id="2-Wazuh"><a href="#2-Wazuh" class="headerlink" title="2.Wazuh"></a>2.Wazuh</h1><p>使用 wazuh agent 读取文件发送到wazuh-manager，使用wazuh来进行decoder和rule编写</p>
-<h2 id="1-配置agent-conf-of-windows-group"><a href="#1-配置agent-conf-of-windows-group" class="headerlink" title="1. 配置agent.conf of windows group"></a>1. 配置agent.conf of windows group</h2><p>首先配置采集agent log， 需要文件具有可读权限</p>
-<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>agent_config</span><span class="token punctuation">&gt;</span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>localfile</span><span class="token punctuation">&gt;</span></span>
-		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>log_format</span><span class="token punctuation">&gt;</span></span>syslog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>log_format</span><span class="token punctuation">&gt;</span></span>
-		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>location</span><span class="token punctuation">&gt;</span></span>C:\Users\admin\AppData\Local\Temp\test.log<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>location</span><span class="token punctuation">&gt;</span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>localfile</span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>agent_config</span><span class="token punctuation">&gt;</span></span></code></pre>
-
-
-
-<h2 id="2-编写对应的decoder"><a href="#2-编写对应的decoder" class="headerlink" title="2. 编写对应的decoder"></a>2. 编写对应的decoder</h2><p>wazuh支持两种正则语法，OSRegex(更快但不支持回溯等操作) 和 PCRE2.</p>
-<p><a target="_blank" rel="noopener" href="https://regex101.com/">https://regex101.com/</a> 可在该网站调试 PCRE2 正则语法，bin/wazuh-regex 测试OSRegex语法</p>
-<p>先使用wazuh-logtest 工具测试该日志，发现会当做 web-accesslog 进行decoder，并且自己在local_decoder.xml 里面编写的decoder无论是新增还是继承 web-accesslog 均无法执行。(所以最好还是syslog 日志好，带有program name 方便识别日志类型)</p>
-<p><img src="/assets/image-20250725131751002.png" alt="image-20250725131751002"></p>
-<p>考虑原因，应该是 <code>0375-web-accesslog_decoders.xml</code> 执行优先级最高，匹配到日志前段符合就使用decoder 执行了。</p>
-<p>因此在<code>/var/ossec/etc/decoders</code> 创建了文件 <code>0374-ali-oss-accesslog_decoders.xml</code>，这样优先级会比<code>0375-web-accesslog_decoders.xml</code> 更高</p>
-<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>decoder</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>alicloud_oss_access_log<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>type</span><span class="token punctuation">&gt;</span></span>web-log<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>type</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prematch</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pcre2<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>^(\S+) (\S+) (\S+) \[([^\]]+)\] "([A-Z]+) ([^ ]+) (HTTP\/[^"]+)" (\d+) (\d+) (\d+) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" (\d+) (\d+) "([^"]*)" (\d+) "([^"]*)" (\S+) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)"$<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prematch</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>regex</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pcre2<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>^(\S+) (\S+) (\S+) \[([^\]]+)\] "([A-Z]+) ([^ ]+) (HTTP\/[^"]+)" (\d+) (\d+) (\d+) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" (\d+) (\d+) "([^"]*)" (\d+) "([^"]*)" (\S+) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)"$<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>regex</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>order</span><span class="token punctuation">&gt;</span></span>srcip, keepfield1, keepfield2, datetime, httpmethod, url, httpversion, status, SentBytes, RequestTime, Referer, UserAgent, HostName, RequestID, LoggingFlag, RequesterAliyunID, action, BucketName, ObjectName, ObjectSize, ServerCostTime, ErrorCode, RequestLength, user, DeltaDataSize, SyncRequest, StorageClass, TargetStorageClass, TransmissionAccelerationAccessPoint, AccessKeyID<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>order</span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>decoder</span><span class="token punctuation">&gt;</span></span>
-</code></pre>
-
-<p>重启wazuh， 并更新文件内容。 这样获取到的日志就会被解析到各个字段上</p>
-<p><img src="/assets/image-20250725120856439.png" alt="image-20250725120856439"></p>
-<p>尝试编写rule</p>
-<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>aliosslog<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rule</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100400<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>6<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if_sid</span><span class="token punctuation">&gt;</span></span>31100<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if_sid</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>decoded_as</span><span class="token punctuation">&gt;</span></span>alicloud_oss_access_log<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>decoded_as</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>field</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UserAgent<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>\.*curl\.*<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>field</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span>$(srcip) try to use curl request: $(UserAgent).<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">&gt;</span></span></code></pre>
-
-<p>在 wazuh-alerts 中可以查到触发告警</p>
-<p><img src="/assets/image-20250725144618467.png" alt="image-20250725144618467"></p>
-<p>但是，会发现存在以下问题：</p>
-<ol>
-<li>除了wazuh的静态字段以外， 动态的字段都是 keywords类型，无法计算</li>
-<li>时间戳不对，使用的是wazuh存储日志的时间</li>
-</ol>
-<h2 id="3-增加字段mapping并重建索引"><a href="#3-增加字段mapping并重建索引" class="headerlink" title="3. 增加字段mapping并重建索引"></a>3. 增加字段mapping并重建索引</h2><p>可在ES中验证格式是否正确</p>
-<pre class="language-xml" data-language="xml"><code class="language-xml">GET _validate/query?format=yaml
-{
-  "query": {
-    "range": {
-      "timestamp": {
-        "gte": "05/Jul/2025:14:00:00 +0800",
-        "lte": "05/Jul/2025:15:00:00 +0800",
-        "format": "dd/MMM/yyyy:HH:mm:ss Z"
-      }
-    }
-  }
-}</code></pre>
-
-<p><img src="/assets/image-20250725162232921.png" alt="image-20250725162232921"></p>
-<p>在wazuh 索引的templates中添加对应字段(如果没加对，日志进不去)</p>
-<p>此处需要将数字设置为long， 才能存储比较大的数字。 后面在Index patterns中再设置成 bytes 即可</p>
-<p><img src="/assets/image-20250725154551321.png" alt="image-20250725154551321"></p>
-<p><img src="/assets/image-20250725162940332.png" alt="image-20250725162940332"></p>
-<p>再重建索引，正常显示 datetime和sentbytes</p>
-<p><img src="/assets/image-20250725163026877.png" alt="image-20250725163026877"></p>
+                <h1 id="1-概览"><a href="#1-概览" class="headerlink" title="1.概览"></a>1.概览</h1><p>目前看到的wazuh日志采集方式如下，后文将对每一种方式做一个大概讲解及测试</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>收集方式</strong></th>
+<th align="left"><strong>配置示例</strong></th>
+<th align="left"><strong>适用场景</strong></th>
+<th align="left"><strong>支持格式</strong></th>
+<th align="left"><strong>备注</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>本地日志文件监控</strong></td>
+<td align="left"><code>&lt;localfile&gt;&lt;location&gt;/var/log/example.log&lt;/location&gt;&lt;log_format&gt;syslog&lt;/log_format&gt;&lt;/localfile&gt;</code></td>
+<td align="left">Linux/Windows 日志文件</td>
+<td align="left"><code>syslog</code>、<code>json</code>、<code>plaintext</code></td>
+<td align="left">支持通配符（<code>*.log</code>）和动态文件名（<code>log-%Y-%m-%d.log</code>）</td>
+</tr>
+<tr>
+<td align="left"><strong>Windows事件日志</strong></td>
+<td align="left"><code>&lt;localfile&gt;&lt;location&gt;Security&lt;/location&gt;&lt;log_format&gt;eventlog&lt;/log_format&gt;&lt;/localfile&gt;</code></td>
+<td align="left">Windows 安全日志、应用日志</td>
+<td align="left"><code>eventlog</code>（传统日志）</td>
+<td align="left">适用于监控登录、权限变更等安全事件</td>
+</tr>
+<tr>
+<td align="left"><strong>Windows事件通道</strong></td>
+<td align="left"><code>&lt;localfile&gt;&lt;location&gt;Microsoft-Windows-PowerShell/Operational&lt;/location&gt;&lt;log_format&gt;eventchannel&lt;/log_format&gt;&lt;/localfile&gt;</code></td>
+<td align="left">Windows 系统/应用事件通道</td>
+<td align="left"><code>eventchannel</code></td>
+<td align="left">适用于监控 PowerShell、打印服务等高级日志</td>
+</tr>
+<tr>
+<td align="left"><strong>远程Syslog接收</strong></td>
+<td align="left"><code>&lt;remote&gt;&lt;connection&gt;syslog&lt;/connection&gt;&lt;allowed-ips&gt;192.168.1.0/24&lt;/allowed-ips&gt;&lt;/remote&gt;</code></td>
+<td align="left">防火墙、路由器、交换机等网络设备</td>
+<td align="left"><code>syslog</code>（UDP/TCP）</td>
+<td align="left">需配置防火墙允许514/1514端口</td>
+</tr>
+<tr>
+<td align="left"><strong>JSON日志解析</strong></td>
+<td align="left"><code>&lt;localfile&gt;&lt;log_format&gt;json&lt;/log_format&gt;&lt;location&gt;/var/log/app.json&lt;/location&gt;&lt;/localfile&gt;</code></td>
+<td align="left">现代应用（如Docker、K8s、Suricata）</td>
+<td align="left"><code>json</code></td>
+<td align="left">支持嵌套字段，自动提取关键字段</td>
+</tr>
+<tr>
+<td align="left"><strong>命令输出收集</strong></td>
+<td align="left"><code>&lt;localfile&gt;&lt;log_format&gt;full_command&lt;/log_format&gt;&lt;command&gt;df -h&lt;/command&gt;&lt;frequency&gt;300&lt;/frequency&gt;&lt;/localfile&gt;</code></td>
+<td align="left">系统状态监控（磁盘、进程、网络）</td>
+<td align="left">命令行输出</td>
+<td align="left">可定时执行（<code>frequency</code> 单位为秒）</td>
+</tr>
+<tr>
+<td align="left"><strong>REST API 提交</strong></td>
+<td align="left"><code>POST /events HTTP/1.1</code>（发送至 <code>http://wazuh-server:55000/events</code>）</td>
+<td align="left">自定义脚本、云服务日志</td>
+<td align="left"><code>json</code></td>
+<td align="left">需认证（API密钥或JWT）</td>
+</tr>
+<tr>
+<td align="left"><strong>Unix Socket 注入</strong></td>
+<td align="left"><code>echo '{"log":"test"}' &gt; /var/ossec/queue/sockets/queue</code></td>
+<td align="left">高性能本地日志注入</td>
+<td align="left"><code>json</code>/<code>plaintext</code></td>
+<td align="left">需确保Wazuh有socket写入权限</td>
+</tr>
+<tr>
+<td align="left"><strong>中间件扩展（API网关）</strong></td>
+<td align="left">自定义HTTP服务（如Python Flask + Wazuh API）</td>
+<td align="left">云服务（AWS、Azure）、Webhook</td>
+<td align="left"><code>json</code></td>
+<td align="left">适用于复杂日志转换和批量提交</td>
+</tr>
+</tbody></table>
+<h1 id="2-本地日志"><a href="#2-本地日志" class="headerlink" title="2.本地日志"></a>2.本地日志</h1><h2 id="2-1本地日志文件"><a href="#2-1本地日志文件" class="headerlink" title="2.1本地日志文件"></a>2.1本地日志文件</h2><p>本部分内容可以参考 <a href="https://blog.161695.xyz/2025/07/23/logstatsh-shi-yong-grok-cai-ji-ri-zhi/#toc-heading-5">https://blog.161695.xyz/2025/07/23/logstatsh-shi-yong-grok-cai-ji-ri-zhi/#toc-heading-5</a> 中的 Wazuh部分， 收集本地的日志文件。</p>
+<h2 id="2-2本地事件日志"><a href="#2-2本地事件日志" class="headerlink" title="2.2本地事件日志"></a>2.2本地事件日志</h2><p>本部分内容可以参考 <a href="https://blog.161695.xyz/2023/10/11/soc-es7/#toc-heading-17">https://blog.161695.xyz/2023/10/11/soc-es7/#toc-heading-17</a> 中的</p>
 
                 
             </div>
@@ -699,7 +588,7 @@ output <span class="token punctuation">{</span>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://blog.161695.xyz/2025/07/23/logstatsh-shi-yong-grok-cai-ji-ri-zhi/">https://blog.161695.xyz/2025/07/23/logstatsh-shi-yong-grok-cai-ji-ri-zhi/</a>
+                    <a href="https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/">https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -743,14 +632,6 @@ output <span class="token punctuation">{</span>
                             
                                 <a href="/tags/wazuh/">
                                     <span class="chip bg-color">wazuh</span>
-                                </a>
-                            
-                                <a href="/tags/filebeat/">
-                                    <span class="chip bg-color">filebeat</span>
-                                </a>
-                            
-                                <a href="/tags/logstatsh/">
-                                    <span class="chip bg-color">logstatsh</span>
                                 </a>
                             
                         </div>
@@ -921,7 +802,7 @@ output <span class="token punctuation">{</span>
         repo: 'gittalk',
         owner: 'aspirepigshadow',
         admin: "aspirepigshadow",
-        id: '2025-07-23T12-41-22',
+        id: '2025-07-26T09-21-28',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -954,7 +835,57 @@ output <span class="token punctuation">{</span>
                 <i class="far fa-dot-circle"></i>&nbsp;Current
             </div>
             <div class="card">
-                <a href="/2025/07/23/logstatsh-shi-yong-grok-cai-ji-ri-zhi/">
+                <a href="/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Wazuh 日志采集 总结篇">
+                        
+                        <span class="card-title">Wazuh 日志采集 总结篇</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-07-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Aspirepig
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/elk/">
+                        <span class="chip bg-color">elk</span>
+                    </a>
+                    
+                    <a href="/tags/wazuh/">
+                        <span class="chip bg-color">wazuh</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/07/23/logstatshwazuh-cai-ji-ri-zhi/">
                     <div class="card-image">
                         
                         
@@ -981,7 +912,6 @@ output <span class="token punctuation">{</span>
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -999,55 +929,6 @@ output <span class="token punctuation">{</span>
                     
                     <a href="/tags/logstatsh/">
                         <span class="chip bg-color">logstatsh</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2025/07/20/an-zhuo-ruan-jian-po-jie/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="安卓软件VIP破解">
-                        
-                        <span class="card-title">安卓软件VIP破解</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-07-20
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Aspirepig
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E9%80%86%E5%90%91/">
-                        <span class="chip bg-color">逆向</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%AE%89%E5%8D%93/">
-                        <span class="chip bg-color">安卓</span>
                     </a>
                     
                 </div>
@@ -1197,7 +1078,7 @@ output <span class="token punctuation">{</span>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">45.3k</span>
+                        class="white-color">46k</span>
             
             
             

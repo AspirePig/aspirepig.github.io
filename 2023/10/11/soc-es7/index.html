@@ -871,7 +871,7 @@ systemctl restart wazuh-manager</code></pre>
 <p>执行完成后，再执行 以下命令启动 wazuh agent即可</p>
 <pre class="language-none"><code class="language-none">net start wazuh</code></pre>
 
-<h3 id="2-Windows事件日志"><a href="#2-Windows事件日志" class="headerlink" title="2.Windows事件日志"></a>2.Windows事件日志</h3><h5 id="1-使用-Wazuh-直接监控进程创建（无需-Sysmon）"><a href="#1-使用-Wazuh-直接监控进程创建（无需-Sysmon）" class="headerlink" title="1.使用 Wazuh 直接监控进程创建（无需 Sysmon）"></a>1.<strong>使用 Wazuh 直接监控进程创建（无需 Sysmon）</strong></h5><p>powershell执行</p>
+<h3 id="2-Windows事件日志"><a href="#2-Windows事件日志" class="headerlink" title="2.Windows事件日志"></a>2.Windows事件日志</h3><h4 id="1-使用-Wazuh-直接监控进程创建（无需-Sysmon）"><a href="#1-使用-Wazuh-直接监控进程创建（无需-Sysmon）" class="headerlink" title="1.使用 Wazuh 直接监控进程创建（无需 Sysmon）"></a>1.使用 Wazuh 直接监控进程创建（无需 Sysmon）</h4><p>powershell执行</p>
 <pre class="language-powershell" data-language="powershell"><code class="language-powershell">auditpol <span class="token operator">/</span><span class="token function">set</span> <span class="token operator">/</span>subcategory:<span class="token string">"{0CCE922B-69AE-11D9-BED3-505054503030}"</span> <span class="token operator">/</span>success:enable <span class="token operator">/</span>failure:enable</code></pre>
 
 <p>查询是否设置成功</p>
@@ -893,9 +893,16 @@ systemctl restart wazuh-manager</code></pre>
 <p>重启wazuh manager</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> systemctl restart wazuh-manager</code></pre>
 
-<p>默认情况下agent 是采集了日志，需要manager有decoder 解析，由rule 进行规则判断</p>
+<p>默认情况下agent 是采集了日志（如果没有采集可以使用以下 agent.conf），需要manager有decoder 解析，由rule 进行规则判断</p>
+<pre class="language-none"><code class="language-none">&lt;localfile&gt;
+  &lt;location&gt;Security&lt;/location&gt;
+  &lt;log_format&gt;eventchannel&lt;/log_format&gt;
+&lt;/localfile&gt;</code></pre>
+
+
+
 <p><img src="/assets/image-20250720144825809.png" alt="image-20250720144825809"></p>
-<h4 id="2-使用Sysmon-Wazuh-监控进程-网络创建"><a href="#2-使用Sysmon-Wazuh-监控进程-网络创建" class="headerlink" title="2.使用Sysmon+ Wazuh 监控进程/网络创建"></a>2.<strong>使用Sysmon+ Wazuh 监控进程/网络创建</strong></h4><h5 id="1-下载和安装-Sysmon"><a href="#1-下载和安装-Sysmon" class="headerlink" title="1.下载和安装 Sysmon"></a>1.下载和安装 Sysmon</h5><pre class="language-none"><code class="language-none"># 下载 Sysmon
+<h4 id="2-使用Sysmon-Wazuh-监控进程-网络创建"><a href="#2-使用Sysmon-Wazuh-监控进程-网络创建" class="headerlink" title="2.使用Sysmon+ Wazuh 监控进程/网络创建"></a>2.使用Sysmon+ Wazuh 监控进程/网络创建</h4><h5 id="1-下载和安装-Sysmon"><a href="#1-下载和安装-Sysmon" class="headerlink" title="1.下载和安装 Sysmon"></a>1.下载和安装 Sysmon</h5><pre class="language-none"><code class="language-none"># 下载 Sysmon
 Invoke-WebRequest -Uri "https://download.sysinternals.com/files/Sysmon.zip" -OutFile "$env:TEMP\Sysmon.zip"
 Expand-Archive -Path "$env:TEMP\Sysmon.zip" -DestinationPath "$env:TEMP\Sysmon"
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml" -OutFile "$env:TEMP\sysmonconfig.xml"
@@ -1635,7 +1642,7 @@ docker logs <span class="token punctuation">-</span>f elastalert</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">45.3k</span>
+                        class="white-color">46k</span>
             
             
             
