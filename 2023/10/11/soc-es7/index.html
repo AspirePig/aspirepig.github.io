@@ -865,7 +865,8 @@ systemctl restart wazuh-manager</code></pre>
 </ol>
 <p>测试 </p>
 <p><img src="/assets/image-20231012110801694.png" alt="image-20231012110801694"></p>
-<h1 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h1><h3 id="1-Agent安装"><a href="#1-Agent安装" class="headerlink" title="1. Agent安装"></a>1. Agent安装</h3><p>比较简单，以Windows安装为例。 使用 Deploy new agent页面，生成对应的命令行。</p>
+<h1 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h1><p>日志采集总结篇，可以查看 <a href="https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/">https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/</a></p>
+<h3 id="1-Agent安装"><a href="#1-Agent安装" class="headerlink" title="1. Agent安装"></a>1. Agent安装</h3><p>比较简单，以Windows安装为例。 使用 Deploy new agent页面，生成对应的命令行。</p>
 <pre class="language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Invoke-WebRequest</span> <span class="token operator">-</span>Uri https:<span class="token operator">/</span><span class="token operator">/</span>packages<span class="token punctuation">.</span>wazuh<span class="token punctuation">.</span>com<span class="token operator">/</span>4<span class="token punctuation">.</span>x<span class="token operator">/</span>windows<span class="token operator">/</span>wazuh<span class="token operator">-</span>agent<span class="token operator">-</span>4<span class="token punctuation">.</span>5<span class="token punctuation">.</span>3<span class="token operator">-</span>1<span class="token punctuation">.</span>msi <span class="token operator">-</span>OutFile $<span class="token punctuation">{</span>env:tmp<span class="token punctuation">}</span>\wazuh<span class="token operator">-</span>agent<span class="token punctuation">.</span>msi<span class="token punctuation">;</span> msiexec<span class="token punctuation">.</span>exe <span class="token operator">/</span>i $<span class="token punctuation">{</span>env:tmp<span class="token punctuation">}</span>\wazuh<span class="token operator">-</span>agent<span class="token punctuation">.</span>msi <span class="token operator">/</span>q WAZUH_MANAGER=<span class="token string">'192.168.137.134'</span> WAZUH_REGISTRATION_SERVER=<span class="token string">'192.168.137.134'</span> WAZUH_AGENT_GROUP=<span class="token string">'default'</span> WAZUH_AGENT_NAME=<span class="token string">'Win'</span> </code></pre>
 
 <p>执行完成后，再执行 以下命令启动 wazuh agent即可</p>
@@ -977,8 +978,6 @@ systemctl restart wazuh-manager</code></pre>
 <img src="/assets/image-20250720182220366.png" alt="image-20250720182220366" style="zoom:80%;">
 
 <p><img src="/assets/image-20250720182401352.png" alt="image-20250720182401352"></p>
-<h3 id="4-其他安全产品日志"><a href="#4-其他安全产品日志" class="headerlink" title="4.其他安全产品日志"></a>4.其他安全产品日志</h3><p>可拉取json格式日志或者 syslog转发的方式收集，需要编写对应的decoder和rule</p>
-<h3 id="5-Wazuh-日志收集总结"><a href="#5-Wazuh-日志收集总结" class="headerlink" title="5.Wazuh-日志收集总结"></a>5.Wazuh-日志收集总结</h3><p>agent会将配置在agent.conf 中要收集的日志全部上报给wazuh， wazuh接收到后会使用 decoder解码</p>
 <h1 id="0x08-Jira联动"><a href="#0x08-Jira联动" class="headerlink" title="0x08 Jira联动"></a>0x08 Jira联动</h1><p>安装过程此处暂时省略，使用 JIRA cloud 在线环境</p>
 <h3 id="1-创建JRIA项目"><a href="#1-创建JRIA项目" class="headerlink" title="1.创建JRIA项目"></a>1.创建JRIA项目</h3><p>JIRA 大致步骤：</p>
 <ol>
@@ -1642,7 +1641,7 @@ docker logs <span class="token punctuation">-</span>f elastalert</code></pre>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">46k</span>
+                        class="white-color">45.9k</span>
             
             
             
