@@ -484,10 +484,10 @@ https://documentation.wazuh.com/current/deployment-o">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="0x00-序言"><a href="#0x00-序言" class="headerlink" title="0x00 序言"></a>0x00 序言</h1><p>搭建SOC完整架构尝试</p>
+                <h2 id="0x00-序言"><a href="#0x00-序言" class="headerlink" title="0x00 序言"></a>0x00 序言</h2><p>搭建SOC完整架构尝试</p>
 <p>架构图如下</p>
 <p><img src="/assets/image-20231011175154949.png" alt="image-20231011175154949"></p>
-<h1 id="0x01-环境准备"><a href="#0x01-环境准备" class="headerlink" title="0x01 环境准备"></a>0x01 环境准备</h1><p>概述 整个文档可以查看wazuh all in one 安装文档</p>
+<h2 id="0x01-环境准备"><a href="#0x01-环境准备" class="headerlink" title="0x01 环境准备"></a>0x01 环境准备</h2><p>概述 整个文档可以查看wazuh all in one 安装文档</p>
 <p><a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/deployment-options/elastic-stack/all-in-one-deployment/index.html">https://documentation.wazuh.com/current/deployment-options/elastic-stack/all-in-one-deployment/index.html</a></p>
 <p>卸载文档：</p>
 <p><a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/uninstall/elastic-stack.html">https://documentation.wazuh.com/current/user-manual/uninstall/elastic-stack.html</a></p>
@@ -495,7 +495,7 @@ https://documentation.wazuh.com/current/deployment-o">
 
 
 
-<h1 id="0x02-Ubuntu-VM安装"><a href="#0x02-Ubuntu-VM安装" class="headerlink" title="0x02 Ubuntu VM安装"></a>0x02 Ubuntu VM安装</h1><p>此处不做过多详细介绍，网上教程很多</p>
+<h2 id="0x02-Ubuntu-VM安装"><a href="#0x02-Ubuntu-VM安装" class="headerlink" title="0x02 Ubuntu VM安装"></a>0x02 Ubuntu VM安装</h2><p>此处不做过多详细介绍，网上教程很多</p>
 <p>下载 ISO <a target="_blank" rel="noopener" href="https://releases.ubuntu.com/22.04/ubuntu-22.04.3-live-server-amd64.iso.torrent">https://releases.ubuntu.com/22.04/ubuntu-22.04.3-live-server-amd64.iso.torrent</a></p>
 <p>下载后在 VMware 中安装，配置如图</p>
 <img src="/assets/image-20231011164338357.png" alt="image-20231011164338357" style="zoom: 80%;">
@@ -516,7 +516,7 @@ ufw disable
 iptables -F
 iptables -X</code></pre>
 
-<h1 id="0x03-ES-Kibana-安装"><a href="#0x03-ES-Kibana-安装" class="headerlink" title="0x03 ES+Kibana 安装"></a>0x03 ES+Kibana 安装</h1><p>经过查询官方文档 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/integrations-guide/index.html">https://documentation.wazuh.com/current/integrations-guide/index.html</a> 和<a target="_blank" rel="noopener" href="https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html">https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html</a> 得知， filebeat集成的方式仅支持 到Wazuh 4.5.3 and Elastic Stack 7.17.13</p>
+<h2 id="0x03-ES-Kibana-安装"><a href="#0x03-ES-Kibana-安装" class="headerlink" title="0x03 ES+Kibana 安装"></a>0x03 ES+Kibana 安装</h2><p>经过查询官方文档 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/integrations-guide/index.html">https://documentation.wazuh.com/current/integrations-guide/index.html</a> 和<a target="_blank" rel="noopener" href="https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html">https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html</a> 得知， filebeat集成的方式仅支持 到Wazuh 4.5.3 and Elastic Stack 7.17.13</p>
 <p>高于次版本需使用 Logstash 进行集成</p>
 <p>因此，此处安装 ES Kibana 均为 7.17.13</p>
 <h3 id="1-ElasticSearch-安装"><a href="#1-ElasticSearch-安装" class="headerlink" title="1. ElasticSearch 安装"></a>1. ElasticSearch 安装</h3><p>直接访问 <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.17/deb.html#deb-repo">https://www.elastic.co/guide/en/elasticsearch/reference/7.17/deb.html#deb-repo</a></p>
@@ -573,7 +573,7 @@ sysctl -p</code></pre>
 
 
 
-<h4 id="2-Kibana安装"><a href="#2-Kibana安装" class="headerlink" title="2.Kibana安装"></a>2.Kibana安装</h4><p>直接访问 <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/kibana/7.17/deb.html#deb-repo">https://www.elastic.co/guide/en/kibana/7.17/deb.html#deb-repo</a></p>
+<h3 id="2-Kibana安装"><a href="#2-Kibana安装" class="headerlink" title="2.Kibana安装"></a>2.Kibana安装</h3><p>直接访问 <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/kibana/7.17/deb.html#deb-repo">https://www.elastic.co/guide/en/kibana/7.17/deb.html#deb-repo</a></p>
 <p>根据文档执行下列命令**(安装ES的时候已经执行过，这无需执行这几行，直接执行最后一行安装即可)**</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> update <span class="token operator">&amp;&amp;</span> <span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token assign-left variable">kibana</span><span class="token operator">=</span><span class="token number">7.17</span>.13</code></pre>
 
@@ -623,7 +623,7 @@ systemctl status kibana.service</code></pre>
 <img src="/assets/image-20231011204040638.png" alt="image-20231011204040638" style="zoom:80%;">
 
 <p>至此，已经完成ES和Kibana的安装,我们的数据存储和浏览的核心组件。</p>
-<h1 id="0x04-wazuh-server安装"><a href="#0x04-wazuh-server安装" class="headerlink" title="0x04 wazuh-server安装"></a>0x04 wazuh-server安装</h1><p>Wazuh 架构图：</p>
+<h2 id="0x04-wazuh-server安装"><a href="#0x04-wazuh-server安装" class="headerlink" title="0x04 wazuh-server安装"></a>0x04 wazuh-server安装</h2><p>Wazuh 架构图：</p>
 <p>本文主要使用 wazuh 做日志收集、规则判断</p>
 <p><img src="/assets/image-20231011182108967.png" alt="image-20231011182108967"></p>
 <p>访问 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/step-by-step.html">https://documentation.wazuh.com/current/installation-guide/wazuh-server/step-by-step.html</a></p>
@@ -721,7 +721,7 @@ systemctl start filebeat</code></pre>
 
 <p>查看Kibana，可以看到 alerts 和的日志了</p>
 <p><img src="/assets/image-20231011205448375.png" alt="image-20231011205448375"></p>
-<h1 id="0x05-Kibana-Wazuh-Plugin安装"><a href="#0x05-Kibana-Wazuh-Plugin安装" class="headerlink" title="0x05 Kibana-Wazuh-Plugin安装"></a>0x05 Kibana-Wazuh-Plugin安装</h1><p>访问 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk">https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk</a> 查找对应版本的离线安装包</p>
+<h2 id="0x05-Kibana-Wazuh-Plugin安装"><a href="#0x05-Kibana-Wazuh-Plugin安装" class="headerlink" title="0x05 Kibana-Wazuh-Plugin安装"></a>0x05 Kibana-Wazuh-Plugin安装</h2><p>访问 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk">https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk</a> 查找对应版本的离线安装包</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /tmp
 <span class="token function">wget</span> https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-4.5.3_7.17.13-1.zip
 
@@ -749,7 +749,7 @@ sudo systemctl start wazuh-agent</code></pre>
 
 <p>再次查看 kibana，可以看到 agent 已经上线</p>
 <p><img src="/assets/image-20231011211432342.png" alt="image-20231011211432342"></p>
-<h1 id="0x06-Wazuh-decoders-amp-rules"><a href="#0x06-Wazuh-decoders-amp-rules" class="headerlink" title="0x06 Wazuh-decoders&amp;rules"></a>0x06 Wazuh-decoders&amp;rules</h1><p>语法文档：<a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html">https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html</a></p>
+<h2 id="0x06-Wazuh-decoders-amp-rules"><a href="#0x06-Wazuh-decoders-amp-rules" class="headerlink" title="0x06 Wazuh-decoders&amp;rules"></a>0x06 Wazuh-decoders&amp;rules</h2><p>语法文档：<a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html">https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html</a></p>
 <h3 id="1-自定义decoder-amp-rule"><a href="#1-自定义decoder-amp-rule" class="headerlink" title="1.自定义decoder &amp; rule"></a>1.自定义decoder &amp; rule</h3><p>参考文档 <a target="_blank" rel="noopener" href="https://documentation.wazuh.com/current/user-manual/ruleset/custom.html">https://documentation.wazuh.com/current/user-manual/ruleset/custom.html</a></p>
 <blockquote>
 <p>自定义的rule id应当使用  100000 到120000 </p>
@@ -865,7 +865,7 @@ systemctl restart wazuh-manager</code></pre>
 </ol>
 <p>测试 </p>
 <p><img src="/assets/image-20231012110801694.png" alt="image-20231012110801694"></p>
-<h1 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h1><p>日志采集总结篇，可以查看 <a href="https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/">https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/</a></p>
+<h2 id="0x07-Wazuh-日志采集"><a href="#0x07-Wazuh-日志采集" class="headerlink" title="0x07 Wazuh-日志采集"></a>0x07 Wazuh-日志采集</h2><p>日志采集总结篇，可以查看 <a href="https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/">https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/</a></p>
 <h3 id="1-Agent安装"><a href="#1-Agent安装" class="headerlink" title="1. Agent安装"></a>1. Agent安装</h3><p>比较简单，以Windows安装为例。 使用 Deploy new agent页面，生成对应的命令行。</p>
 <pre class="language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Invoke-WebRequest</span> <span class="token operator">-</span>Uri https:<span class="token operator">/</span><span class="token operator">/</span>packages<span class="token punctuation">.</span>wazuh<span class="token punctuation">.</span>com<span class="token operator">/</span>4<span class="token punctuation">.</span>x<span class="token operator">/</span>windows<span class="token operator">/</span>wazuh<span class="token operator">-</span>agent<span class="token operator">-</span>4<span class="token punctuation">.</span>5<span class="token punctuation">.</span>3<span class="token operator">-</span>1<span class="token punctuation">.</span>msi <span class="token operator">-</span>OutFile $<span class="token punctuation">{</span>env:tmp<span class="token punctuation">}</span>\wazuh<span class="token operator">-</span>agent<span class="token punctuation">.</span>msi<span class="token punctuation">;</span> msiexec<span class="token punctuation">.</span>exe <span class="token operator">/</span>i $<span class="token punctuation">{</span>env:tmp<span class="token punctuation">}</span>\wazuh<span class="token operator">-</span>agent<span class="token punctuation">.</span>msi <span class="token operator">/</span>q WAZUH_MANAGER=<span class="token string">'192.168.137.134'</span> WAZUH_REGISTRATION_SERVER=<span class="token string">'192.168.137.134'</span> WAZUH_AGENT_GROUP=<span class="token string">'default'</span> WAZUH_AGENT_NAME=<span class="token string">'Win'</span> </code></pre>
 
@@ -903,7 +903,7 @@ systemctl restart wazuh-manager</code></pre>
 
 
 <p><img src="/assets/image-20250720144825809.png" alt="image-20250720144825809"></p>
-<h4 id="2-使用Sysmon-Wazuh-监控进程-网络创建"><a href="#2-使用Sysmon-Wazuh-监控进程-网络创建" class="headerlink" title="2.使用Sysmon+ Wazuh 监控进程/网络创建"></a>2.使用Sysmon+ Wazuh 监控进程/网络创建</h4><h5 id="1-下载和安装-Sysmon"><a href="#1-下载和安装-Sysmon" class="headerlink" title="1.下载和安装 Sysmon"></a>1.下载和安装 Sysmon</h5><pre class="language-none"><code class="language-none"># 下载 Sysmon
+<h3 id="2-使用Sysmon-Wazuh-监控进程-网络创建"><a href="#2-使用Sysmon-Wazuh-监控进程-网络创建" class="headerlink" title="2.使用Sysmon+ Wazuh 监控进程/网络创建"></a>2.使用Sysmon+ Wazuh 监控进程/网络创建</h3><h4 id="1-下载和安装-Sysmon"><a href="#1-下载和安装-Sysmon" class="headerlink" title="1.下载和安装 Sysmon"></a>1.下载和安装 Sysmon</h4><pre class="language-none"><code class="language-none"># 下载 Sysmon
 Invoke-WebRequest -Uri "https://download.sysinternals.com/files/Sysmon.zip" -OutFile "$env:TEMP\Sysmon.zip"
 Expand-Archive -Path "$env:TEMP\Sysmon.zip" -DestinationPath "$env:TEMP\Sysmon"
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml" -OutFile "$env:TEMP\sysmonconfig.xml"
@@ -912,7 +912,7 @@ cd "$env:TEMP\Sysmon"
 .\Sysmon.exe -accepteula -i "$env:TEMP\sysmonconfig.xml"
 .\Sysmon.exe -c "$env:TEMP\sysmonconfig.xml"</code></pre>
 
-<h5 id="2-配置-Wazuh-Agent-收集-Sysmon-日志"><a href="#2-配置-Wazuh-Agent-收集-Sysmon-日志" class="headerlink" title="2. 配置 Wazuh Agent 收集 Sysmon 日志"></a>2. 配置 Wazuh Agent 收集 Sysmon 日志</h5><p>编辑 Wazuh Agent 配置文件 (<code>C:\Program Files (x86)\ossec-agent\ossec.conf</code>)：</p>
+<h4 id="2-配置-Wazuh-Agent-收集-Sysmon-日志"><a href="#2-配置-Wazuh-Agent-收集-Sysmon-日志" class="headerlink" title="2. 配置 Wazuh Agent 收集 Sysmon 日志"></a>2. 配置 Wazuh Agent 收集 Sysmon 日志</h4><p>编辑 Wazuh Agent 配置文件 (<code>C:\Program Files (x86)\ossec-agent\ossec.conf</code>)：</p>
 <pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ossec_config</span><span class="token punctuation">&gt;</span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>localfile</span><span class="token punctuation">&gt;</span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>location</span><span class="token punctuation">&gt;</span></span>Microsoft-Windows-Sysmon/Operational<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>location</span><span class="token punctuation">&gt;</span></span>
@@ -920,7 +920,7 @@ cd "$env:TEMP\Sysmon"
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>localfile</span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ossec_config</span><span class="token punctuation">&gt;</span></span></code></pre>
 
-<h5 id="3-添加-Wazuh-规则解码-Sysmon-事件"><a href="#3-添加-Wazuh-规则解码-Sysmon-事件" class="headerlink" title="3.添加 Wazuh 规则解码 Sysmon 事件"></a>3.添加 Wazuh 规则解码 Sysmon 事件</h5><p>解码器 local_decoder.xml</p>
+<h4 id="3-添加-Wazuh-规则解码-Sysmon-事件"><a href="#3-添加-Wazuh-规则解码-Sysmon-事件" class="headerlink" title="3.添加 Wazuh 规则解码 Sysmon 事件"></a>3.添加 Wazuh 规则解码 Sysmon 事件</h4><p>解码器 local_decoder.xml</p>
 <pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>decoder</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sysmon-full<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">&gt;</span></span>windows<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">&gt;</span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prematch</span><span class="token punctuation">&gt;</span></span>^Microsoft-Windows-Sysmon<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prematch</span><span class="token punctuation">&gt;</span></span>
@@ -948,7 +948,7 @@ cd "$env:TEMP\Sysmon"
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>rule</span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">&gt;</span></span></code></pre>
 
-<h5 id="4-重启wazuh-manager-agent"><a href="#4-重启wazuh-manager-agent" class="headerlink" title="4.重启wazuh manager/agent"></a>4.重启wazuh manager/agent</h5><pre class="language-bash" data-language="bash"><code class="language-bash">Restart-Service -Name wazuh
+<h4 id="4-重启wazuh-manager-agent"><a href="#4-重启wazuh-manager-agent" class="headerlink" title="4.重启wazuh manager/agent"></a>4.重启wazuh manager/agent</h4><pre class="language-bash" data-language="bash"><code class="language-bash">Restart-Service -Name wazuh
 systemctl restart wazuh-manager</code></pre>
 
 <p>即可在kibana上看到相应日志</p>
@@ -978,7 +978,7 @@ systemctl restart wazuh-manager</code></pre>
 <img src="/assets/image-20250720182220366.png" alt="image-20250720182220366" style="zoom:80%;">
 
 <p><img src="/assets/image-20250720182401352.png" alt="image-20250720182401352"></p>
-<h1 id="0x08-Jira联动"><a href="#0x08-Jira联动" class="headerlink" title="0x08 Jira联动"></a>0x08 Jira联动</h1><p>安装过程此处暂时省略，使用 JIRA cloud 在线环境</p>
+<h2 id="0x08-Jira联动"><a href="#0x08-Jira联动" class="headerlink" title="0x08 Jira联动"></a>0x08 Jira联动</h2><p>安装过程此处暂时省略，使用 JIRA cloud 在线环境</p>
 <h3 id="1-创建JRIA项目"><a href="#1-创建JRIA项目" class="headerlink" title="1.创建JRIA项目"></a>1.创建JRIA项目</h3><p>JIRA 大致步骤：</p>
 <ol>
 <li>创建项目</li>
