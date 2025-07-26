@@ -191,7 +191,9 @@ https://regex101.com/ 可在该网站调试 PCRE2 正则语法，bin/wazuh-regex
 
 考虑原因，应该是 `0375-web-accesslog_decoders.xml` 执行优先级最高，匹配到日志前段符合就使用decoder 执行了。
 
-因此在`/var/ossec/etc/decoders` 创建了文件 `0374-ali-oss-accesslog_decoders.xml`，这样优先级会比`0375-web-accesslog_decoders.xml` 更高
+(此处另一种方法，可以重写 `0375-web-accesslog_decoders.xml` 文件，参考https://blog.161695.xyz/2023/10/11/soc-es7/#toc-heading-14 3.修改已有decoder)
+
+如果想要当成新的decoder，需要在`/var/ossec/etc/decoders` 创建了文件 `0374-ali-oss-accesslog_decoders.xml`，这样优先级会比`0375-web-accesslog_decoders.xml` 更高
 
 ```xml
 <decoder name="alicloud_oss_access_log">
@@ -207,7 +209,7 @@ https://regex101.com/ 可在该网站调试 PCRE2 正则语法，bin/wazuh-regex
 
 ![image-20250725120856439](/assets/image-20250725120856439.png)
 
-尝试编写rule
+测试编写rule
 
 ```xml
 <group name="aliosslog">
@@ -236,6 +238,8 @@ https://regex101.com/ 可在该网站调试 PCRE2 正则语法，bin/wazuh-regex
 
 
 ## 3. 增加字段mapping并重建索引
+
+时间格式可在该文档查询 "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/date.html"
 
 可在ES中验证格式是否正确
 

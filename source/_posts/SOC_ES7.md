@@ -7,7 +7,7 @@ tags: [elk, soc, wazuh, JIRA]
 
 
 
-# 0x00 序言
+## 0x00 序言
 
 搭建SOC完整架构尝试
 
@@ -17,7 +17,7 @@ tags: [elk, soc, wazuh, JIRA]
 
 
 
-# 0x01 环境准备
+## 0x01 环境准备
 
 概述 整个文档可以查看wazuh all in one 安装文档
 
@@ -33,7 +33,7 @@ VM1:Ubuntu 22.04.3 LTS
 
 
 
-# 0x02 Ubuntu VM安装
+## 0x02 Ubuntu VM安装
 
 此处不做过多详细介绍，网上教程很多
 
@@ -62,7 +62,7 @@ iptables -F
 iptables -X
 ```
 
-# 0x03 ES+Kibana 安装
+## 0x03 ES+Kibana 安装
 
 经过查询官方文档 https://documentation.wazuh.com/current/integrations-guide/index.html 和https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html 得知， filebeat集成的方式仅支持 到Wazuh 4.5.3 and Elastic Stack 7.17.13
 
@@ -143,7 +143,7 @@ sysctl -p
 
 
 
-#### 2.Kibana安装
+### 2.Kibana安装
 
 直接访问 https://www.elastic.co/guide/en/kibana/7.17/deb.html#deb-repo
 
@@ -207,7 +207,7 @@ systemctl status kibana.service
 
 至此，已经完成ES和Kibana的安装,我们的数据存储和浏览的核心组件。
 
-# 0x04 wazuh-server安装
+## 0x04 wazuh-server安装
 
 Wazuh 架构图：
 
@@ -332,7 +332,7 @@ systemctl start filebeat
 
 
 
-# 0x05 Kibana-Wazuh-Plugin安装
+## 0x05 Kibana-Wazuh-Plugin安装
 
 访问 https://documentation.wazuh.com/4.5/deployment-options/elastic-stack/index.html#packages-list-elk 查找对应版本的离线安装包
 
@@ -378,7 +378,7 @@ sudo systemctl start wazuh-agent
 
 
 
-# 0x06 Wazuh-decoders&rules
+## 0x06 Wazuh-decoders&rules
 
 语法文档：https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/index.html
 
@@ -527,9 +527,9 @@ systemctl restart wazuh-manager
 
 
 
-# 0x07 Wazuh-日志采集
+## 0x07 Wazuh-日志采集
 
-
+日志采集总结篇，可以查看 https://blog.161695.xyz/2025/07/26/wazuh-ri-zhi-cai-ji-zong-jie-pian/
 
 ### 1. Agent安装
 
@@ -547,7 +547,7 @@ net start wazuh
 
 ### 2.Windows事件日志
 
-##### 1.**使用 Wazuh 直接监控进程创建（无需 Sysmon）**
+#### 1.使用 Wazuh 直接监控进程创建（无需 Sysmon）
 
 powershell执行
 
@@ -585,15 +585,24 @@ auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}"
 sudo systemctl restart wazuh-manager
 ```
 
-默认情况下agent 是采集了日志，需要manager有decoder 解析，由rule 进行规则判断
+默认情况下agent 是采集了日志（如果没有采集可以使用以下 agent.conf），需要manager有decoder 解析，由rule 进行规则判断
+
+```
+  <localfile>
+    <location>Security</location>
+    <log_format>eventchannel</log_format>
+  </localfile>
+```
+
+
 
 ![image-20250720144825809](/assets/image-20250720144825809.png)
 
 
 
-#### 2.**使用Sysmon+ Wazuh 监控进程/网络创建**
+### 2.使用Sysmon+ Wazuh 监控进程/网络创建
 
-##### 1.下载和安装 Sysmon
+#### 1.下载和安装 Sysmon
 
 ```
 # 下载 Sysmon
@@ -606,7 +615,7 @@ cd "$env:TEMP\Sysmon"
 .\Sysmon.exe -c "$env:TEMP\sysmonconfig.xml"
 ```
 
-##### 2. 配置 Wazuh Agent 收集 Sysmon 日志
+#### 2. 配置 Wazuh Agent 收集 Sysmon 日志
 
 编辑 Wazuh Agent 配置文件 (`C:\Program Files (x86)\ossec-agent\ossec.conf`)：
 
@@ -619,7 +628,7 @@ cd "$env:TEMP\Sysmon"
 </ossec_config>
 ```
 
-##### 3.添加 Wazuh 规则解码 Sysmon 事件
+#### 3.添加 Wazuh 规则解码 Sysmon 事件
 
 解码器 local_decoder.xml
 
@@ -655,7 +664,7 @@ rule： local_rules.xml
 </group>
 ```
 
-##### 4.重启wazuh manager/agent
+#### 4.重启wazuh manager/agent
 
 ```bash
 Restart-Service -Name wazuh
@@ -701,19 +710,13 @@ systemctl restart wazuh-manager
 
 ![image-20250720182401352](/assets/image-20250720182401352.png)
 
-### 4.其他安全产品日志
-
-可拉取json格式日志或者 syslog转发的方式收集，需要编写对应的decoder和rule
-
-### 5.Wazuh-日志收集总结
-
-agent会将配置在agent.conf 中要收集的日志全部上报给wazuh， wazuh接收到后会使用 decoder解码
 
 
 
 
 
-# 0x08 Jira联动
+
+## 0x08 Jira联动
 
 安装过程此处暂时省略，使用 JIRA cloud 在线环境
 
