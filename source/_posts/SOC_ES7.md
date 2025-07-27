@@ -922,3 +922,51 @@ docker logs -f elastalert
 
 
 到目前，已经可以自动化创建 Ticket 了，如果需要补充更多字段，就得需要更多时间去完成日志源，做wazuh 的decoder、ruleset， 做JIRA的页面显示自动化、字段、页面配置、做Elastalert的配置字段优化等等
+
+
+
+
+
+## 0x09 ES xpack security 模块
+
+elasticsearch.yml 文件
+
+```yaml
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+http.cors.allow-headers: Authorization
+xpack.security.enabled: true
+xpack.security.audit.enabled: true
+xpack.license.self_generated.type: basic
+# 如果是basic license的话需要加入下面这一行，不然的话restart elasticsearch之后会报错。
+xpack.security.transport.ssl.enabled: true
+xpack.security.authc.api_key.enabled: true
+```
+
+生成密码
+
+```bash
+bin/elasticsearch-setup-passwords auto
+```
+
+重启
+
+```bash
+systemctl restart elasticsearch.service
+```
+
+配置kibana/filebeat/logstatsh等其他连接到ES的组件并重启
+
+```
+elasticsearch.username: "elastic"
+elasticsearch.password: "123456"
+```
+
+
+
+可以在kibana中看到可用 security 模块，可以配置rule， 但action只能使用 index 写入， 
+
+1. 可以自己使用 elastalert2 再次查询并通过其他方式告警
+2. 可使用logstash 或其他Python脚本监控该index
+
+![image-20250727153244577](/assets/image-20250727153244577.png)
