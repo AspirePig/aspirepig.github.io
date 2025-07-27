@@ -63,7 +63,7 @@ tags: [wazuh, elk]
 <remote>
   <connection>syslog</connection>
   <port>514</port>
-  <protocol>tcp,udp</protocol>
+  <protocol>tcp</protocol>
   <allowed-ips>192.168.137.15/24</allowed-ips>
   <local_ip>192.168.137.134</local_ip>
 </remote>
@@ -79,9 +79,66 @@ tags: [wazuh, elk]
 
 ![image-20250726131754202](/assets/image-20250726131754202.png)
 
+示例3，Jumpserver syslog日志转发
+
+config.txt
+
+```
+SYSLOG_ENABLE=True
+SYSLOG_ADDR=192.168.137.134:514
+```
+
+日志样例：
+
+```
+jumpserver: login_log - {"backend": "Password", "backend_display": "密码", "city": "局域网", "datetime": "2025/07/26 22:53:12 +0800", "id": "8b74dac9-05f3-469a-9238-e1551fd8e422", "ip": "192.168.137.1", "mfa": {"label": "禁用", "value": 0}, "reason": "", "reason_display": "", "status": {"label": "成功", "value": true}, "type": {"label": "Web", "value": "W"}, "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36", "username": "Administrator(admin)"}
+```
 
 
 
+wazuh 监听udp 514 , 因为 jumpsserver用的是udp端口
+
+```xml
+  <remote>
+    <connection>syslog</connection>
+    <port>514</port>
+    <protocol>udp</protocol>
+    <allowed-ips>192.168.137.15/24</allowed-ips>
+    <local_ip>192.168.137.134</local_ip>
+  </remote>
+```
+
+![image-20250726225605328](/assets/image-20250726225605328.png)
+
+
+
+继续日志解析：
+
+```xml
+<decoder name="jumpserver">
+    <prematch type="pcre2">jumpserver</prematch>
+</decoder>
+
+<decoder name="jumpserver_decoder">
+  <parent>jumpserver</parent>
+  <prematch type="pcre2">\S+ - </prematch>
+  <plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>
+```
+
+![image-20250727134749853](/assets/image-20250727134749853.png)
+
+
+
+发现 archive.json 已经正确解析日志了，但是ES中无法查询到数据，推测是JSON自动分配字段的时候和Index的mapping有冲突，无法写入数据
+
+查询日志，发现是 
+```
+"failed to parse date field [2025/07/27 13:29:31 +0800] with format [dd/MMM/yyyy:HH:mm:ss Z]
+failed to parse field [data.action] of type [keyword] in document with id 'Q0JoSpgBnF7oeTEmyjCL'.
+```
+
+这样改会有很多问题，还是建议使用脚本对数据再套一层， 存入本地文件再重新读取。
 
 
 
@@ -261,7 +318,7 @@ if __name__ == "__main__":
 
 不过JSON日志进来后存在字段无法修改的问题，可以有以下两种方法:
 
-1. python脚本中先修改字段名称
+1. python脚本获取到告警先给json日志套壳，防止字段冲突
 2. 不使用 wazuh的 JSON_Decoder , 使用 正则进行匹配并设置字段名称
 
 
@@ -306,3 +363,38 @@ local_internal_options.conf
 ```
 
 ![image-20250726195641015](/assets/image-20250726195641015.png)
+
+
+
+
+
+## 6.总结
+
+各种接收日志的方式，目前来看直接给wazuh syslog 或者 socket吐数据并不是最好的办法。 因为wazuh的decoder 并不是十分的灵活。 并且可能存在各种各样的解析问题。
+
+如果需要直接使用 syslog/socket的，建议还是前面套一个logstatsh或者先使用脚本对数据重新构造，这样规避 Index mapping问题和 降低decoder 编写复杂度。
+
+
+
+注：
+
+父decoder 并不会将提取的字段继承给 子 decoder，因此需要编写多次子decoder ，以此对字段进行解析
+
+```xml
+<decoder name="testabc">
+  <prematch>^Some_Static_Pattern</prematch>
+</decoder>
+
+<decoder name="testabc-fields">
+  <parent>testabc</parent>
+  <regex>field1=(\S+) field2=(\S+)</regex>
+  <order>field_one, field_two</order>
+</decoder>
+<decoder name="testabc-fields">
+  <parent>testabc</parent>
+  <regex>additional_field=(\S+)</regex>
+  <order>field3</order>
+</decoder>
+```
+
+![image-20250727143657502](/assets/image-20250727143657502.png)
