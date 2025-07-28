@@ -2,7 +2,7 @@
 title: Docker 换源不生效
 typora-root-url: ..
 date: 2025-07-26 21:07:10
-tags:[docker]
+tags: [docker]
 ---
 
 # Docker换源不生效
