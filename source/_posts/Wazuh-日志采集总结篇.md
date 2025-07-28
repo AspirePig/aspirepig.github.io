@@ -20,9 +20,9 @@ tags: [wazuh, elk]
 | **Windows事件通道**          | `<localfile><location>Microsoft-Windows-PowerShell/Operational</location><log_format>eventchannel</log_format></localfile>` | Windows 系统/应用事件通道           | `eventchannel`                | 适用于监控 PowerShell、打印服务等高级日志                    |
 | **远程Syslog接收**           | `<remote><connection>syslog</connection><allowed-ips>192.168.1.0/24</allowed-ips></remote>` | 防火墙、路由器、交换机等网络设备    | `syslog`（UDP/TCP）           | 需配置防火墙允许514/1514端口                                 |
 | **JSON日志解析**             | `<localfile><log_format>json</log_format><location>/var/log/app.json</location></localfile>` | 现代应用（如Docker、K8s、Suricata） | `json`                        | 支持嵌套字段，自动提取关键字段                               |
-| **命令输出收集**             | `<localfile><log_format>full_command</log_format><command>df -h</command><frequency>300</frequency></localfile>` | 系统状态监控（磁盘、进程、网络）    | 命令行输出                    | 可定时执行（`frequency` 单位为秒）                           |
+| **命令输出收集**             | `<localfile>   <log_format>full_command</log_format>    <command>tasklist</command>    <frequency>120</frequency>  </localfile>` | 系统状态监控（磁盘、进程、网络）    | 命令行输出                    | 可定时执行（`frequency` 单位为秒）                           |
 | **REST API 提交**(4.6及以上) | `POST /events HTTP/1.1`（发送至 `http://wazuh-server:55000/events`） | 自定义脚本、云服务日志              | `json`                        | 需认证（API密钥或JWT）该功能4.6及以上采用，本文使用 4.5 暂不支持 |
-| **Unix Socket 注入**         | `echo '{"log":"test"}' > /var/ossec/queue/sockets/queue`     | 高性能本地日志注入                  | `json`/`plaintext`            | 需确保Wazuh有socket写入权限                                  |
+| **Unix Socket 注入**         | `echo '1:k8s:test' | sudo -u wazuh socat - UNIX-SENDTO:/var/ossec/queue/sockets/queue` | 高性能本地日志注入                  | `json`/`plaintext`            | 需确保Wazuh有socket写入权限                                  |
 
 
 
