@@ -116,13 +116,21 @@ wazuh 监听udp 514 , 因为 jumpsserver用的是udp端口
 
 ```xml
 <decoder name="jumpserver">
-    <prematch type="pcre2">jumpserver</prematch>
+    <prematch type="pcre2">^jumpserver</prematch>
 </decoder>
+
 
 <decoder name="jumpserver_decoder">
   <parent>jumpserver</parent>
   <prematch type="pcre2">\S+ - </prematch>
   <plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>
+
+
+<decoder name="jumpserver_decoder">
+  <parent>jumpserver</parent>
+  <regex type="pcre2">^jumpserver: (\S+) - </regex>
+  <order>logtype</order>
 </decoder>
 ```
 
