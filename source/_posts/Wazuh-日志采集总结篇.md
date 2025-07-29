@@ -152,6 +152,80 @@ failed to parse field [data.action] of type [keyword] in document with id 'Q0JoS
 
 
 
+以下是实现方法：
+
+采用logstatsh 监听UDP端口接收数据
+
+```json
+input {
+  udp {
+    port => 514
+    type => "syslog"
+    codec => "plain"
+  }
+}
+
+filter {
+  # 首先解析 syslog 消息
+  if [message] =~ /jumpserver: (\w+) - ({.*})/ {
+    grok {
+      match => { "message" => "jumpserver: %{WORD:logtype} - %{GREEDYDATA:json_message}" }
+      overwrite => ["logtype", "json_message"]
+    }
+
+    # Clean the json_message by removing null characters and other control characters
+    mutate {
+      gsub => [
+        "json_message", "[\u0000-\u001f]", ""  # Remove all control characters
+      ]
+    }
+    # 解析 JSON 部分
+    json {
+      source => "json_message"
+      target => "json_content"
+      remove_field => ["json_message"]
+    }
+
+    # 构建新的 JSON 结构
+    mutate {
+      rename => {
+        "[json_content]" => "[jumpserver]"
+      }
+      add_field => {
+        "[jumpserver][logtype]" => "%{logtype}"
+      }
+      remove_field => ["logtype", "host", "message", "@version", "@timestamp", "type"]
+    }
+  }
+}
+
+output {
+  udp {
+    host => "192.168.137.134"
+    port => 514
+    codec => "json_lines"
+  }
+}
+
+```
+
+重写 decoder：
+
+```xml
+<decoder name="jumpserver">
+    <parent>json</parent>
+    <use_own_name>true</use_own_name>
+    <prematch type="pcre2">^{\"jumpserver</prematch>
+    <plugin_decoder >JSON_Decoder</plugin_decoder>
+</decoder>
+```
+
+这下非常好解析，并且匹配精准度也会上升。
+
+![image-20250729165930188](/assets/image-20250729165930188.png)
+
+
+
 ## 4.JSON日志解析
 
 此处更多讲解 JSON 日志解析，偏向日志的内容。而不是采集方式，因为可以通过各种方式收集 JSON日志，如本地文件、API接口获取、syslog 转发 带有JSON的日志 等等
@@ -328,7 +402,7 @@ if __name__ == "__main__":
 
 不过JSON日志进来后存在字段无法修改的问题，可以有以下两种方法:
 
-1. python脚本获取到告警先给json日志套壳，防止字段冲突
+1. python脚本获取到告警先给json日志套壳，防止字段冲突，可以看上文
 2. 不使用 wazuh的 JSON_Decoder , 使用 正则进行匹配并设置字段名称
 
 
