@@ -313,6 +313,8 @@ systemctl start filebeat
 
 卡住了，filebeat无法正确将日志发送到es，经过查询官方文档 https://documentation.wazuh.com/current/integrations-guide/index.html 得知， filebeat集成的方式仅支持 到Wazuh 4.5.3 and Elastic Stack 7.17.13
 
+可查看https://blog.161695.xyz/2023/10/11/soc-es7/
+
 
 
 如果 ES超过该版本，则需要 使用 Logstash 进行集成，并且Kibana不再支持 wazuh的APP。
@@ -321,29 +323,9 @@ systemctl start filebeat
 
 
 
-# 0x05 Wazuh-decoder
 
 
-
-#### 1. Agent上报
-
+后续直接到官网下载的虚拟机包 https://documentation.wazuh.com/current/deployment-options/virtual-machine/virtual-machine.html#virtual-machine-ova 测试 wazuh4.12
 
 
-#### 2.Syslog上报
-
-
-
-#### 3. Windows事件日志
-
-
-
-#### 4.Docker日志
-
-
-
-# 0x06 Wazuh-rule
-
-
-
-# 0x07 Jira安装
 

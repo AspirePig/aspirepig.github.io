@@ -1,4 +1,5 @@
-cd C:\\Users\\admin\\myblog
+E:
+cd E:\\myblog
 git add .
 git commit -m "update"
 git push
