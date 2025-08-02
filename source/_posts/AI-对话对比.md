@@ -16,35 +16,35 @@ tags: [AI, DeepSeek, ChatGPT]
 以下是各个AI回答：
 
 1. ### DeepSeek
-    
-    ![image-20250802185109644](/C:/Users/admin/myblog/source/assets/image-20250802185109644.png)
+   
+    ![image-20250802185109644](assets/image-20250802185109644.png)
     
 2. ### 腾讯元宝
-    
-    ![image-20250802185141984](/C:/Users/admin/myblog/source/assets/image-20250802185141984.png)
+   
+    ![image-20250802185141984](assets/image-20250802185141984.png)
     
 3. ### Chatgpt
-    
-    ![image-20250802185230584](/C:/Users/admin/myblog/source/assets/image-20250802185230584.png)
+   
+    ![image-20250802185230584](assets/image-20250802185230584.png)
     
 4. ### Claude
    
-   ![image-20250802185630040](/C:/Users/admin/myblog/source/assets/image-20250802185630040.png)
+   ![image-20250802185630040](assets/image-20250802185630040.png)
    
 5. ### Gemini
    
-   ![image-20250802190252354](/C:/Users/admin/myblog/source/assets/image-20250802190252354.png)
+   ![image-20250802190252354](assets/image-20250802190252354.png)
    
 6. ### Grok
    
-   ![image-20250802190724817](/C:/Users/admin/myblog/source/assets/image-20250802190724817.png)
+   ![image-20250802190724817](assets/image-20250802190724817.png)
 
 7. ### 百度AI
 
-   ![image-20250802191227748](/C:/Users/admin/myblog/source/assets/image-20250802191227748.png)
+   ![image-20250802191227748](assets/image-20250802191227748.png)
 
 8. 通义千问
-   ![image-20250802191722959](/C:/Users/admin/myblog/source/assets/image-20250802191722959.png)
+   ![image-20250802191722959](assets/image-20250802191722959.png)
 
 
 
