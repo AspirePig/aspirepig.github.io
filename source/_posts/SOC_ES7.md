@@ -968,5 +968,12 @@ elasticsearch.password: "123456"
 
 1. 可以自己使用 elastalert2 再次查询并通过其他方式告警
 2. 可使用logstash 或其他Python脚本监控该index
+3. 使用 kibana API监控alert /api/detection_engine/signals/search [文档](https://www.elastic.co/docs/api/doc/kibana/operation/operation-searchalerts)
 
 ![image-20250727153244577](/assets/image-20250727153244577.png)
+
+API获取alert
+
+
+
+![image-20250802113130638](/assets/image-20250802113130638.png)
