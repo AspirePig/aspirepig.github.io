@@ -987,3 +987,14 @@ API获取alert
 后记：
 
 对wazuh测试，发现如果Agent只是网络断开，可以在连接到Manager后将期间日志上报(但应该有个缓存池，满了可能无法保证所有日志都能上报)。如果是Agent退出了， 再启动后这期间的日志就不会上报了。
+
+经过测试，由client_buffer 的 queue_size 控制默认 5000
+
+```
+  <client_buffer>
+    <disabled>no</disabled>
+    <queue_size>5000</queue_size>
+    <events_per_second>500</events_per_second>
+  </client_buffer>
+```
+
