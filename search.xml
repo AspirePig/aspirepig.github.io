@@ -56,9 +56,9 @@
       
         <tags>
             
-            <tag> elk </tag>
-            
             <tag> wazuh </tag>
+            
+            <tag> elk </tag>
             
         </tags>
       
@@ -77,9 +77,9 @@
       
         <tags>
             
-            <tag> elk </tag>
-            
             <tag> wazuh </tag>
+            
+            <tag> elk </tag>
             
             <tag> filebeat </tag>
             
@@ -123,13 +123,13 @@
       
         <tags>
             
-            <tag> elk </tag>
-            
-            <tag> soc </tag>
-            
             <tag> wazuh </tag>
             
+            <tag> elk </tag>
+            
             <tag> JIRA </tag>
+            
+            <tag> soc </tag>
             
         </tags>
       
@@ -245,11 +245,11 @@
       
         <tags>
             
-            <tag> JIRA </tag>
-            
             <tag> ES </tag>
             
             <tag> filebeat </tag>
+            
+            <tag> JIRA </tag>
             
             <tag> HIDS </tag>
             
@@ -918,9 +918,9 @@
       
       <categories>
           
-          <category> tools </category>
-          
           <category> OS X </category>
+          
+          <category> tools </category>
           
       </categories>
       
@@ -1154,9 +1154,9 @@
       
       <categories>
           
-          <category> tools </category>
-          
           <category> github </category>
+          
+          <category> tools </category>
           
       </categories>
       
@@ -1187,11 +1187,11 @@
           
           <category> misc </category>
           
-          <category> tools </category>
-          
           <category> github </category>
           
           <category> OS X </category>
+          
+          <category> tools </category>
           
       </categories>
       
@@ -1247,9 +1247,9 @@
       
       <categories>
           
-          <category> tools </category>
-          
           <category> OS X </category>
+          
+          <category> tools </category>
           
       </categories>
       
