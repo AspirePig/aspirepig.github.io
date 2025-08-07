@@ -56,9 +56,9 @@
       
         <tags>
             
-            <tag> wazuh </tag>
-            
             <tag> elk </tag>
+            
+            <tag> wazuh </tag>
             
         </tags>
       
@@ -77,9 +77,9 @@
       
         <tags>
             
-            <tag> wazuh </tag>
-            
             <tag> elk </tag>
+            
+            <tag> wazuh </tag>
             
             <tag> filebeat </tag>
             
@@ -123,13 +123,13 @@
       
         <tags>
             
-            <tag> wazuh </tag>
-            
             <tag> elk </tag>
             
-            <tag> JIRA </tag>
-            
             <tag> soc </tag>
+            
+            <tag> wazuh </tag>
+            
+            <tag> JIRA </tag>
             
         </tags>
       
@@ -245,11 +245,11 @@
       
         <tags>
             
+            <tag> JIRA </tag>
+            
             <tag> ES </tag>
             
             <tag> filebeat </tag>
-            
-            <tag> JIRA </tag>
             
             <tag> HIDS </tag>
             
@@ -918,9 +918,9 @@
       
       <categories>
           
-          <category> OS X </category>
-          
           <category> tools </category>
+          
+          <category> OS X </category>
           
       </categories>
       
@@ -1189,9 +1189,9 @@
           
           <category> github </category>
           
-          <category> OS X </category>
-          
           <category> tools </category>
+          
+          <category> OS X </category>
           
       </categories>
       
@@ -1247,9 +1247,9 @@
       
       <categories>
           
-          <category> OS X </category>
-          
           <category> tools </category>
+          
+          <category> OS X </category>
           
       </categories>
       
