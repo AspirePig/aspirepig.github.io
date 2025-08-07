@@ -3,6 +3,7 @@ title: logstatsh/wazuh采集日志
 typora-root-url: ..
 date: 2025-07-23 12:41:22
 tags: [filebeat, wazuh, logstatsh, elk]
+password: c1b44fa7e3bfac368c6187bf40a65684513b1db96654b85822063f6df9c3e6e0
 ---
 
 本文以 阿里云 https://www.alibabacloud.com/help/zh/oss/user-guide/logging oss-accesslog 为例，

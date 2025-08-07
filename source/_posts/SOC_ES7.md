@@ -3,6 +3,7 @@ title: SOC_ES7.17.13
 typora-root-url: ..
 date: 2023-10-11 19:35:28
 tags: [elk, soc, wazuh, JIRA]
+password: c1b44fa7e3bfac368c6187bf40a65684513b1db96654b85822063f6df9c3e6e0
 ---
 
 

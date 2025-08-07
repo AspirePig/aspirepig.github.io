@@ -3,6 +3,7 @@ title: Wazuh 日志采集 总结篇
 typora-root-url: ..
 date: 2025-07-26 09:21:28
 tags: [wazuh, elk]
+password: c1b44fa7e3bfac368c6187bf40a65684513b1db96654b85822063f6df9c3e6e0
 ---
 
 ## 1.概览

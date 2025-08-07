@@ -1,11 +1,11 @@
 ---
 title: V2RAY+Nginx+TLS+ws搭建方案
-tags: []
+tags: [linux, v2ray]
 id: '598'
 categories:
   - - linux
 date: 2020-02-24 19:27:54
-password: 9fc56569332932ef770770441eb011e8006bef813c989b7b8594d882a6926732
+password: c1b44fa7e3bfac368c6187bf40a65684513b1db96654b85822063f6df9c3e6e0
 ---
 
 当前ss和ssr已经无法很好的隐藏，使用V2RAY可以伪装成各种协议，此处不再细说其好处和区别。以下为安装过程
