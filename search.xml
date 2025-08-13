@@ -96,11 +96,11 @@
       
         <tags>
             
+            <tag> filebeat </tag>
+            
             <tag> elk </tag>
             
             <tag> wazuh </tag>
-            
-            <tag> filebeat </tag>
             
             <tag> logstatsh </tag>
             
@@ -142,13 +142,13 @@
       
         <tags>
             
+            <tag> JIRA </tag>
+            
             <tag> elk </tag>
             
             <tag> soc </tag>
             
             <tag> wazuh </tag>
-            
-            <tag> JIRA </tag>
             
         </tags>
       
@@ -264,11 +264,11 @@
       
         <tags>
             
-            <tag> JIRA </tag>
-            
             <tag> ES </tag>
             
             <tag> filebeat </tag>
+            
+            <tag> JIRA </tag>
             
             <tag> HIDS </tag>
             
