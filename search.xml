@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>电信天邑光猫TEWA-768E超级密码破解</title>
+      <link href="/2025/08/11/dian-xin-tian-yi-guang-mao-tewa-768e-chao-ji-mi-ma-po-jie/"/>
+      <url>/2025/08/11/dian-xin-tian-yi-guang-mao-tewa-768e-chao-ji-mi-ma-po-jie/</url>
+      
+        <content type="html"><![CDATA[<h4 id="1-准备一个FAT32格式的U盘"><a href="#1-准备一个FAT32格式的U盘" class="headerlink" title="1. 准备一个FAT32格式的U盘"></a>1. 准备一个FAT32格式的U盘</h4><p><img src="/assets/image-20250812115400715.png" alt="image-20250812115400715"></p><h4 id="2-获取sessionKey"><a href="#2-获取sessionKey" class="headerlink" title="2.获取sessionKey"></a>2.获取sessionKey</h4><p>访问地址： <a href="http://192.168.1.1:8080/login.html">http://192.168.1.1:8080/login.html</a> ， 并打开F12， 监控XHR 网络请求 ，使用光猫背部的 useradmin 账号密码登陆</p><p><img src="/assets/image-20250812115439017.png" alt="image-20250812115439017"></p><p>登陆进去后，等待，会出现请求,拿到 sessionKey</p><pre class="language-none"><code class="language-none">http://192.168.1.1:8080/getfiveminuterequset.json?sessionKey=****</code></pre><p><img src="/assets/image-20250812115633944.png" alt="image-20250812115633944"></p><h4 id="3-导出配置文件"><a href="#3-导出配置文件" class="headerlink" title="3.导出配置文件"></a>3.导出配置文件</h4><p>使用获得的sessionKey值，修改下面这个网址，改完后，提前插入U盘，再访问url</p><pre class="language-none"><code class="language-none">http://192.168.1.1:8080/usbbackup.cmd?action=backupeble&amp;sessionKey=sessionKey值</code></pre><p><img src="/assets/image-20250812120130505.png" alt="image-20250812120130505"></p><p>如果备份配置是灰色的，可以点一下 快速恢复的禁用按钮，再点备份配置</p><p>点击后会出现空白页面，可以稍等30秒，再拔掉U盘。</p><h4 id="4-查找密码"><a href="#4-查找密码" class="headerlink" title="4.查找密码"></a>4.查找密码</h4><p>打开U盘，可以看到一个e8_Config_Backup的备份文件夹，里面有个文件<code>ctce8_TEWA-768E.cfg</code></p><p>可使用[<strong>RouterPassView</strong>]路由器密码查看工具查看</p><p>在软件中搜索 telecom 即可找到密码</p><p><img src="/assets/image-20250812120507890.png" alt="image-20250812120507890"></p><p>用户名 telecomadmin 和 你的超级密码</p><h4 id="5-获取telnet权限"><a href="#5-获取telnet权限" class="headerlink" title="5.获取telnet权限"></a>5.获取telnet权限</h4><p>使用超管账号访问该页面 <a href="http://192.168.1.1:8080/enableTelnet.html">http://192.168.1.1:8080/enableTelnet.html</a> 开启telnet</p><h4 id="6-获取root"><a href="#6-获取root" class="headerlink" title="6.获取root"></a>6.获取root</h4><p>找了很久的教程，发现这个文章</p><p><a href="https://github.com/jonirrings/xor/issues/24">https://github.com/jonirrings/xor/issues/24</a></p><p>可以获取到root 权限</p><p>但是执行ip6tables 清空的命令后，发现TCP仍然会被阻断， UDP和ping可以使用了。 </p><p>暂时无解</p><p>后续直接打电话给 10000， 就说改桥接模式，重启光猫，然后有了宽带账号密码拨号成功。 后续ipv6防火墙可在路由器设置</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> crack </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>AI 对话对比</title>
       <link href="/2025/08/02/ai-dui-hua-dui-bi/"/>
       <url>/2025/08/02/ai-dui-hua-dui-bi/</url>
@@ -77,11 +96,11 @@
       
         <tags>
             
-            <tag> filebeat </tag>
-            
             <tag> elk </tag>
             
             <tag> wazuh </tag>
+            
+            <tag> filebeat </tag>
             
             <tag> logstatsh </tag>
             
@@ -123,13 +142,13 @@
       
         <tags>
             
-            <tag> JIRA </tag>
-            
             <tag> elk </tag>
             
             <tag> soc </tag>
             
             <tag> wazuh </tag>
+            
+            <tag> JIRA </tag>
             
         </tags>
       
@@ -245,11 +264,11 @@
       
         <tags>
             
+            <tag> JIRA </tag>
+            
             <tag> ES </tag>
             
             <tag> filebeat </tag>
-            
-            <tag> JIRA </tag>
             
             <tag> HIDS </tag>
             
