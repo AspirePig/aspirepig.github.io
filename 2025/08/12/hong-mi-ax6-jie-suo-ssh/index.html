@@ -355,7 +355,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    576
+                    594
                 </div>
                 
 
@@ -385,7 +385,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>接上篇，改为桥接模式后，红米AX6 默认ipv6防火墙也是开启的。</p>
+                <p>接上篇，改为桥接模式后，红米AX6 默认ipv6防火墙也是关闭的。</p>
 <p>因此需要修改ip6tables， 但需要ssh  root 权限。</p>
 <p>参考连接：</p>
 <p><a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a5oegewk/">https://post.smzdm.com/p/a5oegewk/</a></p>
@@ -396,7 +396,7 @@
 <h2 id="1-解锁并固化ssh"><a href="#1-解锁并固化ssh" class="headerlink" title="1.解锁并固化ssh"></a>1.解锁并固化ssh</h2><p>工具：</p>
 <p><img src="/assets/image-20250813120502994.png" alt="image-20250813120502994"></p>
 <ol>
-<li><p>按照<a target="_blank" rel="noopener" href="https://blog.csdn.net/noob0208/article/details/128334126">https://blog.csdn.net/noob0208/article/details/128334126</a> 先试用修复工具降级，再试用虚拟机搭建openwrt，获取到SSh权限</p>
+<li><p>按照<a target="_blank" rel="noopener" href="https://blog.csdn.net/noob0208/article/details/128334126">https://blog.csdn.net/noob0208/article/details/128334126</a> 先使用修复工具降级，再使用虚拟机搭建openwrt，获取到AX6 SSh权限</p>
 </li>
 <li><p>按照 <a target="_blank" rel="noopener" href="https://www.right.com.cn/FORUM/thread-4046020-1-1.html">https://www.right.com.cn/FORUM/thread-4046020-1-1.html</a> 固化ssh，升级路由器固件，再使用telnet 恢复SSH权限</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sed</span> <span class="token parameter variable">-i</span> <span class="token string">'s/channel=.*/channel="debug"/g'</span> /etc/init.d/dropbear
@@ -420,10 +420,10 @@ ip6tables <span class="token parameter variable">-P</span> FORWARD ACCEPT</code>
 
 <p>测试，外网可以连接到内部设备的IPV6</p>
 <p><img src="/assets/image-20250813122911057.png" alt="image-20250813122911057"></p>
-<p>但这种模式并不安全， 因为整个局域网所有设备均会IPv6暴露出去。</p>
+<p>但考虑到，但这种模式并不安全， 因为整个局域网所有设备均会IPv6对外可访问。</p>
 <p><strong>上网设置界面设置为 NAT6 ， 内网设备获取到的IP变成 内网IPv6</strong>，这样外网无法直接连通内网</p>
 <p><img src="/assets/image-20250813133641999.png" alt="image-20250813133641999"></p>
-<p>小米路由器每次重启均会重置防火墙，使用以下命令，设置到开机启动将其转发</p>
+<p>小米路由器每次重启均会重置防火墙，使用以下命令，设置到开机启动，转发指定端口 (可在系统中设置手动IPV6)</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /etc/rc.local
 <span class="token comment">#添加以下命令</span>
 
